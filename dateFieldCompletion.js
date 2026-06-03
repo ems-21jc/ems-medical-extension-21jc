@@ -147,24 +147,18 @@ function injectButton(input, format, label) {
   input.insertAdjacentElement('afterend', btn);
 }
 
-function tryInject() {
-  let injected = 0;
+function tryInjectDates() {
   for (const field of FIELDS) {
     const input = findInputByLabel(field.label);
-    if (input) {
-      injectButton(input, field.format, field.label);
-      injected++;
-    }
+    if (input) injectButton(input, field.format, field.label);
   }
-  return injected;
 }
 
 // Observe les mutations DOM pour les pages chargées dynamiquement (SPA/React)
-const observer = new MutationObserver(() => {
-  tryInject();
+const datesObserver = new MutationObserver(() => {
+  tryInjectDates();
 });
 
-observer.observe(document.body, { childList: true, subtree: true });
+datesObserver.observe(document.body, { childList: true, subtree: true });
 
-// Tentative initiale au chargement
-tryInject();
+tryInjectDates();

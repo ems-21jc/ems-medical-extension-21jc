@@ -38,3 +38,114 @@
   border-color: #c0392b;
   color: #e74c3c;
 }
+
+/* ── Complétion ─────────────────────────────────────────────────────────────── */
+
+.med-completion-btn {
+  position: absolute;
+  top: 20px;
+  right: 16px;
+  z-index: 10;
+
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  font-family: Roboto, Helvetica, Arial, sans-serif;
+  font-weight: 500;
+  font-size: 0.866667rem;
+  line-height: 1.75;
+  letter-spacing: 0.02857em;
+  text-transform: uppercase;
+  color: white;
+  background-color: transparent;
+  padding: 3px 9px;
+  border-radius: 4px;
+  border: 1px solid rgba(120, 176, 202, 0.5);
+  cursor: pointer;
+  transition: background-color 250ms cubic-bezier(0.4, 0, 0.2, 1),
+              box-shadow 250ms cubic-bezier(0.4, 0, 0.2, 1),
+              border-color 250ms cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+.med-completion-btn:hover {
+  background-color: rgba(120, 176, 202, 0.08);
+  border-color: rgba(120, 176, 202, 0.8);
+}
+
+.med-completion-btn--active {
+  background-color: rgba(120, 176, 202, 0.15);
+  border-color: rgba(120, 176, 202, 1);
+}
+
+.med-completion-panel {
+  position: absolute;
+  top: calc(100% + 6px);
+  right: 0;
+  min-width: 180px;
+  background: #1e1e1e;
+  border: 1px solid #444;
+  border-radius: 6px;
+  padding: 12px;
+  z-index: 9999;
+  box-shadow: 0 4px 16px rgba(0,0,0,0.5);
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+}
+
+.med-completion-row {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 12px;
+}
+
+.med-completion-label {
+  color: #ccc;
+  font-size: 14px;
+  cursor: pointer;
+}
+
+.med-completion-checkbox {
+  width: 16px;
+  height: 16px;
+  cursor: pointer;
+  accent-color: #2a7ae4;
+}
+
+.med-completion-actions {
+  display: flex;
+  gap: 8px;
+  margin-top: 4px;
+}
+
+.med-completion-validate,
+.med-completion-cancel {
+  flex: 1;
+  padding: 5px 0;
+  border: none;
+  border-radius: 4px;
+  font-size: 13px;
+  font-weight: 600;
+  cursor: pointer;
+  transition: background 0.15s;
+}
+
+.med-completion-validate {
+  background: #2a7ae4;
+  color: #fff;
+}
+
+.med-completion-validate:hover {
+  background: #1a5fc4;
+}
+
+.med-completion-cancel {
+  background: #3a3a3a;
+  color: #ccc;
+}
+
+.med-completion-cancel:hover {
+  background: #4a4a4a;
+  color: #fff;
+}
