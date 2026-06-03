@@ -9,6 +9,7 @@
         "https://intra.21jumpclick.fr/*"
       ],
       "js": [
+        "browser-polyfill.js",
         "dateFieldCompletion.js",
         "medicalFileCompletion.js"
       ],

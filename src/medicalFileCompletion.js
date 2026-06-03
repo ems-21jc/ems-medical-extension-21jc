@@ -1,5 +1,3 @@
-import browser from "webextension-polyfill";
-
 // Structure hiérarchique du formulaire de complétion
 const COMPLETION_CONFIG = [
   {

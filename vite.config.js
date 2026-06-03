@@ -22,7 +22,8 @@ export default defineConfig(({ mode }) => {
         output: {
           entryFileNames: '[name].js',
           assetFileNames: '[name].[ext]',
-          chunkFileNames: '[name].js'
+          chunkFileNames: '[name].js',
+          format: 'es' // 👈 Format standard ES, compatible multi-inputs et idéal pour les Content Scripts isolés
         }
       }
     },
@@ -34,26 +35,38 @@ export default defineConfig(({ mode }) => {
           const manifestTarget = resolve(__dirname, `dist/${target}/manifest.json`);
           const cssSource = resolve(__dirname, 'src/content.css');
           const cssTarget = resolve(__dirname, `dist/${target}/content.css`);
+          
+          // Récupération automatique du polyfill depuis node_modules
+          const polyfillSource = resolve(__dirname, 'node_modules/webextension-polyfill/dist/browser-polyfill.js');
+          const polyfillTarget = resolve(__dirname, `dist/${target}/browser-polyfill.js`);
 
+          // 1. Synchronisation et copie du manifest spécifique
           if (fs.existsSync(manifestSource)) {
             const manifestData = JSON.parse(fs.readFileSync(manifestSource, 'utf-8'));
             
             // Injection de la version du package.json
             manifestData.version = pkg.version;
             
-            // 1. Métamorphose/Mise à jour du fichier SOURCE (dans src/) pour garder la bonne version
+            // Mise à jour du fichier SOURCE (dans src/)
             fs.writeFileSync(manifestSource, JSON.stringify(manifestData, null, 2));
 
-            // 2. Écriture du fichier final de PRODUCTION (dans dist/)
+            // Écriture du fichier final de PRODUCTION (dans dist/)
             fs.writeFileSync(manifestTarget, JSON.stringify(manifestData, null, 2));
           }
 
-          // Copie le CSS
+          // 2. Copie du fichier CSS
           if (fs.existsSync(cssSource)) {
             fs.copyFileSync(cssSource, cssTarget);
           }
 
-          console.log(`\n🎉 Version synchronisée (${pkg.version}) et extension compilée pour ${target.toUpperCase()} !`);
+          // 3. Copie du fichier polyfill requis par l'ordre des manifests
+          if (fs.existsSync(polyfillSource)) {
+            fs.copyFileSync(polyfillSource, polyfillTarget);
+          } else {
+            console.error(`❌ Impossible de trouver le polyfill dans node_modules à l'emplacement : ${polyfillSource}`);
+          }
+
+          console.log(`\n🎉 Version synchronisée (${pkg.version}) et extension compilée avec succès pour ${target.toUpperCase()} !`);
         }
       }
     ]
