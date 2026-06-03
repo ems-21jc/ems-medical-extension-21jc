@@ -81,7 +81,9 @@
   position: absolute;
   top: calc(100% + 6px);
   right: 0;
-  min-width: 180px;
+  min-width: 220px;
+  max-height: 420px;
+  overflow-y: auto;
   background: #1e1e1e;
   border: 1px solid #444;
   border-radius: 6px;
@@ -90,7 +92,21 @@
   box-shadow: 0 4px 16px rgba(0,0,0,0.5);
   display: flex;
   flex-direction: column;
-  gap: 10px;
+  gap: 4px;
+}
+
+.med-completion-group {
+  display: flex;
+  flex-direction: column;
+  gap: 2px;
+  margin-bottom: 8px;
+}
+
+.med-completion-group-title {
+  color: #fff;
+  font-size: 13px;
+  font-weight: 600;
+  margin-bottom: 4px;
 }
 
 .med-completion-row {
@@ -98,19 +114,31 @@
   align-items: center;
   justify-content: space-between;
   gap: 12px;
+  min-height: 22px;
+}
+
+.med-completion-row--disabled .med-completion-label {
+  color: #555;
+  cursor: default;
+}
+
+.med-completion-row--disabled .med-completion-checkbox {
+  cursor: default;
+  opacity: 0.35;
 }
 
 .med-completion-label {
   color: #ccc;
-  font-size: 14px;
+  font-size: 13px;
   cursor: pointer;
 }
 
 .med-completion-checkbox {
-  width: 16px;
-  height: 16px;
+  width: 15px;
+  height: 15px;
   cursor: pointer;
   accent-color: #2a7ae4;
+  flex-shrink: 0;
 }
 
 .med-completion-actions {
