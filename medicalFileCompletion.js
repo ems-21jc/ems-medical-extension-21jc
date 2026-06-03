@@ -13,15 +13,25 @@ const COMPLETION_CONFIG = [
     group: 'Accident',
     items: [
       { key: 'avp',            label: 'AVP' },
-      { key: 'moto',           label: 'Moto',             parent: 'avp',   level: 1 },
-      { key: 'casque',         label: 'Casque ?',          parent: 'moto',  level: 2 },
-      { key: 'parebrise',      label: 'Pare Brise ?',      parent: 'avp',   level: 1, disabledBy: 'moto' },
+      { key: 'moto',           label: 'Moto',             parent: 'avp',   level: 1, disabledBy: ['pieton', 'parebrise'] },
+      { key: 'casque',         label: 'Casque',          parent: 'moto',  level: 2 },
+      { key: 'parebrise',      label: 'Pare Brise',      parent: 'avp',   level: 1, disabledBy: ['moto', 'pieton'] },
+      { key: 'pieton',         label: 'Piéton',            parent: 'avp',   level: 1, disabledBy: ['moto', 'parebrise'] },
+      { key: 'cb',             label: 'Coup & Blessure' },
+      { key: 'arme_blanche',   label: 'Arme Blanche',      parent: 'cb',    level: 1 },
+      { key: 'arme_contondante', label: 'Contondante',       parent: 'cb',   level: 1 },
       { key: 'bpb',            label: 'BPB' },
-      { key: 'gpb',            label: 'GPB ?',             parent: 'bpb',   level: 1 },
-      { key: 'cat3',           label: 'Cat3 ?',            parent: 'bpb',   level: 1 },
+      { key: 'gpb',            label: 'GPB',             parent: 'bpb',   level: 1 },
+      { key: 'cat3',           label: 'Cat3',            parent: 'bpb',   level: 1 },
       { key: 'desydratation',  label: 'Désydratation' },
+      { key: 'hypoglycemie',   label: 'Hypoglycémie' },
       { key: 'noyade',         label: 'Noyade' },
-      { key: 'depo',           label: 'Dépôt ?',           parent: 'noyade', level: 1 },
+      { key: 'depo',           label: 'Dépôt',           parent: 'noyade', level: 1 },
+      { key: 'chute',          label: 'Chute' },
+      { key: 'chute_15m',      label: '15m',             parent: 'chute',  level: 1 },
+      { key: 'explosion',       label: 'Explosion' },
+      { key: 'brulure',         label: 'Brulure' },
+      { key: 'attaque_animal',  label: 'Attaque Animal' },
     ]
   },
   {
@@ -30,6 +40,7 @@ const COMPLETION_CONFIG = [
       { key: 'antidouleur',        label: 'Antidouleur',        disabledBy: ['noyade', 'bpb'] },
       { key: 'anti_inflammatoire', label: 'Anti-Inflammatoire', disabledBy: ['noyade', 'bpb'] },
       { key: 'antibiotique',       label: 'Antibiotique',       disabledBy: ['noyade'] },
+      { key: 'anti_coagulant',     label: 'Anti-Coagulant' },
     ]
   },
   {
@@ -43,6 +54,21 @@ const COMPLETION_CONFIG = [
 ];
 
 const COMPLETION_ITEMS = COMPLETION_CONFIG.flatMap(g => g.items);
+
+// Checkboxes d'incapacité — initialisées une seule fois au premier appel
+let cbComa     = null;
+let cbSaut     = null;
+let cbCourse   = null;
+let cbConduire = null;
+let cbArme     = null;
+
+function initIncapaciteCbs() {
+  if (!cbComa)     cbComa     = findCheckboxByLabel('Coma');
+  if (!cbSaut)     cbSaut     = findCheckboxByLabel('Incapacité de saut(1)');
+  if (!cbCourse)   cbCourse   = findCheckboxByLabel('Incapacité de course(2)');
+  if (!cbConduire) cbConduire = findCheckboxByLabel('Incapacité de conduire(3)');
+  if (!cbArme)     cbArme     = findCheckboxByLabel("Incapacité d'utiliser une arme(4)");
+}
 
 function findCheckboxByLabel(labelText) {
   for (const el of document.querySelectorAll('label, span')) {
@@ -134,6 +160,12 @@ function setFieldValue(labelText, value) {
   document.execCommand('insertText', false, value);
 }
 
+// Remplit Durée d'invalidité ET recalcule Date de visite de contrôle
+function setDuration(durationStr) {
+  setFieldValue("Durée d'invalidité", durationStr);
+  setFieldValue('Date de visite de contrôle', calcDateFromDuration(durationStr));
+}
+
 // Calcule date actuelle + durée HH:MM:SS → format DD/MM/YYYY HH:MM
 function calcDateFromDuration(durationStr) {
   const parts = durationStr.split(':');
@@ -149,10 +181,10 @@ function calcDateFromDuration(durationStr) {
 }
 
 function applyCompletion(sel) {
+  initIncapaciteCbs();
   // ── Notes Internes ────────────────────────────────────────────────────────
   if (sel.vm || sel.cu) {
     setFieldValue('Code Postal', '1057');
-    setTimeout(() => setSelectOption('Type', 'Note interne'), 50);
   }
 
   if (sel.vm) {
@@ -163,13 +195,12 @@ function applyCompletion(sel) {
   }
 
   if (sel.cu) {
-    appendToField('Remarque(s)', 'Changement Contactes d\'Urgence');
+    appendToField('Remarque(s)', 'Changement Contactes d\'Urgence', ' + ');
   }
 
   // ── Coma ──────────────────────────────────────────────────────────────────
   if (sel.coma) {
-    const cb = findCheckboxByLabel('Coma');
-    if (cb && !cb.checked) cb.click();
+    if (cbComa && !cbComa.checked) cbComa.click();
   }
 
   // ── Blessures ─────────────────────────────────────────────────────────────
@@ -185,7 +216,14 @@ function applyCompletion(sel) {
       s += sel.casque ? ' Casque' : ' sans Casque';
     }
     if (sel.parebrise) s += ' Pare Brise';
+    if (sel.pieton)    s += ' Piéton';
     blessures.push(s);
+  }
+
+  if (sel.cb) {
+    if (sel.arme_blanche)      blessures.push('Arme Blanche');
+    else if (sel.arme_contondante) blessures.push('Arme Contondante');
+    else                           blessures.push('Coup et Blessure');
   }
 
   if (sel.bpb) {
@@ -193,23 +231,46 @@ function applyCompletion(sel) {
     s += sel.gpb  ? ' GPB'   : ' sans GPB';
     s += sel.cat3 ? ' Cat3'  : ' 9mm';
     blessures.push(s);
+    if (!sel.gpb || sel.coma) {
+      [cbSaut, cbCourse, cbConduire, cbArme].forEach(cb => {
+        if (cb && !cb.checked) cb.click();
+      });
+    }
   }
 
   if (sel.desydratation) {
     blessures.push('Déshydratation');
+    if (cbComa && !cbComa.checked) cbComa.click();
     appendToField('Examens', 'Constantes: Faible');
-    appendToField('Traitements', 'Poche de Solution Hydratante', ' ');
-    setFieldValue("Durée d'invalidité", '00:30:00');
-    setFieldValue('Date de visite de contrôle', calcDateFromDuration('00:30:00'));
-    const cbSaut   = findCheckboxByLabel('Incapacité de saut(1)');
-    const cbCourse = findCheckboxByLabel('Incapacité de course(2)');
+    appendToField('Traitements', 'Poche de Solution Hydratante', ' + ');
     if (cbSaut   && !cbSaut.checked)   cbSaut.click();
     if (cbCourse && !cbCourse.checked) cbCourse.click();
-    setTimeout(() => setSelectOption('Type', 'Intervention'), 50);
   }
-  if (sel.noyade)        blessures.push('Noyade');
 
-  if (blessures.length) appendToField('Blessures', blessures.join(' // '));
+  if (sel.hypoglycemie) {
+    blessures.push('Hypoglycémie');
+    if (cbComa && !cbComa.checked) cbComa.click();
+    appendToField('Examens', 'Constantes: Faible');
+    appendToField('Traitements', 'Poche de Glucose', ' + ');
+    if (cbSaut   && !cbSaut.checked)   cbSaut.click();
+    if (cbCourse && !cbCourse.checked) cbCourse.click();
+  }
+  if (sel.noyade) {
+    blessures.push('Noyade');
+    if (cbSaut   && !cbSaut.checked)   cbSaut.click();
+    if (cbCourse && !cbCourse.checked) cbCourse.click();
+  }
+
+  if (sel.chute) {
+    let s = 'Chute';
+    s += sel.chute_15m ? ' 15m' : ' -15m';
+    blessures.push(s);
+  }
+  if (sel.explosion)      blessures.push('Explosion');
+  if (sel.brulure)        blessures.push('Brulures');
+  if (sel.attaque_animal) blessures.push('Attaque Animal');
+
+  if (blessures.length) appendToField('Blessures', blessures.join(' + '), ' + ');
 
   // ── Examens ───────────────────────────────────────────────────────────────
   if (sel.depo) appendToField('Examens', 'Echo: Présence Dépot Poumon');
@@ -223,39 +284,59 @@ function applyCompletion(sel) {
     if (sel.antidouleur)        soins.push('AD');
     if (sel.antibiotique)       soins.push('AB');
     if (sel.anti_inflammatoire) soins.push('AI');
+    if (sel.anti_coagulant)     soins.push('AC');
     if (soins.length) appendToField('Traitements', '// ' + soins.join(' + '), ' ');
   }
 
+  if (sel.attaque_animal) appendToField('Traitements', 'Vaccin Antirabique', ' + ');
+
+  // ── Durée d'invalidité & Date de contrôle — prend la valeur la plus élevée ─
+  const durations = [];
+  if (sel.desydratation || sel.hypoglycemie)  durations.push('00:30:00');
+  if (sel.noyade)                             durations.push(sel.coma ? '00:45:00' : '00:30:00');
+  if (sel.attaque_animal)                     durations.push(sel.coma ? '00:45:00' : '00:30:00');
+  if (sel.brulure && !sel.explosion)          durations.push(sel.coma ? '00:45:00' : '00:30:00');
+  if (sel.bpb && sel.coma)                    durations.push(sel.cat3 ? '04:00:00' : '03:00:00');
+  if (sel.explosion && sel.coma)              durations.push('06:00:00');
+  if (sel.chute && sel.chute_15m && sel.coma) durations.push('06:00:00');
+
+  if (durations.length) {
+    const toSec = s => s.split(':').reduce((acc, v, i) => acc + parseInt(v) * [3600, 60, 1][i], 0);
+    const best = durations.reduce((a, b) => toSec(a) >= toSec(b) ? a : b);
+    setDuration(best);
+  }
+
   // ── Remarque(s) ───────────────────────────────────────────────────────────
-  if (sel.canne)     appendToField('Remarque(s)', 'Prêt de canne');
-  if (sel.fauteuil) appendToField('Remarque(s)', 'Prêt de fauteuil');
+  if (sel.canne)    appendToField('Remarque(s)', 'Prêt de canne', ' + ');
+  if (sel.fauteuil) appendToField('Remarque(s)', 'Prêt de fauteuil', ' + ');
+
+  // ── Type (select) — appelé en dernier après tous les focus() ─────────────
+  if (sel.vm || sel.cu) setTimeout(() => setSelectOption('Type', 'Note interne'), 50);
 }
 
-// Met à jour l'état disabled des enfants d'un item et gère l'exclusion disabledBy
-function updateChildStates(panel, changedKey, isChecked) {
+// Calcule si un item doit être désactivé en tenant compte de TOUTES ses contraintes
+function computeDisabled(item, panel) {
+  if (item.parent) {
+    const parentCb = panel.querySelector(`#med-compl-${item.parent}`);
+    if (parentCb && (parentCb.disabled || !parentCb.checked)) return true;
+  }
+  const list = Array.isArray(item.disabledBy) ? item.disabledBy : (item.disabledBy ? [item.disabledBy] : []);
+  return list.some(key => {
+    const cb = panel.querySelector(`#med-compl-${key}`);
+    return cb && cb.checked;
+  });
+}
+
+// Recalcule l'état de tous les items — plus simple et fiable qu'une propagation récursive
+function updateAllStates(panel) {
   COMPLETION_ITEMS.forEach(item => {
-    // Enfants directs dont le parent vient de changer
-    if (item.parent === changedKey) {
-      const cbEl = panel.querySelector(`#med-compl-${item.key}`);
-      const row = cbEl?.closest('.med-completion-row');
-      if (!cbEl) return;
-      const parentDisabled = !isChecked;
-      cbEl.disabled = parentDisabled;
-      if (parentDisabled) cbEl.checked = false;
-      if (row) row.classList.toggle('med-completion-row--disabled', parentDisabled);
-      // Propage aux petits-enfants
-      updateChildStates(panel, item.key, isChecked && cbEl.checked);
-    }
-    // Exclusion : disabledBy peut être une string ou un tableau
-    const disabledByList = Array.isArray(item.disabledBy) ? item.disabledBy : (item.disabledBy ? [item.disabledBy] : []);
-    if (disabledByList.includes(changedKey)) {
-      const cbEl = panel.querySelector(`#med-compl-${item.key}`);
-      const row = cbEl?.closest('.med-completion-row');
-      if (!cbEl) return;
-      cbEl.disabled = isChecked;
-      if (isChecked) cbEl.checked = false;
-      if (row) row.classList.toggle('med-completion-row--disabled', isChecked);
-    }
+    const cbEl = panel.querySelector(`#med-compl-${item.key}`);
+    const row  = cbEl?.closest('.med-completion-row');
+    if (!cbEl) return;
+    const newDisabled = computeDisabled(item, panel);
+    if (newDisabled && !cbEl.disabled) cbEl.checked = false;
+    cbEl.disabled = newDisabled;
+    if (row) row.classList.toggle('med-completion-row--disabled', newDisabled);
   });
 }
 
@@ -295,7 +376,7 @@ function buildPanel() {
       if (startsDisabled) row.classList.add('med-completion-row--disabled');
 
       cb.addEventListener('change', () => {
-        updateChildStates(panel, item.key, cb.checked);
+        updateAllStates(panel);
       });
 
       row.appendChild(lbl);
