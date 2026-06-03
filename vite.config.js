@@ -14,8 +14,8 @@ export default defineConfig(({ mode }) => {
     build: {
       outDir: resolve(__dirname, `dist/${target}`),
       emptyOutDir: true,
-      minify: true, // Minification active pour la production (en developpement, tu peux la désactiver si tu préfères)
-      sourcemap: false, // Pas de sourcemaps pour la production (à activer en développement si besoin)
+      minify: false, // Pas de minification pour faciliter le debug (à activer en production si besoin)
+      sourcemap: false, // Pas de sourcemaps pour éviter les problèmes de chemins et de confidentialité (à activer en développement si besoin)
       rollupOptions: {
         input: {
           // Les chemins absolus vers tes fichiers sources sont maintenant corrects et cohérents
