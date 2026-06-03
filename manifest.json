@@ -1,0 +1,14 @@
+{
+  "manifest_version": 3,
+  "name": "Extension_EMS_21jc",
+  "version": "0.2",
+  "description": "Remplit automatiquement les dates médicales avec l'heure actuelle",
+  "content_scripts": [
+    {
+      "matches": ["https://intra.21jumpclick.fr/*"],
+      "js": ["content.js"],
+      "css": ["content.css"],
+      "run_at": "document_idle"
+    }
+  ]
+}
