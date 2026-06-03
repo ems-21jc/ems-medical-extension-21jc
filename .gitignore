@@ -1,0 +1,23 @@
+# Dépendances locales
+node_modules/
+.pnpm-store/
+
+# Dossiers de builds générés par Vite
+dist/
+
+# Fichiers de log d'erreurs (npm/yarn)
+npm-debug.log*
+yarn-debug.log*
+yarn-error.log*
+pnpm-debug.log*
+
+# Fichiers systèmes et éditeurs
+.DS_Store
+Thumbs.db
+.vscode/
+.idea/
+
+# Fichiers de configuration locale / Variables d'environnement
+.env
+.env.local
+.env.*.local
