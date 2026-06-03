@@ -1,0 +1,20 @@
+{
+  "name": "extension-ems-21jc",
+  "private": true,
+  "version": "0.3.0",
+  "type": "module",
+  "description": "Extension pour aider à la rédaction de dossier pour les joueurs des EMS du serveur 21 JumpClick",
+  "scripts": {
+    "dev:chrome": "vite --mode chrome",
+    "dev:firefox": "vite --mode firefox",
+    "build:chrome": "vite build --mode chrome",
+    "build:firefox": "vite build --mode firefox",
+    "build:all": "npm run build:chrome && npm run build:firefox"
+  },
+  "dependencies": {
+    "webextension-polyfill": "^0.12.0"
+  },
+  "devDependencies": {
+    "vite": "^5.4.11"
+  }
+}

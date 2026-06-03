@@ -1,0 +1,19 @@
+{
+  "manifest_version": 3,
+  "name": "Extension_EMS_21jc (Firefox)",
+  "version": "0.3.0",
+  "description": "Extension Firefox pour aider à la rédaction de dossier pour les joueurs des EMS du serveur 21 JumpClick",
+  "content_scripts": [
+    {
+      "matches": ["https://intra.21jumpclick.fr/*"],
+      "js": ["dateFieldCompletion.js", "medicalFileCompletion.js"],
+      "css": ["content.css"],
+      "run_at": "document_idle"
+    }
+  ],
+  "browser_specific_settings": {
+    "gecko": {
+      "id": "extension-ems-21jc@21jumpclick.fr"
+    }
+  }
+}
