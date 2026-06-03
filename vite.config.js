@@ -23,7 +23,7 @@ export default defineConfig(({ mode }) => {
           entryFileNames: '[name].js',
           assetFileNames: '[name].[ext]',
           chunkFileNames: '[name].js',
-          format: 'es' // 👈 Format standard ES, compatible multi-inputs et idéal pour les Content Scripts isolés
+          format: 'es' // Format standard ES, compatible multi-inputs et idéal pour les Content Scripts isolés
         }
       }
     },
@@ -64,6 +64,24 @@ export default defineConfig(({ mode }) => {
             fs.copyFileSync(polyfillSource, polyfillTarget);
           } else {
             console.error(`❌ Impossible de trouver le polyfill dans node_modules à l'emplacement : ${polyfillSource}`);
+          }
+
+          // 4. Copie du dossier des icônes
+          const iconsSourceDir = resolve(__dirname, 'src/icons');
+          const iconsTargetDir = resolve(__dirname, `dist/${target}/icons`);
+
+          if (fs.existsSync(iconsSourceDir)) {
+            // Création du dossier de destination s'il n'existe pas encore
+            if (!fs.existsSync(iconsTargetDir)) {
+              fs.mkdirSync(iconsTargetDir, { recursive: true });
+            }
+
+            // Lecture et copie de chaque icône présente
+            const files = fs.readdirSync(iconsSourceDir);
+            for (const file of files) {
+              fs.copyFileSync(resolve(iconsSourceDir, file), resolve(iconsTargetDir, file));
+            }
+            console.log(`✅ Dossier icônes synchronisé pour ${target.toUpperCase()}`);
           }
 
           console.log(`\n🎉 Version synchronisée (${pkg.version}) et extension compilée avec succès pour ${target.toUpperCase()} !`);
