@@ -58,12 +58,12 @@ const COMPLETION_CONFIG = [
       {
         key: "antidouleur",
         label: "Antidouleur",
-        disabledBy: ["noyade", "bpb"],
+        disabledBy: ["noyade"],
       },
       {
         key: "anti_inflammatoire",
         label: "Anti-Inflammatoire",
-        disabledBy: ["noyade", "bpb"],
+        disabledBy: ["noyade"],
       },
       { key: "antibiotique", label: "Antibiotique", disabledBy: ["noyade"] },
       { key: "anti_coagulant", label: "Anti-Coagulant" },
