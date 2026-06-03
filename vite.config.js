@@ -2,6 +2,9 @@ import { defineConfig } from 'vite';
 import { resolve } from 'path';
 import fs from 'fs';
 
+// Lecture dynamique de la version du package.json
+const pkg = JSON.parse(fs.readFileSync(resolve(__dirname, 'package.json'), 'utf-8'));
+
 export default defineConfig(({ mode }) => {
   const target = mode === 'firefox' ? 'firefox' : 'chrome';
 
@@ -32,9 +35,17 @@ export default defineConfig(({ mode }) => {
           const cssSource = resolve(__dirname, 'src/content.css');
           const cssTarget = resolve(__dirname, `dist/${target}/content.css`);
 
-          // Copie et renomme le bon manifest
           if (fs.existsSync(manifestSource)) {
-            fs.copyFileSync(manifestSource, manifestTarget);
+            const manifestData = JSON.parse(fs.readFileSync(manifestSource, 'utf-8'));
+            
+            // Injection de la version du package.json
+            manifestData.version = pkg.version;
+            
+            // 1. Métamorphose/Mise à jour du fichier SOURCE (dans src/) pour garder la bonne version
+            fs.writeFileSync(manifestSource, JSON.stringify(manifestData, null, 2));
+
+            // 2. Écriture du fichier final de PRODUCTION (dans dist/)
+            fs.writeFileSync(manifestTarget, JSON.stringify(manifestData, null, 2));
           }
 
           // Copie le CSS
@@ -42,7 +53,7 @@ export default defineConfig(({ mode }) => {
             fs.copyFileSync(cssSource, cssTarget);
           }
 
-          console.log(`\n🎉 Extension compilée avec succès pour ${target.toUpperCase()} !`);
+          console.log(`\n🎉 Version synchronisée (${pkg.version}) et extension compilée pour ${target.toUpperCase()} !`);
         }
       }
     ]
