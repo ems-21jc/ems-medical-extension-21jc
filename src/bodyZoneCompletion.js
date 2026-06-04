@@ -50,7 +50,7 @@ function bz_prependToField(labelText, text, separator = " // ") {
 // ── Construction de la sidebar ────────────────────────────────────────────────
 function buildSidebar() {
 
-  // La sidebar est un élément fixe sur le côté gauche de l'écran.
+  // La sidebar est un élément fixe sur le côté droit de l'écran.
   // Elle ne bloque pas le formulaire derrière.
   const sidebar = document.createElement("div");
   sidebar.className = "bz-sidebar";
