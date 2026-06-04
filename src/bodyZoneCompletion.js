@@ -39,6 +39,14 @@ function bz_appendToField(labelText, text, separator = " // ") {
   document.execCommand("insertText", false, prefix + text);
 }
 
+function bz_prependToField(labelText, text, separator = " // ") {
+  const field = bz_findFieldByLabel(labelText);
+  if (!field) return;
+  field.focus();
+  field.setSelectionRange(0, 0);
+  document.execCommand("insertText", false, text + (field.value.trim() ? separator : ""));
+}
+
 // ── Construction de la sidebar ────────────────────────────────────────────────
 function buildSidebar() {
 
@@ -218,7 +226,7 @@ function buildSidebar() {
     const blessuresText = stack.map((e) => `${e.zone.label}: ${e.patho.label}`).join(" + ");
 
     bz_appendToField("Examens", examensText);
-    bz_appendToField("Traitements", soinsText);
+    bz_prependToField("Traitements", soinsText);
     bz_appendToField("Blessures", blessuresText, " + ");
 
     closeSidebar();
