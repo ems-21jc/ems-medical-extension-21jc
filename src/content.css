@@ -229,8 +229,8 @@
   width: 480px;
   max-width: 98vw;
   background: #1a1a1a;
-  border-right: 1px solid #333;
-  box-shadow: 4px 0 24px rgba(0, 0, 0, 0.6);
+  border-left: 1px solid #333;
+  box-shadow: -4px 0 24px rgba(0, 0, 0, 0.6);
   z-index: 99999;
   display: flex;
   flex-direction: column;
