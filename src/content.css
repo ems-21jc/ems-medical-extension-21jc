@@ -181,3 +181,333 @@
   background: #4a4a4a;
   color: #fff;
 }
+
+
+/* ══════════════════════════════════════════════════════════════════════════════
+   Bilan Anatomique — bodyZoneCompletion.js
+   ══════════════════════════════════════════════════════════════════════════════ */
+
+/* Bouton "Bilan" dans le formulaire */
+.bz-trigger-btn {
+  position: absolute;
+  top: 20px;
+  z-index: 10;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  font-family: Roboto, Helvetica, Arial, sans-serif;
+  font-weight: 500;
+  font-size: 0.866667rem;
+  line-height: 1.75;
+  letter-spacing: 0.02857em;
+  text-transform: uppercase;
+  color: white;
+  background-color: transparent;
+  padding: 3px 9px;
+  border-radius: 4px;
+  border: 1px solid rgba(140, 200, 120, 0.5);
+  cursor: pointer;
+  transition: background-color 250ms ease, border-color 250ms ease;
+}
+.bz-trigger-btn:hover {
+  background-color: rgba(140, 200, 120, 0.1);
+  border-color: rgba(140, 200, 120, 0.9);
+}
+
+/* ── Sidebar ──────────────────────────────────────────────────────────────── */
+
+/* La sidebar est fixe, collée à gauche de l'écran.
+   Elle démarre hors écran (translateX(-100%)) et glisse à l'intérieur
+   quand la classe .bz-sidebar--open est ajoutée. */
+.bz-sidebar {
+  position: fixed;
+  top: 0;
+  left: 0;
+  height: 100vh;
+  width: 480px;
+  max-width: 98vw;
+  background: #1a1a1a;
+  border-right: 1px solid #333;
+  box-shadow: 4px 0 24px rgba(0, 0, 0, 0.6);
+  z-index: 99999;
+  display: flex;
+  flex-direction: column;
+  transform: translateX(-100%);
+  transition: transform 280ms cubic-bezier(0.4, 0, 0.2, 1);
+  overflow: hidden;
+}
+.bz-sidebar--open {
+  transform: translateX(0);
+}
+
+/* Header */
+.bz-header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 14px 16px;
+  border-bottom: 1px solid #2a2a2a;
+  flex-shrink: 0;
+}
+.bz-title {
+  color: #fff;
+  font-family: Roboto, Helvetica, Arial, sans-serif;
+  font-size: 14px;
+  font-weight: 600;
+  letter-spacing: 0.03em;
+}
+.bz-close-btn {
+  background: none;
+  border: none;
+  color: #555;
+  font-size: 16px;
+  cursor: pointer;
+  padding: 2px 6px;
+  border-radius: 4px;
+  transition: color 0.15s, background 0.15s;
+}
+.bz-close-btn:hover {
+  color: #fff;
+  background: #333;
+}
+
+/* Label de section (petit titre grisé) */
+.bz-col-label {
+  color: #555;
+  font-family: Roboto, Helvetica, Arial, sans-serif;
+  font-size: 10px;
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: 0.1em;
+  padding: 8px 12px 5px;
+}
+
+/* ── Sélecteur zones / pathologies ──────────────────────────────────────── */
+
+/* Les deux colonnes prennent la moitié de la hauteur disponible */
+.bz-selector {
+  display: grid;
+  grid-template-columns: 150px 1fr;
+  flex: 1;
+  min-height: 0;
+  border-bottom: 1px solid #2a2a2a;
+  overflow: hidden;
+}
+
+.bz-zones-col {
+  display: flex;
+  flex-direction: column;
+  border-right: 1px solid #252525;
+  overflow: hidden;
+}
+.bz-zone-list {
+  overflow-y: auto;
+  flex: 1;
+  padding: 4px 6px 6px;
+  display: flex;
+  flex-direction: column;
+  gap: 2px;
+}
+.bz-zone-btn {
+  background: none;
+  border: 1px solid transparent;
+  border-radius: 4px;
+  color: #999;
+  font-family: Roboto, Helvetica, Arial, sans-serif;
+  font-size: 12px;
+  padding: 6px 8px;
+  text-align: left;
+  cursor: pointer;
+  transition: background 0.1s, color 0.1s, border-color 0.1s;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+.bz-zone-btn:hover {
+  background: #252525;
+  color: #ddd;
+}
+.bz-zone-btn--active {
+  background: rgba(140, 200, 120, 0.1);
+  border-color: rgba(140, 200, 120, 0.4);
+  color: #8cc878;
+  font-weight: 600;
+}
+
+.bz-patho-col {
+  display: flex;
+  flex-direction: column;
+  overflow: hidden;
+}
+.bz-patho-list {
+  overflow-y: auto;
+  flex: 1;
+  padding: 4px 8px 6px;
+  display: flex;
+  flex-direction: column;
+  gap: 3px;
+}
+.bz-patho-btn {
+  background: none;
+  border: 1px solid transparent;
+  border-radius: 4px;
+  color: #999;
+  font-family: Roboto, Helvetica, Arial, sans-serif;
+  font-size: 12px;
+  padding: 6px 9px;
+  text-align: left;
+  cursor: pointer;
+  transition: background 0.1s, color 0.1s, border-color 0.1s;
+}
+.bz-patho-btn:hover {
+  background: #252525;
+  color: #ddd;
+}
+/* État "prêt à ajouter" — pathologie sélectionnée mais pas encore stackée */
+.bz-patho-btn--active {
+  background: rgba(120, 176, 202, 0.12);
+  border-color: rgba(120, 176, 202, 0.4);
+  color: #78b0ca;
+  font-weight: 600;
+}
+/* État "déjà dans le stack" */
+.bz-patho-btn--in-stack {
+  color: #5a8a50;
+  cursor: default;
+  opacity: 0.7;
+}
+
+/* ── Stack ───────────────────────────────────────────────────────────────── */
+
+.bz-stack-section {
+  display: flex;
+  flex-direction: column;
+  border-bottom: 1px solid #2a2a2a;
+  max-height: 220px;
+  min-height: 80px;
+  flex-shrink: 0;
+}
+.bz-stack-header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding-right: 10px;
+  flex-shrink: 0;
+}
+.bz-clear-all-btn {
+  background: none;
+  border: none;
+  color: #555;
+  font-size: 11px;
+  cursor: pointer;
+  padding: 2px 6px;
+  border-radius: 3px;
+  transition: color 0.15s, background 0.15s;
+}
+.bz-clear-all-btn:hover {
+  color: #e05555;
+  background: rgba(224, 85, 85, 0.08);
+}
+.bz-stack-list {
+  overflow-y: auto;
+  flex: 1;
+  padding: 4px 8px 8px;
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+}
+
+/* Chaque entrée du stack */
+.bz-stack-item {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  background: #222;
+  border: 1px solid #2e2e2e;
+  border-radius: 5px;
+  padding: 6px 8px;
+  gap: 8px;
+}
+.bz-stack-item-info {
+  display: flex;
+  flex-direction: column;
+  gap: 1px;
+  min-width: 0;
+}
+.bz-stack-item-zone {
+  color: #8cc878;
+  font-size: 10px;
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
+}
+.bz-stack-item-patho {
+  color: #ccc;
+  font-size: 12px;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+.bz-stack-remove-btn {
+  background: none;
+  border: none;
+  color: #444;
+  font-size: 13px;
+  cursor: pointer;
+  padding: 2px 5px;
+  border-radius: 3px;
+  flex-shrink: 0;
+  transition: color 0.15s, background 0.15s;
+}
+.bz-stack-remove-btn:hover {
+  color: #e05555;
+  background: rgba(224, 85, 85, 0.1);
+}
+
+/* Message vide */
+.bz-empty-msg {
+  color: #3a3a3a;
+  font-size: 12px;
+  font-style: italic;
+  padding: 6px 4px;
+}
+
+/* ── Actions ─────────────────────────────────────────────────────────────── */
+
+.bz-actions {
+  display: flex;
+  gap: 8px;
+  padding: 10px 12px;
+  flex-shrink: 0;
+}
+.bz-btn {
+  padding: 7px 0;
+  border: none;
+  border-radius: 5px;
+  font-family: Roboto, Helvetica, Arial, sans-serif;
+  font-size: 12px;
+  font-weight: 600;
+  cursor: pointer;
+  transition: background 0.15s, opacity 0.15s;
+}
+.bz-btn--cancel {
+  flex: 1;
+  background: #252525;
+  color: #777;
+}
+.bz-btn--cancel:hover {
+  background: #2e2e2e;
+  color: #bbb;
+}
+.bz-btn--inject {
+  flex: 2;
+  background: #2a7ae4;
+  color: #fff;
+}
+.bz-btn--inject:hover:not(:disabled) {
+  background: #1a5fc4;
+}
+.bz-btn--inject:disabled {
+  opacity: 0.35;
+  cursor: default;
+}

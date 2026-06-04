@@ -30,11 +30,13 @@ Extension_EMS_21jc/
 │   │   ├── icon32.png              # Placeholder / Icône finale 32x32
 │   │   ├── icon48.png              # Placeholder / Icône finale 48x48
 │   │   └── icon128.png             # Placeholder / Icône finale 128x128
+|   ├── bodyZoneCompletion.js       # Panneau de sélection des pathologies
 │   ├── content.css                 # Styles injectés sur l'intranet
 │   ├── dateFieldCompletion.js      # Logique de complétion des dates
 │   ├── medicalFileCompletion.js    # Logique de rédaction des rapports
 │   ├── manifest.chrome.json        # Configuration spécifique à Google Chrome (avec clés icons et action)
-│   └── manifest.firefox.json       # Configuration spécifique à Mozilla Firefox (avec clés icons et action)
+│   ├── manifest.firefox.json       # Configuration spécifique à Mozilla Firefox (avec clés icons et action)
+|   └── pathologies.json            # Liste des pathologies
 ├── vite.config.js                  # Configuration de compilation Vite (avec copie automatique du dossier icons)
 └── package.json                    # Dépendances et scripts
 ```

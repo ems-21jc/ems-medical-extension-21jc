@@ -1,0 +1,374 @@
+﻿[
+  {
+    "key": "tete",
+    "label": "Tête",
+    "pathologies": [
+      {
+        "key": "tcc_leger",
+        "label": "TCCl — Traumatisme Crânien Léger",
+        "examens": "Pupilles: Réactives et symétriques // Glasgow: 14-15 // Constantes: Stables // Palpation crâne: Douleur locale",
+        "soins": "Mise en observation // Antalgie légère // Surveillance neurologique"
+      },
+      {
+        "key": "tcc_grave",
+        "label": "TCCg — Traumatisme Crânien Grave",
+        "examens": "Pupilles: Anisocorie // Glasgow: <13 // Constantes: Instables // Palpation crâne: Déformation / Fracture suspectée",
+        "soins": "Collier cervical // Oxygénothérapie // Perfusion IV // Transfert SMUR"
+      },
+      {
+        "key": "plaie_crane",
+        "label": "Plaie Crânienne",
+        "examens": "Inspection: Plaie ouverte // Saignement actif // Palpation: Profondeur évaluée",
+        "soins": "Hémostase par compression // Pansement stérile // AD + AB"
+      },
+      {
+        "key": "fracture_machoire",
+        "label": "Fracture Mâchoire",
+        "examens": "Palpation: Craquement / Déformation // Occlusion: Anormale // Douleur à la mobilisation",
+        "soins": "Immobilisation mandibulaire // AD + AI // Alimentation liquide"
+      },
+      {
+        "key": "commotion",
+        "label": "Commotion Cérébrale",
+        "examens": "Glasgow: 13-15 // Amnésie: Possible // Nausées: Oui // Perte de conscience brève notée",
+        "soins": "Repos strict // Surveillance 6h // Antalgie légère"
+      }
+    ]
+  },
+  {
+    "key": "epaules",
+    "label": "Épaules",
+    "pathologies": [
+      {
+        "key": "luxation_epaule",
+        "label": "Luxation Épaule",
+        "examens": "Inspection: Déformation visible // Mobilité: Abolie // Douleur: Intense // Neurovasculaire: Vérifié",
+        "soins": "Immobilisation écharpe // AD + AI // Réduction en milieu médicalisé"
+      },
+      {
+        "key": "fracture_clavicule",
+        "label": "Fracture Clavicule",
+        "examens": "Palpation: Craquement / Point douloureux // Déformation: Visible // Mobilité: Limitée",
+        "soins": "Écharpe d'immobilisation // AD + AI // Surveillance neurovasculaire"
+      },
+      {
+        "key": "contusion_epaule",
+        "label": "Contusion Épaule",
+        "examens": "Palpation: Douleur locale // Hématome: Présent // Mobilité: Conservée partiellement",
+        "soins": "Glace locale // AD + AI // Repos relatif"
+      }
+    ]
+  },
+  {
+    "key": "bras_g",
+    "label": "Bras Gauche",
+    "pathologies": [
+      {
+        "key": "fracture_humerus",
+        "label": "Fracture Humérus",
+        "examens": "Palpation: Craquement // Déformation: Présente // Neurovasculaire: Vérifié distal // Douleur: Vive",
+        "soins": "Attelle / Immobilisation // AD + AI // Élévation du membre"
+      },
+      {
+        "key": "plaie_bras",
+        "label": "Plaie Bras",
+        "examens": "Inspection: Plaie ouverte // Saignement: Évalué // Profondeur: Évaluée // Tendons: Intégrité vérifiée",
+        "soins": "Hémostase // Nettoyage + Pansement stérile // AD + AB // Suture si nécessaire"
+      },
+      {
+        "key": "brulure_bras",
+        "label": "Brûlure Bras",
+        "examens": "Degré: Évalué (1er/2ème/3ème) // Surface: % calculé // Vésicules: Présentes ou non",
+        "soins": "Refroidissement eau froide 15min // Pansement hydrocolloïde // AD + AB préventif"
+      }
+    ]
+  },
+  {
+    "key": "bras_d",
+    "label": "Bras Droit",
+    "pathologies": [
+      {
+        "key": "fracture_humerus",
+        "label": "Fracture Humérus",
+        "examens": "Palpation: Craquement // Déformation: Présente // Neurovasculaire: Vérifié distal // Douleur: Vive",
+        "soins": "Attelle / Immobilisation // AD + AI // Élévation du membre"
+      },
+      {
+        "key": "plaie_bras",
+        "label": "Plaie Bras",
+        "examens": "Inspection: Plaie ouverte // Saignement: Évalué // Profondeur: Évaluée // Tendons: Intégrité vérifiée",
+        "soins": "Hémostase // Nettoyage + Pansement stérile // AD + AB // Suture si nécessaire"
+      },
+      {
+        "key": "brulure_bras",
+        "label": "Brûlure Bras",
+        "examens": "Degré: Évalué (1er/2ème/3ème) // Surface: % calculé // Vésicules: Présentes ou non",
+        "soins": "Refroidissement eau froide 15min // Pansement hydrocolloïde // AD + AB préventif"
+      }
+    ]
+  },
+  {
+    "key": "main_g",
+    "label": "Main Gauche",
+    "pathologies": [
+      {
+        "key": "fracture_metacarpe",
+        "label": "Fracture Métacarpe",
+        "examens": "Palpation: Douleur vive // Déformation: Présente // Mobilité: Limitée // Neurovasculaire: Vérifié",
+        "soins": "Attelle main // AD + AI // Élévation"
+      },
+      {
+        "key": "plaie_main",
+        "label": "Plaie Main / Lacération",
+        "examens": "Inspection: Plaie // Tendons: Intégrité testée // Sensibilité: Évaluée // Saignement: Contrôlé",
+        "soins": "Hémostase + Pansement stérile // AD + AB // Suture si indiquée"
+      },
+      {
+        "key": "brulure_main",
+        "label": "Brûlure Main",
+        "examens": "Degré: Évalué // Zones nobles: Inspection (tendons, articulations) // Surface: % calculé",
+        "soins": "Refroidissement 15min // Pansement stérile non adhérent // AD + AB"
+      },
+      {
+        "key": "ecrasement_main",
+        "label": "Écrasement Main",
+        "examens": "Déformation: Présente // Neurovasculaire: Vérifié // Hématome: Présent // Pouls radial: Évalué",
+        "soins": "Immobilisation // Élévation // AD // Surveillance vasculaire // AC si indiqué"
+      },
+      {
+        "key": "fracture_phalange",
+        "label": "Fracture Phalange / Doigt",
+        "examens": "Palpation: Douleur // Déformation: Présente // Mobilité: Abolie // Circulation: Vérifiée",
+        "soins": "Doigtier de protection // Syndactylie // AD + AI"
+      },
+      {
+        "key": "amputation_doigt",
+        "label": "Amputation Partielle / Totale Doigt",
+        "examens": "Inspection: Segment amputé // Saignement: Évalué // Conservation du segment: Notée",
+        "soins": "Garrot si hémorragie // Pansement compressif // Conservation segment dans linge froid humide // AB + AD"
+      }
+    ]
+  },
+  {
+    "key": "main_d",
+    "label": "Main Droite",
+    "pathologies": [
+      {
+        "key": "fracture_metacarpe",
+        "label": "Fracture Métacarpe",
+        "examens": "Palpation: Douleur vive // Déformation: Présente // Mobilité: Limitée // Neurovasculaire: Vérifié",
+        "soins": "Attelle main // AD + AI // Élévation"
+      },
+      {
+        "key": "plaie_main",
+        "label": "Plaie Main / Lacération",
+        "examens": "Inspection: Plaie // Tendons: Intégrité testée // Sensibilité: Évaluée // Saignement: Contrôlé",
+        "soins": "Hémostase + Pansement stérile // AD + AB // Suture si indiquée"
+      },
+      {
+        "key": "brulure_main",
+        "label": "Brûlure Main",
+        "examens": "Degré: Évalué // Zones nobles: Inspection (tendons, articulations) // Surface: % calculé",
+        "soins": "Refroidissement 15min // Pansement stérile non adhérent // AD + AB"
+      },
+      {
+        "key": "ecrasement_main",
+        "label": "Écrasement Main",
+        "examens": "Déformation: Présente // Neurovasculaire: Vérifié // Hématome: Présent // Pouls radial: Évalué",
+        "soins": "Immobilisation // Élévation // AD // Surveillance vasculaire // AC si indiqué"
+      },
+      {
+        "key": "fracture_phalange",
+        "label": "Fracture Phalange / Doigt",
+        "examens": "Palpation: Douleur // Déformation: Présente // Mobilité: Abolie // Circulation: Vérifiée",
+        "soins": "Doigtier de protection // Syndactylie // AD + AI"
+      },
+      {
+        "key": "amputation_doigt",
+        "label": "Amputation Partielle / Totale Doigt",
+        "examens": "Inspection: Segment amputé // Saignement: Évalué // Conservation du segment: Notée",
+        "soins": "Garrot si hémorragie // Pansement compressif // Conservation segment dans linge froid humide // AB + AD"
+      }
+    ]
+  },
+  {
+    "key": "torse",
+    "label": "Torse",
+    "pathologies": [
+      {
+        "key": "fracture_cotes",
+        "label": "Fractures de Côtes",
+        "examens": "Palpation: Craquement / Douleur // Auscultation: Murmure vésiculaire diminué // SpO2: Surveillance // Respiration: Paradoxale possible",
+        "soins": "Position semi-assise // O2 // AD // Surveillance respiratoire // AI"
+      },
+      {
+        "key": "pneumothorax",
+        "label": "Pneumothorax",
+        "examens": "Auscultation: Silence unilatéral // Détresse respiratoire: Présente // Déviation trachée: Vérifiée // SpO2: Abaissée",
+        "soins": "O2 haut débit // Position semi-assise // Exsufflation si nécessaire // Transfert SMUR"
+      },
+      {
+        "key": "plaie_thoracique",
+        "label": "Plaie Thoracique",
+        "examens": "Inspection: Type de plaie (pénétrante ou non) // Saignement: Évalué // Bullage: Recherché // Auscultation",
+        "soins": "Pansement 3 côtés si soufflante // Hémostase // AB + AD // O2"
+      },
+      {
+        "key": "contusion_thorax",
+        "label": "Contusion Thoracique",
+        "examens": "Palpation: Douleur diffuse // Hématome: Présent // Auscultation: Vérifiée",
+        "soins": "Surveillance constantes // AD + AI // O2 si SpO2 < 95%"
+      },
+      {
+        "key": "plaie_abdominale",
+        "label": "Plaie Abdominale",
+        "examens": "Inspection: Pénétrante ou non // Éviscération: Présente ou non // Défense abdominale: Évaluée // Constantes: Surveillées",
+        "soins": "Pansement humide si éviscération // Ne pas réintroduire // Perfusion IV // AB + AD // Transfert urgent"
+      }
+    ]
+  },
+  {
+    "key": "bassin",
+    "label": "Bassin",
+    "pathologies": [
+      {
+        "key": "fracture_bassin",
+        "label": "Fracture du Bassin",
+        "examens": "Palpation: Douleur à la compression // Instabilité: Présente // Constantes: Choc hémorragique possible // Urine: Hématurie recherchée",
+        "soins": "Immobilisation stricte / Ceinture pelvienne // Perfusion IV // AC si hémorragie // Transfert SMUR"
+      },
+      {
+        "key": "contusion_bassin",
+        "label": "Contusion Pelvienne",
+        "examens": "Palpation: Douleur locale // Hématome: Présent // Stabilité: Préservée",
+        "soins": "Repos // AD + AI // Surveillance constantes"
+      },
+      {
+        "key": "luxation_hanche",
+        "label": "Luxation Hanche",
+        "examens": "Déformation: Membre en rotation // Mobilité: Abolie // Neurovasculaire: Vérifié // Douleur: Intense",
+        "soins": "Immobilisation en position trouvée // AD // Transfert pour réduction médicalisée"
+      }
+    ]
+  },
+  {
+    "key": "jambe_g",
+    "label": "Jambe Gauche",
+    "pathologies": [
+      {
+        "key": "fracture_femur",
+        "label": "Fracture Fémur",
+        "examens": "Déformation: Présente // Raccourcissement: Noté // Neurovasculaire: Vérifié // Choc hémorragique: Surveillé",
+        "soins": "Attelle de traction // Perfusion IV // AD // AC si hémorragie // Surveillance constantes"
+      },
+      {
+        "key": "fracture_tibia",
+        "label": "Fracture Tibia / Péroné",
+        "examens": "Palpation: Craquement / Déformation // Neurovasculaire: Vérifié // Ouverture cutanée: Évaluée",
+        "soins": "Attelle / Immobilisation // AD + AI // AB si fracture ouverte // Élévation"
+      },
+      {
+        "key": "plaie_jambe",
+        "label": "Plaie Membre Inférieur",
+        "examens": "Inspection: Profondeur / Étendue // Saignement: Contrôlé // Tendons: Intégrité vérifiée // Pouls pédo: Évalué",
+        "soins": "Hémostase // Pansement stérile // AD + AB // Suture si indiquée"
+      },
+      {
+        "key": "entorse_genou",
+        "label": "Entorse Genou",
+        "examens": "Palpation: Douleur ligamentaire // Tests laxité: Réalisés // Épanchement: Présent ou non // Mobilité: Évaluée",
+        "soins": "Repos + Glace // Contention // AD + AI // Béquilles si nécessaire"
+      }
+    ]
+  },
+  {
+    "key": "jambe_d",
+    "label": "Jambe Droite",
+    "pathologies": [
+      {
+        "key": "fracture_femur",
+        "label": "Fracture Fémur",
+        "examens": "Déformation: Présente // Raccourcissement: Noté // Neurovasculaire: Vérifié // Choc hémorragique: Surveillé",
+        "soins": "Attelle de traction // Perfusion IV // AD // AC si hémorragie // Surveillance constantes"
+      },
+      {
+        "key": "fracture_tibia",
+        "label": "Fracture Tibia / Péroné",
+        "examens": "Palpation: Craquement / Déformation // Neurovasculaire: Vérifié // Ouverture cutanée: Évaluée",
+        "soins": "Attelle / Immobilisation // AD + AI // AB si fracture ouverte // Élévation"
+      },
+      {
+        "key": "plaie_jambe",
+        "label": "Plaie Membre Inférieur",
+        "examens": "Inspection: Profondeur / Étendue // Saignement: Contrôlé // Tendons: Intégrité vérifiée // Pouls pédo: Évalué",
+        "soins": "Hémostase // Pansement stérile // AD + AB // Suture si indiquée"
+      },
+      {
+        "key": "entorse_genou",
+        "label": "Entorse Genou",
+        "examens": "Palpation: Douleur ligamentaire // Tests laxité: Réalisés // Épanchement: Présent ou non // Mobilité: Évaluée",
+        "soins": "Repos + Glace // Contention // AD + AI // Béquilles si nécessaire"
+      }
+    ]
+  },
+  {
+    "key": "pied_g",
+    "label": "Pied Gauche",
+    "pathologies": [
+      {
+        "key": "entorse_cheville",
+        "label": "Entorse Cheville",
+        "examens": "Palpation: Douleur malléolaire // Œdème: Présent // Appui: Évalué // Stabilité: Testée",
+        "soins": "Glace + Repos // Bandage compressif // AD + AI // Béquilles si appui impossible"
+      },
+      {
+        "key": "fracture_cheville",
+        "label": "Fracture Cheville",
+        "examens": "Palpation: Craquement / Déformation // Neurovasculaire: Vérifié // Appui: Impossible // Œdème: Important",
+        "soins": "Attelle plâtrée // AD + AI // Élévation // Transfert si chirurgical"
+      },
+      {
+        "key": "fracture_metatarse",
+        "label": "Fracture Métatarse / Pied",
+        "examens": "Palpation: Douleur vive localisée // Déformation: Présente ou non // Appui: Très douloureux",
+        "soins": "Chaussure de décharge // AD + AI // Repos strict"
+      },
+      {
+        "key": "plaie_pied",
+        "label": "Plaie Pied",
+        "examens": "Inspection: Corps étranger présent ou non // Profondeur: Évaluée // Saignement: Contrôlé",
+        "soins": "Extraction corps étranger si superficiel // Nettoyage + Pansement stérile // AB + AD"
+      }
+    ]
+  },
+  {
+    "key": "pied_d",
+    "label": "Pied Droit",
+    "pathologies": [
+      {
+        "key": "entorse_cheville",
+        "label": "Entorse Cheville",
+        "examens": "Palpation: Douleur malléolaire // Œdème: Présent // Appui: Évalué // Stabilité: Testée",
+        "soins": "Glace + Repos // Bandage compressif // AD + AI // Béquilles si appui impossible"
+      },
+      {
+        "key": "fracture_cheville",
+        "label": "Fracture Cheville",
+        "examens": "Palpation: Craquement / Déformation // Neurovasculaire: Vérifié // Appui: Impossible // Œdème: Important",
+        "soins": "Attelle plâtrée // AD + AI // Élévation // Transfert si chirurgical"
+      },
+      {
+        "key": "fracture_metatarse",
+        "label": "Fracture Métatarse / Pied",
+        "examens": "Palpation: Douleur vive localisée // Déformation: Présente ou non // Appui: Très douloureux",
+        "soins": "Chaussure de décharge // AD + AI // Repos strict"
+      },
+      {
+        "key": "plaie_pied",
+        "label": "Plaie Pied",
+        "examens": "Inspection: Corps étranger présent ou non // Profondeur: Évaluée // Saignement: Contrôlé",
+        "soins": "Extraction corps étranger si superficiel // Nettoyage + Pansement stérile // AB + AD"
+      }
+    ]
+  }
+]

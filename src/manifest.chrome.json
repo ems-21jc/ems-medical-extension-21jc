@@ -25,7 +25,8 @@
       "js": [
         "browser-polyfill.js",
         "dateFieldCompletion.js",
-        "medicalFileCompletion.js"
+        "medicalFileCompletion.js",
+        "bodyZoneCompletion.js"
       ],
       "css": [
         "content.css"
