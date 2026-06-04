@@ -19,7 +19,6 @@ function getDynamicInputs() {
       const filePath = resolve(srcDir, file);
       const stat = fs.statSync(filePath);
       
-      // On ne prend que les fichiers (pas les dossiers) qui finissent par .js
       if (stat.isFile() && extname(file) === '.js') {
         const name = basename(file, '.js');
         inputs[name] = filePath;
@@ -38,10 +37,9 @@ export default defineConfig(({ mode }) => {
     root: 'src',
     build: {
       outDir: resolve(__dirname, `dist/${target}`),
-      emptyOutDir: true,
-      minify: false, // Plus propre pour lire le code injecté sur l'intra
+      emptyOutDir: false, // Évite de freeze le chargement du navigateur en mode watch
+      minify: false,
       rollupOptions: {
-        // 💡 AUTO : L'objet input se remplit tout seul avec tous tes scripts JS
         input: dynamicInputs,
         output: {
           entryFileNames: '[name].js',
@@ -54,54 +52,76 @@ export default defineConfig(({ mode }) => {
     plugins: [
       {
         name: 'manifest-and-assets-copier',
-        closeBundle() {
+        
+        // Ajout des fichiers statiques spécifiques à surveiller (Vite gère déjà le JS tout seul)
+        buildStart() {
+          const srcDir = resolve(__dirname, 'src');
+          if (fs.existsSync(srcDir)) {
+            // On ne watch manuellement que ce que Vite ignore (HTML, CSS, JSON)
+            const files = fs.readdirSync(srcDir);
+            files.forEach(file => {
+              const ext = extname(file);
+              if (file === 'popup.html' || file === 'content.css' || (ext === '.json' && file !== 'package.json')) {
+                this.addWatchFile(resolve(srcDir, file));
+              }
+            });
+          }
+        },
+
+        // Exécuté à la fin de l'écriture
+        writeBundle() {
           const manifestSource = resolve(__dirname, `src/manifest.${target}.json`);
           const manifestTarget = resolve(__dirname, `dist/${target}/manifest.json`);
           const cssSource = resolve(__dirname, 'src/content.css');
           const cssTarget = resolve(__dirname, `dist/${target}/content.css`);
-          
-          // Gestion automatique de TOUS les fichiers .json présents à la racine de src/
-          // (Gère automatiquement pathologies.json ou tout autre futur JSON)
+          const popupSource = resolve(__dirname, 'src/popup.html');
+          const popupTarget = resolve(__dirname, `dist/${target}/popup.html`);
+          const polyfillSource = resolve(__dirname, 'node_modules/webextension-polyfill/dist/browser-polyfill.js');
+          const polyfillTarget = resolve(__dirname, `dist/${target}/browser-polyfill.js`);
+
           const srcDir = resolve(__dirname, 'src');
+          const distDir = resolve(__dirname, `dist/${target}`);
+
+          if (!fs.existsSync(distDir)) {
+            fs.mkdirSync(distDir, { recursive: true });
+          }
+
+          // 1. Copie des fichiers .json (ex: pathologies.json) sans toucher à la source
           if (fs.existsSync(srcDir)) {
             const files = fs.readdirSync(srcDir);
             files.forEach(file => {
               if (extname(file) === '.json' && !file.startsWith('manifest.')) {
-                const jsonSource = resolve(srcDir, file);
-                const jsonTarget = resolve(__dirname, `dist/${target}`, file);
-                fs.copyFileSync(jsonSource, jsonTarget);
+                fs.copyFileSync(resolve(srcDir, file), resolve(distDir, file));
               }
             });
-            console.log(`✅ Fichiers de données JSON synchronisés pour ${target.toUpperCase()}`);
           }
 
-          const polyfillSource = resolve(__dirname, 'node_modules/webextension-polyfill/dist/browser-polyfill.js');
-          const polyfillTarget = resolve(__dirname, `dist/${target}/browser-polyfill.js`);
-
-          // 1. Synchronisation et copie du manifest spécifique
+          // 2. Génération du manifest uniquement dans dist/ (Crucial pour casser la boucle infinie)
           if (fs.existsSync(manifestSource)) {
             const manifestData = JSON.parse(fs.readFileSync(manifestSource, 'utf-8'));
             manifestData.version = pkg.version;
-            fs.writeFileSync(manifestSource, JSON.stringify(manifestData, null, 2));
+            // 🛑 On NE réécrit PLUS dans manifestSource (src/), uniquement dans manifestTarget (dist/) !
             fs.writeFileSync(manifestTarget, JSON.stringify(manifestData, null, 2));
           }
 
-          // 2. Copie du fichier CSS
+          // 3. Copie du fichier CSS
           if (fs.existsSync(cssSource)) {
             fs.copyFileSync(cssSource, cssTarget);
           }
 
-          // 3. Copie du fichier polyfill requis par l'ordre des manifests
-          if (fs.existsSync(polyfillSource)) {
-            fs.copyFileSync(polyfillSource, polyfillTarget);
-          } else {
-            console.error(`❌ Impossible de trouver le polyfill dans node_modules à l'emplacement : ${polyfillSource}`);
+          // 4. Copie du fichier popup.html
+          if (fs.existsSync(popupSource)) {
+            fs.copyFileSync(popupSource, popupTarget);
           }
 
-          // 4. Copie du dossier des icônes
-          const iconsSourceDir = resolve(__dirname, 'src/icons');
-          const iconsTargetDir = resolve(__dirname, `dist/${target}/icons`);
+          // 5. Copie du polyfill
+          if (fs.existsSync(polyfillSource)) {
+            fs.copyFileSync(polyfillSource, polyfillTarget);
+          }
 
+          // 6. Copie des icônes
+          const iconsSourceDir = resolve(__dirname, 'src/icons');
+          const iconsTargetDir = resolve(distDir, 'icons');
           if (fs.existsSync(iconsSourceDir)) {
             if (!fs.existsSync(iconsTargetDir)) {
               fs.mkdirSync(iconsTargetDir, { recursive: true });
@@ -110,10 +130,10 @@ export default defineConfig(({ mode }) => {
             for (const file of files) {
               fs.copyFileSync(resolve(iconsSourceDir, file), resolve(iconsTargetDir, file));
             }
-            console.log(`✅ Dossier icônes synchronisé pour ${target.toUpperCase()}`);
           }
 
-          console.log(`\n🎉 Version synchronisée (${pkg.version}) et extension compilée avec succès pour ${target.toUpperCase()} !`);
+          // Un seul log propre et unique par build
+          console.log(`\n⚡ [${target.toUpperCase()}] Build & Synchro OK (v${pkg.version})`);
         }
       }
     ]

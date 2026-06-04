@@ -1,0 +1,150 @@
+<!DOCTYPE html>
+<html lang="fr">
+
+<head>
+    <meta charset="UTF-8">
+    <style>
+        body {
+            width: 260px;
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background: #1a1a1a;
+            color: #e0e0e0;
+            margin: 0;
+            padding: 14px;
+        }
+
+        h3 {
+            margin: 0 0 12px 0;
+            color: #e74c3c;
+            /* Rouge EMS */
+            font-size: 13px;
+            border-bottom: 1px solid #333;
+            padding-bottom: 6px;
+            text-transform: uppercase;
+            letter-spacing: 0.05em;
+        }
+
+        .section-title {
+            font-size: 10px;
+            color: #777;
+            text-transform: uppercase;
+            margin: 12px 0 6px 0;
+            font-weight: bold;
+            letter-spacing: 0.03em;
+        }
+
+        .option-item {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            background: #242424;
+            padding: 8px 10px;
+            border-radius: 4px;
+            margin-bottom: 6px;
+        }
+
+        .option-label {
+            font-size: 12px;
+        }
+
+        .zip-input,
+        .hospital-select {
+            width: 100px;
+            background: #111;
+            border: 1px solid #444;
+            color: #fff;
+            padding: 4px 6px;
+            border-radius: 4px;
+            font-size: 12px;
+        }
+
+        .zip-input {
+            width: 60px;
+            text-align: center;
+        }
+
+        .zip-input:focus,
+        .hospital-select:focus {
+            border-color: #e74c3c;
+            outline: none;
+        }
+
+        .btn-link {
+            display: flex;
+            align-items: center;
+            padding: 8px 10px;
+            color: #fff;
+            text-decoration: none;
+            background: #2b2b2b;
+            border-left: 3px solid #3498db;
+            border-radius: 0 4px 4px 0;
+            margin-bottom: 6px;
+            font-size: 12px;
+            transition: background 0.2s, color 0.2s;
+        }
+
+        .btn-link:hover {
+            background: #353535;
+        }
+
+        .btn-bces {
+            border-left-color: #b6d7a8;
+            /* Vert BCES */
+        }
+
+        .btn-lses {
+            border-left-color: #a4c2f4;
+            /* Bleu LSES */
+        }
+
+        .icon {
+            margin-right: 8px;
+            font-size: 14px;
+        }
+
+        .status-msg {
+            font-size: 10px;
+            color: #2ecc71;
+            text-align: right;
+            margin-top: -4px;
+            margin-bottom: 4px;
+            height: 12px;
+            opacity: 0;
+            transition: opacity 0.3s;
+        }
+    </style>
+</head>
+
+<body>
+
+    <h3>EMS Medical Tools</h3>
+
+    <div class="section-title">Paramètres</div>
+
+    <div class="option-item">
+        <span class="option-label">Votre hôpital :</span>
+        <select id="hospitalSelect" class="hospital-select">
+            <option value="BCES">BCES</option>
+            <option value="LSES">LSES</option>
+        </select>
+    </div>
+
+    <div class="option-item">
+        <span class="option-label">Code ZIP par défaut :</span>
+        <input type="number" id="defaultZip" class="zip-input" placeholder="Ex: 9012">
+    </div>
+    <div id="status" class="status-msg">Sauvegardé !</div>
+
+    <div class="section-title">Raccourcis Dispatches</div>
+
+    <a id="linkBCES" href="#" target="_blank" class="btn-link btn-bces">
+        <span class="icon">🦅</span> Dispatch BCES
+    </a>
+    <a id="linkLSES" href="#" target="_blank" class="btn-link btn-lses">
+        <span class="icon">🏙️</span> Dispatch LSES
+    </a>
+
+    <script src="popup.js"></script>
+</body>
+
+</html>

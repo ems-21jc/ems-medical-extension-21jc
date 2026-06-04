@@ -1,3 +1,6 @@
+const storage = (typeof browser !== "undefined" ? browser : chrome).storage
+  .local;
+
 // Structure hiérarchique du formulaire de complétion
 const COMPLETION_CONFIG = [
   {
@@ -211,8 +214,11 @@ function setDuration(durationStr) {
 function parisDateParts(date) {
   const parts = new Intl.DateTimeFormat("fr-FR", {
     timeZone: "Europe/Paris",
-    year: "numeric", month: "2-digit", day: "2-digit",
-    hour: "2-digit", minute: "2-digit",
+    year: "numeric",
+    month: "2-digit",
+    day: "2-digit",
+    hour: "2-digit",
+    minute: "2-digit",
     hourCycle: "h23",
   }).formatToParts(date);
   return Object.fromEntries(parts.map((p) => [p.type, p.value]));
@@ -229,11 +235,21 @@ function calcDateFromDuration(durationStr) {
   return `${p.day}/${p.month}/${p.year} ${p.hour}:${p.minute}`;
 }
 
-function applyCompletion(sel) {
+async function applyCompletion(sel) {
   initIncapaciteCbs();
+
   // ── Notes Internes ────────────────────────────────────────────────────────
   if (sel.vm || sel.cu) {
-    setFieldValue("Code Postal", "1057");
+    try {
+      // Récupère le ZIP configuré dans la popup, met 1057 si introuvable
+      const data = await storage.get({ defaultHospitalZip: "1057" });
+      const zipToApply = data.defaultHospitalZip || "1057";
+
+      setFieldValue("Code Postal", zipToApply);
+    } catch (error) {
+      console.error("Erreur de lecture du stockage :", error);
+      setFieldValue("Code Postal", "1057");
+    }
   }
 
   if (sel.vm) {
@@ -342,8 +358,7 @@ function applyCompletion(sel) {
     if (sel.antibiotique) soins.push("AB");
     if (sel.anti_inflammatoire) soins.push("AI");
     if (sel.anti_coagulant) soins.push("AC");
-    if (soins.length)
-      appendToField("Traitements", soins.join(" + "));
+    if (soins.length) appendToField("Traitements", soins.join(" + "));
   }
 
   if (sel.attaque_animal)
@@ -389,12 +404,17 @@ function computeDisabled(item, panel) {
     : item.disabledBy
       ? [item.disabledBy]
       : [];
-  if (list.some((key) => {
-    const cb = panel.querySelector(`#med-compl-${key}`);
-    return cb && cb.checked;
-  })) return true;
+  if (
+    list.some((key) => {
+      const cb = panel.querySelector(`#med-compl-${key}`);
+      return cb && cb.checked;
+    })
+  )
+    return true;
   if (item.requiresGroup) {
-    const groupItems = COMPLETION_CONFIG.find((g) => g.group === item.requiresGroup)?.items || [];
+    const groupItems =
+      COMPLETION_CONFIG.find((g) => g.group === item.requiresGroup)?.items ||
+      [];
     const anyChecked = groupItems.some((gi) => {
       const cb = panel.querySelector(`#med-compl-${gi.key}`);
       return cb && cb.checked && !cb.disabled;
@@ -566,11 +586,14 @@ function injectCompletionButton(titleEl) {
       btn.classList.remove("med-completion-btn--active");
     };
 
+    // Bouton Valider
     const validateBtn = document.createElement("button");
     validateBtn.type = "button";
     validateBtn.className = "med-completion-validate";
     validateBtn.textContent = "Valider";
-    validateBtn.addEventListener("click", () => {
+
+    // C'est ici qu'on récupère correctement les cases cochées avant d'appeler applyCompletion
+    validateBtn.addEventListener("click", async () => {
       const selections = {};
       panel.querySelectorAll('input[type="checkbox"]').forEach((cb) => {
         selections[cb.dataset.key] = cb.checked;

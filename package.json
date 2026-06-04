@@ -3,7 +3,7 @@
   "private": true,
   "version": "0.5.0",
   "type": "module",
-  "description": "Extension pour aider à la rédaction de dossier pour les joueurs des EMS du serveur 21 JumpClick",
+  "description": "Extension pour aider à la rédaction de dossier pour les joueurs des EMS du serveur 21 Jump Click",
   "scripts": {
     "build:chrome": "vite build --mode chrome",
     "build:firefox": "vite build --mode firefox",
