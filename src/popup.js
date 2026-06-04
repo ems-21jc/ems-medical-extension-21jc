@@ -3,13 +3,13 @@ const storage = (typeof browser !== "undefined" ? browser : chrome).storage
 
 // 🔗 CONFIGURATION DES LIENS EN FONCTION DE L'HÔPITAL CHOISI
 const URLS_CONFIG = {
-  LSES: {
-    bces: "https://docs.google.com/spreadsheets/d/1Vho76MbebIo4d1RgpVL0wGFqbMjeK1e3HcirZV_C7Uk", // Lien dispatch BCES quand on est à l'hôpital LSES
-    lses: "https://lses-inventory.web.app/", // Lien dispatch LSES quand on est à l'hôpital LSES
-  },
   BCES: {
     bces: "https://docs.google.com/spreadsheets/d/1Vho76MbebIo4d1RgpVL0wGFqbMjeK1e3HcirZV_C7Uk", // Lien dispatch BCES quand on est à l'hôpital BCES
     lses: "https://lses-link.web.app/", // Lien dispatch LSES quand on est à l'hôpital BCES
+  },
+  LSES: {
+    bces: "https://docs.google.com/spreadsheets/d/1Vho76MbebIo4d1RgpVL0wGFqbMjeK1e3HcirZV_C7Uk", // Lien dispatch BCES quand on est à l'hôpital LSES
+    lses: "https://lses-inventory.web.app/", // Lien dispatch LSES quand on est à l'hôpital LSES
   },
 };
 
@@ -38,8 +38,8 @@ document.addEventListener("DOMContentLoaded", async () => {
 
   // 1. Charger la configuration (Par défaut : LSES et ZIP vide)
   const data = await storage.get({
-    defaultHospitalZip: "",
-    selectedHospital: "LSES",
+    defaultHospitalZip: "1057",
+    selectedHospital: "BCES",
   });
 
   zipInput.value = data.defaultHospitalZip;
