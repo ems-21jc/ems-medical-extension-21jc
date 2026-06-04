@@ -318,26 +318,26 @@
       {
         "key": "entorse_cheville",
         "label": "Entorse Cheville",
-        "examens": "Palpation: Douleur malléolaire // Œdème: Présent // Appui: Évalué // Stabilité: Testée",
-        "soins": "Glace + Repos // Bandage compressif // AD + AI // Béquilles si appui impossible"
+        "examens": "Echo: Entorse Cheville G",
+        "soins": "Repos // Attelle Rigide Cheville G"
       },
       {
         "key": "fracture_cheville",
         "label": "Fracture Cheville",
-        "examens": "Palpation: Craquement / Déformation // Neurovasculaire: Vérifié // Appui: Impossible // Œdème: Important",
-        "soins": "Attelle plâtrée // AD + AI // Élévation // Transfert si chirurgical"
+        "examens": "Radio: Fracture Cheville D",
+        "soins": "Repos // Attelle Rigide Cheville D"
       },
       {
         "key": "fracture_metatarse",
         "label": "Fracture Métatarse / Pied",
-        "examens": "Palpation: Douleur vive localisée // Déformation: Présente ou non // Appui: Très douloureux",
-        "soins": "Chaussure de décharge // AD + AI // Repos strict"
+        "examens": "Radio: Fracture Métatarse Pied D",
+        "soins": "Repos // Attelle Rigide Pied D"
       },
       {
         "key": "plaie_pied",
         "label": "Plaie Pied",
-        "examens": "Inspection: Corps étranger présent ou non // Profondeur: Évaluée // Saignement: Contrôlé",
-        "soins": "Extraction corps étranger si superficiel // Nettoyage + Pansement stérile // AB + AD"
+        "examens": "Auscultation: [ Laceration | Hématome ] Pied D",
+        "soins": "Désinfection // Bandage + Strip"
       }
     ]
   },
@@ -348,26 +348,26 @@
       {
         "key": "entorse_cheville",
         "label": "Entorse Cheville",
-        "examens": "Palpation: Douleur malléolaire // Œdème: Présent // Appui: Évalué // Stabilité: Testée",
-        "soins": "Glace + Repos // Bandage compressif // AD + AI // Béquilles si appui impossible"
+        "examens": "Echo: Entorse Cheville D",
+        "soins": "Repos // Attelle Rigide Cheville D"
       },
       {
         "key": "fracture_cheville",
         "label": "Fracture Cheville",
-        "examens": "Palpation: Craquement / Déformation // Neurovasculaire: Vérifié // Appui: Impossible // Œdème: Important",
-        "soins": "Attelle plâtrée // AD + AI // Élévation // Transfert si chirurgical"
+        "examens": "Radio: Fracture Cheville D",
+        "soins": "Repos // Attelle Rigide Cheville D"
       },
       {
         "key": "fracture_metatarse",
         "label": "Fracture Métatarse / Pied",
-        "examens": "Palpation: Douleur vive localisée // Déformation: Présente ou non // Appui: Très douloureux",
-        "soins": "Chaussure de décharge // AD + AI // Repos strict"
+        "examens": "Radio: Fracture Métatarse Pied D",
+        "soins": "Repos // Attelle Rigide Pied D"
       },
       {
         "key": "plaie_pied",
         "label": "Plaie Pied",
-        "examens": "Inspection: Corps étranger présent ou non // Profondeur: Évaluée // Saignement: Contrôlé",
-        "soins": "Extraction corps étranger si superficiel // Nettoyage + Pansement stérile // AB + AD"
+        "examens": "Auscultation: [ Laceration | Hématome ] Pied D",
+        "soins": "Désinfection // Bandage + Strip"
       }
     ]
   }
