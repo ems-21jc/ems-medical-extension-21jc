@@ -368,18 +368,19 @@ function injectInfosButtons() {
 }
 
 // Comportement des boutons :
-//  1) Si le chip cliqué est déjà présent → ne rien faire (idempotent)
+//  1) Si le chip conceptuellement équivalent (info ok / info pas ok) est déjà présent → ne rien faire
 //  2) Sinon, supprimer le chip de l'OPPOSÉ s'il existe (mutex)
 //  3) Puis ajouter le chip cliqué via le champ Autocomplete
 function toggleInfoChip(text, btn) {
-  if (hasChipInDom(text)) {
+  if (hasInfoChipInDom(text)) {
     btn.classList.add("med-infos-btn--done");
     setTimeout(() => btn.classList.remove("med-infos-btn--done"), 1200);
     return;
   }
 
-  const other = text.toLowerCase().includes("pas") ? "Infos ok" : "Infos pas ok";
-  removeChipsByText([other]);
+  // Détermine l'opposé : si on veut "Infos pas ok", on supprime les chips info ok et vice-versa
+  const isPasOk = text.toLowerCase().includes("pas");
+  removeInfoChipsByConcept(isPasOk ? "ok" : "pas-ok");
 
   const iceInput = findInputByLabel("En cas d'urgence");
   if (iceInput) {
@@ -418,14 +419,16 @@ function toggleInfoChip(text, btn) {
   setTimeout(() => btn.classList.remove("med-infos-btn--done"), 1200);
 }
 
-// Vérifie la présence d'un chip MUI dont le label matche `text`
-function hasChipInDom(text) {
-  const norm = normalizeChipText(text);
+// Vérifie la présence d'un chip MUI dont le label correspond au concept info ok / info pas ok
+// (insensible à la casse, singulier/pluriel, etc.)
+function hasInfoChipInDom(text) {
+  const wantPasOk = text.toLowerCase().includes("pas");
   for (const chip of document.querySelectorAll(".MuiChip-root")) {
     const label = chip.querySelector(".MuiChip-label");
     if (!label) continue;
-    const lbl = normalizeChipText(label.textContent || "");
-    if (lbl === norm || lbl.includes(norm)) return true;
+    const lbl = label.textContent || "";
+    if (wantPasOk && isInfosPasOk(lbl)) return true;
+    if (!wantPasOk && isInfosOk(lbl)) return true;
   }
   return false;
 }
@@ -454,43 +457,41 @@ function findClickHandler(el) {
   return null;
 }
 
-// Supprime les chips MUI via leur onClick React
-function removeChipsByText(texts) {
-  for (const text of texts) {
-    const norm = normalizeChipText(text);
-    const chips = [...document.querySelectorAll(".MuiChip-root")];
-    for (const chip of chips) {
-      const label = chip.querySelector(".MuiChip-label");
-      if (!label) continue;
-      const lbl = normalizeChipText(label.textContent || "");
-      if (lbl !== norm && !lbl.includes(norm)) continue;
+// Supprime les chips MUI correspondant au concept donné ('ok' ou 'pas-ok')
+function removeInfoChipsByConcept(kind) {
+  const chips = [...document.querySelectorAll(".MuiChip-root")];
+  for (const chip of chips) {
+    const label = chip.querySelector(".MuiChip-label");
+    if (!label) continue;
+    const lbl = label.textContent || "";
+    const matches = kind === "ok" ? isInfosOk(lbl) : isInfosPasOk(lbl);
+    if (!matches) continue;
 
-      const del = chip.querySelector(".MuiChip-deleteIcon");
-      if (!del) continue;
+    const del = chip.querySelector(".MuiChip-deleteIcon");
+    if (!del) continue;
 
-      const onClick = findClickHandler(del);
-      if (onClick) {
-        try {
-          onClick({
-            type: "click",
-            bubbles: true,
-            cancelable: true,
-            currentTarget: del,
-            target: del,
-            preventDefault() {},
-            stopPropagation() {},
-          });
-        } catch (e) {
-          console.warn("[med-infos] onClick handler failed:", e);
-        }
-      }
+    const onClick = findClickHandler(del);
+    if (onClick) {
       try {
-        del.dispatchEvent(
-          new MouseEvent("click", { bubbles: true, cancelable: true, view: window }),
-        );
-        del.click();
-      } catch (e) {}
+        onClick({
+          type: "click",
+          bubbles: true,
+          cancelable: true,
+          currentTarget: del,
+          target: del,
+          preventDefault() {},
+          stopPropagation() {},
+        });
+      } catch (e) {
+        console.warn("[med-infos] onClick handler failed:", e);
+      }
     }
+    try {
+      del.dispatchEvent(
+        new MouseEvent("click", { bubbles: true, cancelable: true, view: window }),
+      );
+      del.click();
+    } catch (e) {}
   }
 }
 
