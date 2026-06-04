@@ -42,7 +42,116 @@
   color: #e74c3c;
 }
 
+/* ── Chips "Infos ok" / "Infos pas ok" — coloration ─────────────────────── */
+
+.med-chip--ok {
+  background-color: rgba(39, 174, 96, 0.18) !important;
+  border-color: #27ae60 !important;
+  color: #27ae60 !important;
+}
+.med-chip--ok .MuiChip-label {
+  color: #27ae60 !important;
+  font-weight: 600;
+}
+.med-chip--ok .MuiChip-deleteIcon {
+  color: #27ae60 !important;
+  opacity: 0.7;
+}
+.med-chip--ok .MuiChip-deleteIcon:hover {
+  color: #1e8449 !important;
+  opacity: 1;
+}
+
+.med-chip--pas-ok {
+  background-color: rgba(231, 76, 60, 0.18) !important;
+  border-color: #e74c3c !important;
+  color: #e74c3c !important;
+}
+.med-chip--pas-ok .MuiChip-label {
+  color: #e74c3c !important;
+  font-weight: 600;
+}
+.med-chip--pas-ok .MuiChip-deleteIcon {
+  color: #e74c3c !important;
+  opacity: 0.7;
+}
+.med-chip--pas-ok .MuiChip-deleteIcon:hover {
+  color: #c0392b !important;
+  opacity: 1;
+}
+
+/* Texte inline "Infos ok" / "Infos pas ok" (hors chips) :
+   enveloppe juste le mot ciblé pour ne pas casser la mise en page
+   du bloc "En cas d'urgence" */
+.med-inline-ok {
+  color: #27ae60 !important;
+  font-weight: 700 !important;
+  white-space: nowrap;
+}
+
+.med-inline-pas-ok {
+  color: #e74c3c !important;
+  font-weight: 700 !important;
+  white-space: nowrap;
+}
+
+/* ── Boutons "+ Infos ok" / "+ Infos pas ok" (dans le conteneur MuiBox) ─ */
+
+.med-infos-btn-group {
+  display: flex;
+  gap: 6px;
+  margin-top: 12px;
+  padding: 8px 10px;
+  background: rgba(255, 255, 255, 0.03);
+  border: 1px solid #333;
+  border-radius: 6px;
+  flex-wrap: wrap;
+  width: fit-content;
+}
+
+.med-infos-btn {
+  display: inline-flex;
+  align-items: center;
+  gap: 4px;
+  padding: 3px 9px;
+  font-family: Roboto, Helvetica, Arial, sans-serif;
+  font-size: 12px;
+  font-weight: 600;
+  border-radius: 14px;
+  border: 1px solid;
+  cursor: pointer;
+  transition: background 0.15s, border-color 0.15s, color 0.15s, transform 0.1s;
+  background: transparent;
+}
+.med-infos-btn:active {
+  transform: scale(0.96);
+}
+.med-infos-btn--ok {
+  color: #27ae60;
+  border-color: #27ae60;
+}
+.med-infos-btn--ok:hover {
+  background: rgba(39, 174, 96, 0.15);
+  color: #2ecc71;
+  border-color: #2ecc71;
+}
+.med-infos-btn--pas-ok {
+  color: #e74c3c;
+  border-color: #e74c3c;
+}
+.med-infos-btn--pas-ok:hover {
+  background: rgba(231, 76, 60, 0.15);
+  color: #ff6b5b;
+  border-color: #ff6b5b;
+}
+.med-infos-btn--done {
+  background: rgba(120, 176, 202, 0.25) !important;
+  border-color: #78b0ca !important;
+  color: #78b0ca !important;
+}
+
 /* ── Complétion ─────────────────────────────────────────────────────────────── */
+
 
 .med-completion-btn {
   position: absolute;
