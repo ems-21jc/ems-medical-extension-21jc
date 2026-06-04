@@ -73,7 +73,8 @@ const COMPLETION_CONFIG = [
     group: "Autre",
     items: [
       { key: "coma", label: "Coma" },
-      { key: "inconscient", label: "Inconscient", requiresGroup: "Accident" },
+      { key: "douleur", label: "Douleur", type: "slider", min: 0, max: 10, disabledBy: ["inconscient"] },
+      { key: "inconscient", label: "Inconscient", requiresGroup: "Accident", disabledWhenNonZero: ["douleur"] },
       { key: "canne", label: "Canne" },
       { key: "fauteuil", label: "Fauteuil" },
     ],
@@ -324,6 +325,8 @@ function applyCompletion(sel) {
 
   if (blessures.length)
     appendToField("Blessures", blessures.join(" + "), " + ");
+  if (sel.douleur > 0)
+    appendToField("Blessures", `// Douleur: ${sel.douleur}`, " ");
   if (sel.inconscient)
     appendToField("Blessures", "// Inconscient", " ");
 
@@ -398,20 +401,35 @@ function computeDisabled(item, panel) {
     });
     if (!anyChecked) return true;
   }
+  if (item.disabledWhenNonZero) {
+    const keys = Array.isArray(item.disabledWhenNonZero) ? item.disabledWhenNonZero : [item.disabledWhenNonZero];
+    if (keys.some((key) => {
+      const el = panel.querySelector(`#med-compl-${key}`);
+      return el && parseInt(el.value, 10) > 0;
+    })) return true;
+  }
   return false;
 }
 
 // Recalcule l'état de tous les items — plus simple et fiable qu'une propagation récursive
 function updateAllStates(panel) {
   COMPLETION_ITEMS.forEach((item) => {
-    const cbEl = panel.querySelector(`#med-compl-${item.key}`);
-    const row = cbEl?.closest(".med-completion-row");
-    if (!cbEl) return;
+    const el = panel.querySelector(`#med-compl-${item.key}`);
+    const row = el?.closest(".med-completion-row");
+    if (!el) return;
     const newDisabled = computeDisabled(item, panel);
-    if (newDisabled && !cbEl.disabled) cbEl.checked = false;
-    cbEl.disabled = newDisabled;
+    if (newDisabled) {
+      if (item.type === "slider") { el.value = 0; updateSliderDisplay(el); }
+      else if (!el.disabled) el.checked = false;
+    }
+    el.disabled = newDisabled;
     if (row) row.classList.toggle("med-completion-row--disabled", newDisabled);
   });
+}
+
+function updateSliderDisplay(sliderEl) {
+  const display = sliderEl.parentElement?.querySelector(".med-completion-slider-value");
+  if (display) display.textContent = sliderEl.value;
 }
 
 function buildPanel() {
@@ -433,7 +451,6 @@ function buildPanel() {
       row.className = "med-completion-row";
       if (item.level) row.style.paddingLeft = item.level * 14 + "px";
 
-      // Les enfants démarrent disabled jusqu'à ce que le parent soit coché
       const startsDisabled = !!item.parent;
 
       const lbl = document.createElement("label");
@@ -441,20 +458,47 @@ function buildPanel() {
       lbl.textContent = item.label;
       lbl.htmlFor = `med-compl-${item.key}`;
 
-      const cb = document.createElement("input");
-      cb.type = "checkbox";
-      cb.id = `med-compl-${item.key}`;
-      cb.className = "med-completion-checkbox";
-      cb.dataset.key = item.key;
-      cb.disabled = startsDisabled;
-      if (startsDisabled) row.classList.add("med-completion-row--disabled");
+      if (item.type === "slider") {
+        const slider = document.createElement("input");
+        slider.type = "range";
+        slider.id = `med-compl-${item.key}`;
+        slider.className = "med-completion-slider";
+        slider.dataset.key = item.key;
+        slider.min = item.min ?? 0;
+        slider.max = item.max ?? 10;
+        slider.value = 0;
+        slider.disabled = startsDisabled;
+        if (startsDisabled) row.classList.add("med-completion-row--disabled");
 
-      cb.addEventListener("change", () => {
-        updateAllStates(panel);
-      });
+        const valueDisplay = document.createElement("span");
+        valueDisplay.className = "med-completion-slider-value";
+        valueDisplay.textContent = "0";
 
-      row.appendChild(lbl);
-      row.appendChild(cb);
+        slider.addEventListener("input", () => {
+          valueDisplay.textContent = slider.value;
+          updateAllStates(panel);
+        });
+
+        row.appendChild(lbl);
+        row.appendChild(slider);
+        row.appendChild(valueDisplay);
+      } else {
+        const cb = document.createElement("input");
+        cb.type = "checkbox";
+        cb.id = `med-compl-${item.key}`;
+        cb.className = "med-completion-checkbox";
+        cb.dataset.key = item.key;
+        cb.disabled = startsDisabled;
+        if (startsDisabled) row.classList.add("med-completion-row--disabled");
+
+        cb.addEventListener("change", () => {
+          updateAllStates(panel);
+        });
+
+        row.appendChild(lbl);
+        row.appendChild(cb);
+      }
+
       groupEl.appendChild(row);
     }
 
@@ -530,6 +574,9 @@ function injectCompletionButton(titleEl) {
       const selections = {};
       panel.querySelectorAll('input[type="checkbox"]').forEach((cb) => {
         selections[cb.dataset.key] = cb.checked;
+      });
+      panel.querySelectorAll('input[type="range"]').forEach((slider) => {
+        selections[slider.dataset.key] = parseInt(slider.value, 10);
       });
       applyCompletion(selections);
       closePanel();

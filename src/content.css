@@ -144,6 +144,32 @@
   flex-shrink: 0;
 }
 
+.med-completion-slider {
+  flex: 1;
+  min-width: 70px;
+  accent-color: #2a7ae4;
+  cursor: pointer;
+  height: 4px;
+}
+
+.med-completion-slider:disabled {
+  opacity: 0.3;
+  cursor: default;
+}
+
+.med-completion-slider-value {
+  color: #78b0ca;
+  font-size: 12px;
+  font-weight: 700;
+  min-width: 16px;
+  text-align: right;
+  flex-shrink: 0;
+}
+
+.med-completion-row--disabled .med-completion-slider-value {
+  color: #555;
+}
+
 .med-completion-actions {
   display: flex;
   gap: 8px;
