@@ -98,6 +98,7 @@ function mcc_buildExamensRAS(examensText) {
   if (/radio/i.test(examensText)) results.push("Radio: RAS");
   if (/scanner|echo|irm/i.test(examensText)) results.push("Echo: RAS");
   if (/auscultation|ausc|auscult/i.test(examensText)) results.push("Auscultation: RAS");
+  if (/constantes?\s*:?\s*faibles?/i.test(examensText)) results.push("Constantes: Normales");
   return results.join(" // ");
 }
 
@@ -221,14 +222,16 @@ function mcc_injectButton(dialog) {
     const extras = [];
     if (/canne/i.test(remarquesRaw)) extras.push("Canne récupéré");
     if (/fauteuil/i.test(remarquesRaw)) extras.push("Fauteuil récupéré");
-    const remarques = "Retrait IPT // FDS" + (extras.length ? " + " + extras.join(" + ") : "");
+    const remarques = "FDS" + (extras.length ? " + " + extras.join(" + ") : "");
+    const traitementsBase = mcc_buildTraitementsRetrait(traitementsRaw);
+    const traitements = traitementsBase ? traitementsBase + " // Retrait IPT" : "Retrait IPT";
 
     mcc_storage.get({ defaultHospitalZip: "1057" }, (data) => {
       window.__mcc_pending_vc = {
         blessures: "VC",
         remarques,
         examens: mcc_buildExamensRAS(examensRaw),
-        traitements: mcc_buildTraitementsRetrait(traitementsRaw),
+        traitements,
         zip: data.defaultHospitalZip || "",
       };
 

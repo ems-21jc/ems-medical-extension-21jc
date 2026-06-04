@@ -310,7 +310,7 @@ async function applyCompletion(sel) {
   if (sel.desydratation) {
     blessures.push("Déshydratation");
     if (cbComa && !cbComa.checked) cbComa.click();
-    appendToField("Examens", "Constantes: Faible");
+    appendToField("Examens", "Constantes: Faibles");
     appendToField("Traitements", "Poche de Solution Hydratante", " + ");
     if (cbSaut && !cbSaut.checked) cbSaut.click();
     if (cbCourse && !cbCourse.checked) cbCourse.click();
@@ -319,7 +319,7 @@ async function applyCompletion(sel) {
   if (sel.hypoglycemie) {
     blessures.push("Hypoglycémie");
     if (cbComa && !cbComa.checked) cbComa.click();
-    appendToField("Examens", "Constantes: Faible");
+    appendToField("Examens", "Constantes: Faibles");
     appendToField("Traitements", "Poche de Glucose", " + ");
     if (cbSaut && !cbSaut.checked) cbSaut.click();
     if (cbCourse && !cbCourse.checked) cbCourse.click();
