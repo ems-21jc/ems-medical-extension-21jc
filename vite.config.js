@@ -7,18 +7,23 @@ const pkg = JSON.parse(fs.readFileSync(resolve(__dirname, 'package.json'), 'utf-
 
 export default defineConfig(({ mode }) => {
   const target = mode === 'firefox' ? 'firefox' : 'chrome';
+  
+  // Détection du mode développement (--watch)
+  const isDevelopment = process.argv.includes('--watch');
 
   return {
-    // 1. On retire root: 'src' pour laisser la racine du projet à la base de ton projet.
-    // Cela évite les conflits de chemins doublés "src/src/..."
+    // On nettoie l'objet esbuild racine pour ne laisser que ce que le build global doit savoir, et on injecte les options spécifiques dans optimizeDeps
+    esbuild: {
+      keepNames: true
+    },
     build: {
       outDir: resolve(__dirname, `dist/${target}`),
       emptyOutDir: true,
-      minify: false, // Pas de minification pour faciliter le debug (à activer en production si besoin)
-      sourcemap: false, // Pas de sourcemaps pour éviter les problèmes de chemins et de confidentialité (à activer en développement si besoin)
+      // En mode dev, false. En production, on utilise 'esbuild'
+      minify: isDevelopment ? false : 'esbuild', 
+      sourcemap: false,
       rollupOptions: {
         input: {
-          // Les chemins absolus vers tes fichiers sources sont maintenant corrects et cohérents
           dateFieldCompletion: resolve(__dirname, 'src/dateFieldCompletion.js'),
           medicalFileCompletion: resolve(__dirname, 'src/medicalFileCompletion.js'),
         },
@@ -30,10 +35,18 @@ export default defineConfig(({ mode }) => {
         }
       }
     },
+    // On s'assure que les options d'esbuild sont appliquées à la fois pour le build et pour l'optimisation des dépendances
+    optimizeDeps: {
+      esbuildOptions: {
+        keepNames: true,
+        minifyIdentifiers: false,
+        minifySyntax: true,
+        minifyWhitespace: true
+      }
+    },
     plugins: [
       {
         name: 'manifest-and-assets-copier',
-        // writeBundle s'exécute à chaque écriture sur le disque (idéal pour le mode build ET le mode --watch)
         writeBundle() {
           const manifestSource = resolve(__dirname, `src/manifest.${target}.json`);
           const manifestTarget = resolve(__dirname, `dist/${target}/manifest.json`);
