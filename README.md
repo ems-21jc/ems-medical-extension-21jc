@@ -2,107 +2,150 @@
 
 Extension pour navigateurs (Chrome et Firefox) conçue pour automatiser et faciliter la rédaction des dossiers et rapports médicaux pour les joueurs EMS sur l'intranet du serveur **21 JumpClick**.
 
+> **Site ciblé :** `https://intra.21jumpclick.fr/*`
+
+---
+
 ## 🚀 Fonctionnalités
-* **Complétion automatique** des structures de rapports médicaux (Notes internes, Accidents, etc.).
-* **Remplissage rapide des dates** (Visites médicales, Dons de sang, Visites de contrôle avec calcul automatique de la durée d'invalidité).
-* **Compatibilité Cross-Browser** native (Chrome et Firefox) grâce à l'intégration de `webextension-polyfill`.
-* **Compilation optimisée** via Vite.
+
+### 🩺 Complétion automatique de rapport (`medicalFileCompletion.js`)
+Injecte un bouton **"Complétion"** dans le formulaire *Nouveau rapport médical*. Un panneau de cases à cocher et de contrôles permet de pré-remplir automatiquement les champs du rapport en fonction des éléments sélectionnés.
+
+Les groupes disponibles sont :
+
+- **Notes Internes** — VM (avec sous-options SP / Validé), CU
+- **Accident** — AVP (Moto + Casque, Pare-Brise, Piéton), Coups & Blessures (Arme Blanche, Contondante), BPB (GPB, Cat3), Déshydratation, Hypoglycémie, Noyade (Dépôt), Chute (15m), Explosion, Brûlure, Attaque Animal
+- **Médicaments** — Antidouleur, Anti-Inflammatoire, Antibiotique, Anti-Coagulant *(certains désactivés automatiquement selon le type d'accident)*
+- **Autre** — Coma, Douleur *(slider 0–10)*, Inconscient, Canne, Fauteuil
+
+Les options incompatibles se désactivent dynamiquement (ex. : Moto et Piéton s'excluent mutuellement ; Douleur se désactive si Inconscient est coché).
+
+### 🗂️ Bilan Anatomique interactif (`bodyZoneCompletion.js`)
+Injecte un bouton **"Bilan"** dans le formulaire. Il ouvre une sidebar latérale permettant de construire un bilan lésionnel multi-zones avant de tout injecter en une seule action dans les champs **Examens** et **Traitements** du rapport.
+
+Les zones anatomiques disponibles sont : Tête, Épaules, Bras Gauche / Droit, Main Gauche / Droite, Torse, Bassin, Jambe Gauche / Droite, Pied Gauche / Droit.
+
+Chaque zone propose une liste de pathologies avec examens et soins pré-remplis. Les pathologies peuvent être accumulées dans un **stack** avant injection groupée, et retirées individuellement si besoin.
+
+### 📅 Remplissage rapide des dates (`dateFieldCompletion.js`)
+Injecte un bouton 🔃 à côté de trois champs de date :
+
+- **Date de visite médicale** — insère la date actuelle (`JJ/MM/AAAA`)
+- **Date du don de sang** — insère la date et l'heure actuelles (`JJ/MM/AAAA HH:MM`), puis déclenche automatiquement le bouton *Enregistrer*
+- **Date de visite de contrôle** — calcule et insère la date actuelle + la durée d'invalidité renseignée dans le champ *Durée d'invalidité* (`HH:MM:SS`)
+
+Toutes les dates sont calculées sur le **fuseau horaire Europe/Paris**.
+
+### ⚙️ Popup de configuration (`popup.html` / `popup.js`)
+Interface accessible depuis l'icône de l'extension dans la barre d'outils :
+
+- Sélection de l'**hôpital actif** (BCES ou LSES)
+- Définition d'un **code ZIP par défaut**
+- Raccourcis vers les **dispatches BCES et LSES** (liens adaptés selon l'hôpital sélectionné)
+
+### 🌐 Compatibilité Cross-Browser
+Support natif Chrome (Manifest V3) et Firefox (Manifest V3 + `browser_specific_settings`) via l'intégration de `webextension-polyfill`.
 
 ---
 
 ## 🛠️ Installation et Configuration Initiale
 
-Avant de pouvoir utiliser les commandes de build, installe les dépendances Node.js du projet :
+Installe les dépendances Node.js du projet avant toute chose :
 
 ```bash
 npm install
-
 ```
 
-### Structure des dossiers requise :
+### Structure des dossiers
 
 ```text
 Extension_EMS_21jc/
-├── dist/                           # Dossiers de builds finaux (générés automatiquement)
-├── src/                            # Fichiers sources de travail
-│   ├── icons/                      # 📁 Nouveau dossier pour l'identité visuelle
-│   │   ├── icon16.png              # Placeholder / Icône finale 16x16
-│   │   ├── icon32.png              # Placeholder / Icône finale 32x32
-│   │   ├── icon48.png              # Placeholder / Icône finale 48x48
-│   │   └── icon128.png             # Placeholder / Icône finale 128x128
-|   ├── bodyZoneCompletion.js       # Panneau de sélection des pathologies
-│   ├── content.css                 # Styles injectés sur l'intranet
-│   ├── dateFieldCompletion.js      # Logique de complétion des dates
-│   ├── medicalFileCompletion.js    # Logique de rédaction des rapports
-│   ├── manifest.chrome.json        # Configuration spécifique à Google Chrome (avec clés icons et action)
-│   ├── manifest.firefox.json       # Configuration spécifique à Mozilla Firefox (avec clés icons et action)
-|   └── pathologies.json            # Liste des pathologies
-├── vite.config.js                  # Configuration de compilation Vite (avec copie automatique du dossier icons)
-└── package.json                    # Dépendances et scripts
+├── dist/                           # Dossiers compilés finaux (générés automatiquement)
+│   ├── chrome/                     # Build prêt à être chargé dans Google Chrome / Chromium
+│   └── firefox/                    # Build prêt à être chargé dans Mozilla Firefox
+├── src/                            # Fichiers sources de développement
+│   ├── icons/                      # Identité visuelle de l'extension
+│   │   ├── icon16.png              # Icône système (16x16)
+│   │   ├── icon32.png              # Icône de la liste d'extensions (32x32)
+│   │   ├── icon48.png              # Icône de barre d'outils (48x48)
+│   │   └── icon128.png             # Icône détaillée du store (128x128)
+│   ├── bodyZoneCompletion.js       # Sidebar du Bilan Anatomique (zones, pathologies, stack, injection)
+│   ├── content.css                 # Styles CSS injectés (boutons, panneau de complétion, sidebar)
+│   ├── dateFieldCompletion.js      # Insertion et calcul automatique des dates
+│   ├── manifest.chrome.json        # Configuration de l'extension pour Google Chrome (Manifest V3)
+│   ├── manifest.firefox.json       # Configuration de l'extension pour Mozilla Firefox (Manifest V3)
+│   ├── medicalFileCompletion.js    # Panneau de complétion du rapport médical (cases, slider, incapacités)
+│   ├── pathologies.json            # Base de données des pathologies par zone anatomique
+│   ├── popup.html                  # Interface graphique du menu d'options
+│   └── popup.js                    # Logique de la popup (hôpital, ZIP, liens dispatches)
+├── .gitignore
+├── package-lock.json
+├── package.json                    # Scripts npm et dépendances
+└── vite.config.js                  # Configuration de build Vite (compilation + copie des manifests)
 ```
 
 ---
 
-## 💻 Commandes de Développement et Build
+## 💻 Commandes de développement et build
 
-### 1. Google Chrome
+### Google Chrome
 
-* **Lancer le développement continu (mode "watch") :**
 ```bash
+# Développement continu (mode watch)
 npm run dev:chrome
-```
 
-
-* **Générer le build de production optimisé :**
-```bash
+# Build de production
 npm run build:chrome
 ```
 
-
-
-👉 **Installation dans Chrome :** 1. Ouvre l'onglet `chrome://extensions/`.
-2. Active le **Mode développeur** en haut à droite.
-3. Clique sur **Charger l'extension non empaquetée**.
-4. Sélectionne le dossier **`dist/chrome`** situé à la racine du projet.
+**Installation dans Chrome :**
+1. Ouvre `chrome://extensions/`
+2. Active le **Mode développeur** (en haut à droite)
+3. Clique sur **Charger l'extension non empaquetée**
+4. Sélectionne le dossier **`dist/chrome`**
 
 ---
 
-### 2. Mozilla Firefox
+### Mozilla Firefox
 
-* **Lancer le développement continu (mode "watch") :**
 ```bash
+# Développement continu (mode watch)
 npm run dev:firefox
-```
 
-
-* **Générer le build de production optimisé :**
-```bash
+# Build de production
 npm run build:firefox
 ```
 
-
-
-👉 **Installation dans Firefox :**
-
-1. Ouvre l'onglet `about:debugging#/runtime/this-firefox`.
-2. Clique sur **Charger un module d'extension temporaire...**.
-3. Sélectionne le fichier `manifest.json` qui se trouve dans le dossier **`dist/firefox`**.
+**Installation dans Firefox :**
+1. Ouvre `about:debugging#/runtime/this-firefox`
+2. Clique sur **Charger un module d'extension temporaire...**
+3. Sélectionne le fichier `manifest.json` dans le dossier **`dist/firefox`**
 
 ---
 
-### 3. Build simultané (Toutes plateformes)
-
-Pour générer d'un seul coup les versions finales prêtes à être partagées à l'équipe EMS :
+### Build simultané (toutes plateformes)
 
 ```bash
 npm run build:all
 ```
 
-Cette commande nettoie le dossier `dist/` et compile simultanément l'extension dans `dist/chrome` et `dist/firefox`.
+Exécute `build:chrome` puis `build:firefox` séquentiellement. Les deux builds coexistent dans `dist/` sans se supprimer mutuellement (`emptyOutDir: false`).
 
 ---
 
-## 📦 Dépendances principales
+## ⚙️ Comportement du build (Vite)
 
-* **Vite** : Outil de build ultra-rapide utilisé pour compiler le JavaScript et copier les fichiers de configuration de manière isolée.
-* **webextension-polyfill** : Polyfill officiel permettant d'utiliser l'API standard `browser` à la fois sur l'environnement Chromium (Chrome) et Gecko (Firefox).
+Le `vite.config.js` automatise plusieurs tâches à chaque build :
+
+- **Détection automatique des entrées** — tous les fichiers `.js` à la racine de `src/` sont compilés comme points d'entrée indépendants (pas besoin de les déclarer manuellement).
+- **Versioning automatique** — la version définie dans `package.json` est injectée dans le `manifest.json` généré dans `dist/`.
+- **Copie des ressources statiques** — `content.css`, `popup.html`, `pathologies.json`, les icônes et le polyfill `browser-polyfill.js` sont copiés automatiquement dans le bon dossier `dist/<cible>/`.
+- **Manifest isolé par cible** — `manifest.chrome.json` → `dist/chrome/manifest.json`, `manifest.firefox.json` → `dist/firefox/manifest.json`. Les fichiers source dans `src/` ne sont jamais modifiés.
+- **Mode watch compatible** — `emptyOutDir: false` évite de vider le dossier de sortie entre deux recompilations, ce qui prévient les rechargements intempestifs de l'extension en cours de développement.
+
+---
+
+## 📦 Dépendances
+
+- **`vite`** *(devDependency)* — outil de build, gère la compilation JS et la copie des ressources statiques par cible.
+- **`webextension-polyfill`** *(dependency)* — polyfill officiel Mozilla permettant d'utiliser l'API `browser` de façon unifiée sur Chromium et Gecko. Copié tel quel dans `dist/` sous le nom `browser-polyfill.js`.
