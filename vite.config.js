@@ -18,6 +18,7 @@ export default defineConfig(({ mode }) => {
         input: {
           dateFieldCompletion: resolve(__dirname, 'src/dateFieldCompletion.js'),
           medicalFileCompletion: resolve(__dirname, 'src/medicalFileCompletion.js'),
+          bodyZoneCompletion:   resolve(__dirname, 'src/bodyZoneCompletion.js'),
         },
         output: {
           entryFileNames: '[name].js',
