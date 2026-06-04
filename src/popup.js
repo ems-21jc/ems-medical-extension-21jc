@@ -38,8 +38,8 @@ document.addEventListener("DOMContentLoaded", async () => {
 
   // 1. Charger la configuration (Par défaut : LSES et ZIP vide)
   const data = await storage.get({
-    defaultHospitalZip: "1057",
     selectedHospital: "BCES",
+    defaultHospitalZip: "1057",
   });
 
   zipInput.value = data.defaultHospitalZip;
