@@ -13,22 +13,24 @@ const FIELDS = [
   },
 ];
 
+function parisDateParts(date) {
+  const parts = new Intl.DateTimeFormat("fr-FR", {
+    timeZone: "Europe/Paris",
+    year: "numeric", month: "2-digit", day: "2-digit",
+    hour: "2-digit", minute: "2-digit",
+    hourCycle: "h23",
+  }).formatToParts(date);
+  return Object.fromEntries(parts.map((p) => [p.type, p.value]));
+}
+
 function formatDate() {
-  const now = new Date();
-  const d = String(now.getDate()).padStart(2, "0");
-  const m = String(now.getMonth() + 1).padStart(2, "0");
-  const y = now.getFullYear();
-  return `${d}/${m}/${y}`;
+  const p = parisDateParts(new Date());
+  return `${p.day}/${p.month}/${p.year}`;
 }
 
 function formatDateTime() {
-  const now = new Date();
-  const d = String(now.getDate()).padStart(2, "0");
-  const m = String(now.getMonth() + 1).padStart(2, "0");
-  const y = now.getFullYear();
-  const h = String(now.getHours()).padStart(2, "0");
-  const min = String(now.getMinutes()).padStart(2, "0");
-  return `${d}/${m}/${y} ${h}:${min}`;
+  const p = parisDateParts(new Date());
+  return `${p.day}/${p.month}/${p.year} ${p.hour}:${p.minute}`;
 }
 
 // Date actuelle + durée HH:MM:SS du champ "Durée d'invalidité"
@@ -42,15 +44,12 @@ function formatControlDate() {
   if (parts.length < 2) {
     return { value: null, error: "Format invalide — attendu HH:MM:SS" };
   }
-  const now = new Date();
-  now.setHours(now.getHours() + (parseInt(parts[0], 10) || 0));
-  now.setMinutes(now.getMinutes() + (parseInt(parts[1], 10) || 0));
-  now.setSeconds(now.getSeconds() + (parseInt(parts[2], 10) || 0));
-  const d = String(now.getDate()).padStart(2, "0");
-  const m = String(now.getMonth() + 1).padStart(2, "0");
-  const h = String(now.getHours()).padStart(2, "0");
-  const min = String(now.getMinutes()).padStart(2, "0");
-  return { value: `${d}/${m}/${now.getFullYear()} ${h}:${min}`, error: null };
+  const totalSeconds =
+    (parseInt(parts[0], 10) || 0) * 3600 +
+    (parseInt(parts[1], 10) || 0) * 60 +
+    (parseInt(parts[2], 10) || 0);
+  const p = parisDateParts(new Date(Date.now() + totalSeconds * 1000));
+  return { value: `${p.day}/${p.month}/${p.year} ${p.hour}:${p.minute}`, error: null };
 }
 
 // Compatible React : execCommand opère sous la couche synthétique de React,

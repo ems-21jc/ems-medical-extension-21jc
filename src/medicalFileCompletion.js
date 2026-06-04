@@ -73,6 +73,7 @@ const COMPLETION_CONFIG = [
     group: "Autre",
     items: [
       { key: "coma", label: "Coma" },
+      { key: "inconscient", label: "Inconscient", requiresGroup: "Accident" },
       { key: "canne", label: "Canne" },
       { key: "fauteuil", label: "Fauteuil" },
     ],
@@ -206,18 +207,25 @@ function setDuration(durationStr) {
   );
 }
 
-// Calcule date actuelle + durée HH:MM:SS → format DD/MM/YYYY HH:MM
+function parisDateParts(date) {
+  const parts = new Intl.DateTimeFormat("fr-FR", {
+    timeZone: "Europe/Paris",
+    year: "numeric", month: "2-digit", day: "2-digit",
+    hour: "2-digit", minute: "2-digit",
+    hourCycle: "h23",
+  }).formatToParts(date);
+  return Object.fromEntries(parts.map((p) => [p.type, p.value]));
+}
+
+// Calcule date actuelle + durée HH:MM:SS → format DD/MM/YYYY HH:MM (heure Paris)
 function calcDateFromDuration(durationStr) {
   const parts = durationStr.split(":");
-  const now = new Date();
-  now.setHours(now.getHours() + (parseInt(parts[0], 10) || 0));
-  now.setMinutes(now.getMinutes() + (parseInt(parts[1], 10) || 0));
-  now.setSeconds(now.getSeconds() + (parseInt(parts[2], 10) || 0));
-  const d = String(now.getDate()).padStart(2, "0");
-  const m = String(now.getMonth() + 1).padStart(2, "0");
-  const h = String(now.getHours()).padStart(2, "0");
-  const min = String(now.getMinutes()).padStart(2, "0");
-  return `${d}/${m}/${now.getFullYear()} ${h}:${min}`;
+  const totalSeconds =
+    (parseInt(parts[0], 10) || 0) * 3600 +
+    (parseInt(parts[1], 10) || 0) * 60 +
+    (parseInt(parts[2], 10) || 0);
+  const p = parisDateParts(new Date(Date.now() + totalSeconds * 1000));
+  return `${p.day}/${p.month}/${p.year} ${p.hour}:${p.minute}`;
 }
 
 function applyCompletion(sel) {
@@ -316,6 +324,8 @@ function applyCompletion(sel) {
 
   if (blessures.length)
     appendToField("Blessures", blessures.join(" + "), " + ");
+  if (sel.inconscient)
+    appendToField("Blessures", "// Inconscient", " ");
 
   // ── Examens ───────────────────────────────────────────────────────────────
   if (sel.depo) appendToField("Examens", "Echo: Présence Dépot Poumon");
@@ -377,10 +387,19 @@ function computeDisabled(item, panel) {
     : item.disabledBy
       ? [item.disabledBy]
       : [];
-  return list.some((key) => {
+  if (list.some((key) => {
     const cb = panel.querySelector(`#med-compl-${key}`);
     return cb && cb.checked;
-  });
+  })) return true;
+  if (item.requiresGroup) {
+    const groupItems = COMPLETION_CONFIG.find((g) => g.group === item.requiresGroup)?.items || [];
+    const anyChecked = groupItems.some((gi) => {
+      const cb = panel.querySelector(`#med-compl-${gi.key}`);
+      return cb && cb.checked && !cb.disabled;
+    });
+    if (!anyChecked) return true;
+  }
+  return false;
 }
 
 // Recalcule l'état de tous les items — plus simple et fiable qu'une propagation récursive
