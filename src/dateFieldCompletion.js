@@ -147,6 +147,12 @@ function injectButton(input, format, label) {
       btn.textContent = "🔃";
       btn.classList.remove("med-now-btn--done");
     }, 1500);
+    if (format === "datetime") {
+      const enregistrer = [...document.querySelectorAll("button")].find(
+        (b) => b.textContent.trim().toLowerCase() === "enregistrer"
+      );
+      if (enregistrer) setTimeout(() => enregistrer.click(), 200);
+    }
   });
 
   // Insère le bouton juste après l'input, sur la même ligne
