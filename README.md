@@ -13,10 +13,10 @@ Injecte un bouton **"Complétion"** dans le formulaire *Nouveau rapport médical
 
 Les groupes disponibles sont :
 
-- **Notes Internes** — VM (avec sous-options SP / Validé), CU
-- **Accident** — AVP (Moto + Casque, Pare-Brise, Piéton), Coups & Blessures (Arme Blanche, Contondante), BPB (GPB, Cat3), Déshydratation, Hypoglycémie, Noyade (Dépôt), Chute (15m), Explosion, Brûlure, Attaque Animal
-- **Médicaments** — Antidouleur, Anti-Inflammatoire, Antibiotique, Anti-Coagulant *(certains désactivés automatiquement selon le type d'accident)*
-- **Autre** — Coma, Douleur *(slider 0–10)*, Inconscient, Canne, Fauteuil
+- **Notes Internes** - VM (avec sous-options SP / Validé), CU
+- **Accident** - AVP (Moto + Casque, Pare-Brise, Piéton), Coups & Blessures (Arme Blanche, Contondante), BPB (GPB, Cat3), Déshydratation, Hypoglycémie, Noyade (Dépôt), Chute (15m), Explosion, Brûlure, Attaque Animal
+- **Médicaments** - Antidouleur, Anti-Inflammatoire, Antibiotique, Anti-Coagulant *(certains désactivés automatiquement selon le type d'accident)*
+- **Autre** - Coma, Douleur *(slider 0–10)*, Inconscient, Canne, Fauteuil
 
 Les options incompatibles se désactivent dynamiquement (ex. : Moto et Piéton s'excluent mutuellement ; Douleur se désactive si Inconscient est coché).
 
@@ -30,9 +30,9 @@ Chaque zone propose une liste de pathologies avec examens et soins pré-remplis.
 ### 📅 Remplissage rapide des dates (`dateFieldCompletion.js`)
 Injecte un bouton 🔃 à côté de trois champs de date :
 
-- **Date de visite médicale** — insère la date actuelle (`JJ/MM/AAAA`)
-- **Date du don de sang** — insère la date et l'heure actuelles (`JJ/MM/AAAA HH:MM`), puis déclenche automatiquement le bouton *Enregistrer*
-- **Date de visite de contrôle** — calcule et insère la date actuelle + la durée d'invalidité renseignée dans le champ *Durée d'invalidité* (`HH:MM:SS`)
+- **Date de visite médicale** - insère la date actuelle (`JJ/MM/AAAA`)
+- **Date du don de sang** - insère la date et l'heure actuelles (`JJ/MM/AAAA HH:MM`), puis déclenche automatiquement le bouton *Enregistrer*
+- **Date de visite de contrôle** - calcule et insère la date actuelle + la durée d'invalidité renseignée dans le champ *Durée d'invalidité* (`HH:MM:SS`)
 
 Toutes les dates sont calculées sur le **fuseau horaire Europe/Paris**.
 
@@ -137,15 +137,15 @@ Exécute `build:chrome` puis `build:firefox` séquentiellement. Les deux builds 
 
 Le `vite.config.js` automatise plusieurs tâches à chaque build :
 
-- **Détection automatique des entrées** — tous les fichiers `.js` à la racine de `src/` sont compilés comme points d'entrée indépendants (pas besoin de les déclarer manuellement).
-- **Versioning automatique** — la version définie dans `package.json` est injectée dans le `manifest.json` généré dans `dist/`.
-- **Copie des ressources statiques** — `content.css`, `popup.html`, `pathologies.json`, les icônes et le polyfill `browser-polyfill.js` sont copiés automatiquement dans le bon dossier `dist/<cible>/`.
-- **Manifest isolé par cible** — `manifest.chrome.json` → `dist/chrome/manifest.json`, `manifest.firefox.json` → `dist/firefox/manifest.json`. Les fichiers source dans `src/` ne sont jamais modifiés.
-- **Mode watch compatible** — `emptyOutDir: false` évite de vider le dossier de sortie entre deux recompilations, ce qui prévient les rechargements intempestifs de l'extension en cours de développement.
+- **Détection automatique des entrées** - tous les fichiers `.js` à la racine de `src/` sont compilés comme points d'entrée indépendants (pas besoin de les déclarer manuellement).
+- **Versioning automatique** - la version définie dans `package.json` est injectée dans le `manifest.json` généré dans `dist/`.
+- **Copie des ressources statiques** - `content.css`, `popup.html`, `pathologies.json`, les icônes et le polyfill `browser-polyfill.js` sont copiés automatiquement dans le bon dossier `dist/<cible>/`.
+- **Manifest isolé par cible** - `manifest.chrome.json` → `dist/chrome/manifest.json`, `manifest.firefox.json` → `dist/firefox/manifest.json`. Les fichiers source dans `src/` ne sont jamais modifiés.
+- **Mode watch compatible** - `emptyOutDir: false` évite de vider le dossier de sortie entre deux recompilations, ce qui prévient les rechargements intempestifs de l'extension en cours de développement.
 
 ---
 
 ## 📦 Dépendances
 
-- **`vite`** *(devDependency)* — outil de build, gère la compilation JS et la copie des ressources statiques par cible.
-- **`webextension-polyfill`** *(dependency)* — polyfill officiel Mozilla permettant d'utiliser l'API `browser` de façon unifiée sur Chromium et Gecko. Copié tel quel dans `dist/` sous le nom `browser-polyfill.js`.
+- **`vite`** *(devDependency)* - outil de build, gère la compilation JS et la copie des ressources statiques par cible.
+- **`webextension-polyfill`** *(dependency)* - polyfill officiel Mozilla permettant d'utiliser l'API `browser` de façon unifiée sur Chromium et Gecko. Copié tel quel dans `dist/` sous le nom `browser-polyfill.js`.
