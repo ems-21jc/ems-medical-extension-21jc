@@ -6,10 +6,12 @@ const URLS_CONFIG = {
   BCES: {
     bces: "https://docs.google.com/spreadsheets/d/1Vho76MbebIo4d1RgpVL0wGFqbMjeK1e3HcirZV_C7Uk", // Lien dispatch BCES quand on est à l'hôpital BCES
     lses: "https://lses-link.web.app/", // Lien dispatch LSES quand on est à l'hôpital BCES
+    intra21: "https://intra.21jumpclick.fr/", // Lien Intra-21 quand on est à l'hôpital BCES
   },
   LSES: {
     bces: "https://docs.google.com/spreadsheets/d/1Vho76MbebIo4d1RgpVL0wGFqbMjeK1e3HcirZV_C7Uk", // Lien dispatch BCES quand on est à l'hôpital LSES
     lses: "https://lses-inventory.web.app/", // Lien dispatch LSES quand on est à l'hôpital LSES
+    intra21: "https://intra.21jumpclick.fr/", // Lien Intra-21 quand on est à l'hôpital LSES
   },
 };
 
@@ -20,13 +22,15 @@ document.addEventListener("DOMContentLoaded", async () => {
 
   const linkBCES = document.getElementById("linkBCES");
   const linkLSES = document.getElementById("linkLSES");
+  const linkIntra21 = document.getElementById("linkIntra21");
 
   // Met à jour les liens href des boutons en fonction du choix
   const updateLinks = (hospitalKey) => {
-    const links = URLS_CONFIG[hospitalKey] || URLS_CONFIG["LSES"];
+    const links = URLS_CONFIG[hospitalKey] || URLS_CONFIG["BCES"]; // Fallback au cas où la clé serait inconnue
 
     linkBCES.href = links.bces;
     linkLSES.href = links.lses;
+    linkIntra21.href = links.intra21;
   };
 
   const showStatus = () => {
@@ -40,6 +44,7 @@ document.addEventListener("DOMContentLoaded", async () => {
   const data = await storage.get({
     selectedHospital: "BCES",
     defaultHospitalZip: "1057",
+    isUnlocked: false,
   });
 
   zipInput.value = data.defaultHospitalZip;
