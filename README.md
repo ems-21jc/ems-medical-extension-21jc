@@ -133,15 +133,23 @@ Exécute `build:chrome` puis `build:firefox` séquentiellement. Les deux builds 
 
 ---
 
-## ⚙️ Comportement du build (Vite)
 
-Le `vite.config.js` automatise plusieurs tâches à chaque build :
+## ⚙️ Configuration du Build (Vite)
 
-- **Détection automatique des entrées** - tous les fichiers `.js` à la racine de `src/` sont compilés comme points d'entrée indépendants (pas besoin de les déclarer manuellement).
-- **Versioning automatique** - la version définie dans `package.json` est injectée dans le `manifest.json` généré dans `dist/`.
-- **Copie des ressources statiques** - `content.css`, `popup.html`, `pathologies.json`, les icônes et le polyfill `browser-polyfill.js` sont copiés automatiquement dans le bon dossier `dist/<cible>/`.
-- **Manifest isolé par cible** - `manifest.chrome.json` → `dist/chrome/manifest.json`, `manifest.firefox.json` → `dist/firefox/manifest.json`. Les fichiers source dans `src/` ne sont jamais modifiés.
-- **Mode watch compatible** - `emptyOutDir: false` évite de vider le dossier de sortie entre deux recompilations, ce qui prévient les rechargements intempestifs de l'extension en cours de développement.
+Ce projet utilise `vite.config.js` pour automatiser le processus de build et assurer la compatibilité multi-navigateurs. Le système gère les tâches suivantes :
+
+* **Entrées Dynamiques** : Tous les fichiers `.js` situés à la racine du dossier `src/` sont automatiquement détectés et compilés comme points d'entrée indépendants. Aucune déclaration manuelle n'est nécessaire.
+* **Gestion Multi-Cible** : Le build génère des dossiers distincts selon la cible (`dist/chrome/` ou `dist/firefox/`). Le fichier `manifest.json` final est généré en fusionnant la version du `package.json` avec le manifeste spécifique (`manifest.chrome.json` ou `manifest.firefox.json`).
+* **Synchronisation des Ressources** : Les assets nécessaires au fonctionnement de l'extension sont copiés automatiquement dans le dossier de sortie :
+* Fichiers CSS (`content.css`) et HTML (`popup.html`).
+* Données JSON additionnelles (ex: `pathologies.json`).
+* Icônes du dossier `src/icons/`.
+* Le polyfill `browser-polyfill.js` pour la compatibilité WebExtensions.
+
+
+* **Optimisation du Développement** :
+* La configuration `emptyOutDir: false` permet de maintenir les fichiers dans `dist/` lors du mode `watch`, évitant ainsi les rechargements intempestifs de l'extension dans votre navigateur.
+* Le système surveille les modifications de fichiers (`watchFile`) pour déclencher une reconstruction immédiate lors de vos changements.
 
 ---
 
