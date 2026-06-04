@@ -332,8 +332,7 @@ function applyCompletion(sel) {
 
   // ── Traitements ───────────────────────────────────────────────────────────
   if (sel.noyade) {
-    // Noyade impose un traitement fixe et désactive les soins individuels
-    appendToField("Traitements", "// AI + AD + AB + AF + Expectorant", " ");
+    appendToField("Traitements", "AI + AD + AB + AF + Expectorant");
   } else {
     const soins = [];
     if (sel.antidouleur) soins.push("AD");
@@ -341,7 +340,7 @@ function applyCompletion(sel) {
     if (sel.anti_inflammatoire) soins.push("AI");
     if (sel.anti_coagulant) soins.push("AC");
     if (soins.length)
-      appendToField("Traitements", "// " + soins.join(" + "), " ");
+      appendToField("Traitements", soins.join(" + "));
   }
 
   if (sel.attaque_animal)

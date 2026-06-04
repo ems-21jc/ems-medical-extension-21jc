@@ -218,16 +218,11 @@ function buildSidebar() {
   function injectAll() {
     if (stack.length === 0) return;
 
-    // Examens : toutes les entrées séparées par //
-    const examensText = stack.map((e) => `[${e.zone.label}] ${e.patho.examens}`).join(" // ");
-    // Soins : idem
-    const soinsText = stack.map((e) => `[${e.zone.label}] ${e.patho.soins}`).join(" // ");
-    // Blessures : liste compacte
-    const blessuresText = stack.map((e) => `${e.zone.label}: ${e.patho.label}`).join(" + ");
+    const examensText = stack.map((e) => e.patho.examens).join(" // ");
+    const soinsText = stack.map((e) => e.patho.soins).join(" // ");
 
     bz_appendToField("Examens", examensText);
     bz_prependToField("Traitements", soinsText);
-    bz_appendToField("Blessures", blessuresText, " + ");
 
     closeSidebar();
   }
