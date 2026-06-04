@@ -344,23 +344,24 @@ function injectBodyZoneButton(titleEl) {
   btn.className = "bz-trigger-btn";
   btn.textContent = "Bilan";
 
-  btn.addEventListener("click", openSidebar);
+  btn.addEventListener("click", () => {
+    if (document.getElementById("bz-sidebar")) closeSidebar();
+    else openSidebar();
+  });
   container.appendChild(btn);
 
   setTimeout(() => {
-    const completionBtn = container.querySelector(".med-completion-btn");
-    if (completionBtn) {
+    const enregistrerBtn = [...document.querySelectorAll("button")].find(
+      (b) => b.textContent.trim().toLowerCase() === "enregistrer"
+    );
+    if (enregistrerBtn) {
       const containerRect = container.getBoundingClientRect();
-      const completionRect = completionBtn.getBoundingClientRect();
-      btn.style.right = (containerRect.right - completionRect.left) + 8 + "px";
-    } else {
-      const enregistrerBtn = [...document.querySelectorAll("button")].find(
-        (b) => b.textContent.trim().toLowerCase() === "enregistrer"
-      );
-      if (enregistrerBtn) {
-        const containerRect = container.getBoundingClientRect();
-        const enregistrerRect = enregistrerBtn.getBoundingClientRect();
-        btn.style.right = (containerRect.right - enregistrerRect.right + 110) + "px";
+      const enregistrerRect = enregistrerBtn.getBoundingClientRect();
+      const rightOffset = containerRect.right - enregistrerRect.right;
+      btn.style.right = rightOffset + "px";
+      const completionBtn = container.querySelector(".med-completion-btn");
+      if (completionBtn) {
+        completionBtn.style.right = (rightOffset + btn.offsetWidth + 8) + "px";
       }
     }
   }, 50);
@@ -381,6 +382,12 @@ function tryInjectBodyZone() {
 
 const bodyZoneObserver = new MutationObserver(() => {
   tryInjectBodyZone();
+  if (document.getElementById("bz-sidebar")) {
+    const formOpen = [...document.querySelectorAll(
+      'h1, h2, h3, h4, h5, [class*="title"], [class*="Title"]'
+    )].some(el => el.textContent.trim().includes("Nouveau rapport medical"));
+    if (!formOpen) closeSidebar();
+  }
 });
 
 bodyZoneObserver.observe(document.body, { childList: true, subtree: true });
