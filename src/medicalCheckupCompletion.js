@@ -62,13 +62,42 @@ function mcc_isControlDatePassed(dateStr) {
   return nowStr >= controlStr;
 }
 
+// ── Construit la chaîne Traitements "Retrait X" à partir de l'existant ───────
+
+function mcc_buildTraitementsRetrait(traitementsText) {
+  const items = [];
+  if (/corset/i.test(traitementsText))
+    items.push("Corset");
+  if (/bandage/i.test(traitementsText))
+    items.push("Bandage");
+  if (/ceinture/i.test(traitementsText))
+    items.push("Ceinture");
+  const hasAttelleS = /attelle\s*souple/i.test(traitementsText);
+  const hasAttelleR = /attelle\s*rigide/i.test(traitementsText);
+  if (hasAttelleS) items.push("Attelle Souple");
+  if (hasAttelleR) items.push("Attelle Rigide");
+  if (!hasAttelleS && !hasAttelleR && /attelle/i.test(traitementsText))
+    items.push("Attelle");
+  if (/minerve|collier cervicale?s?/i.test(traitementsText))
+    items.push("Minerve");
+  if (/pl[aâ]tre/i.test(traitementsText))
+    items.push("Plâtre");
+  if (/[eé]paul/i.test(traitementsText))
+    items.push("Épaulière");
+  if (/[eé]charpe/i.test(traitementsText))
+    items.push("Écharpe");
+  if (/casque/i.test(traitementsText))
+    items.push("Casque");
+  return items.length ? "Retrait " + items.join(" + ") : "";
+}
+
 // ── Construit la chaîne Examens à partir de l'existant ───────────────────────
 
 function mcc_buildExamensRAS(examensText) {
   const results = [];
   if (/radio/i.test(examensText)) results.push("Radio: RAS");
   if (/scanner|echo|irm/i.test(examensText)) results.push("Echo: RAS");
-  if (/auscultation|ausc|ascult/i.test(examensText)) results.push("Auscultation: RAS");
+  if (/auscultation|ausc|auscult/i.test(examensText)) results.push("Auscultation: RAS");
   return results.join(" // ");
 }
 
@@ -157,6 +186,7 @@ const mccFormFillObserver = new MutationObserver(() => {
     mcc_setField("Blessures", data.blessures);
     mcc_setField("Remarque(s)", data.remarques);
     if (data.examens) mcc_setField("Examens", data.examens);
+    if (data.traitements) mcc_setField("Traitements", data.traitements);
     if (data.zip) mcc_setField("Code Postal", data.zip);
     setTimeout(() => mcc_setSelectOption("Type", "Note interne"), 50);
   }, 300);
@@ -187,6 +217,7 @@ function mcc_injectButton(dialog) {
   btn.addEventListener("click", () => {
     const examensRaw = mcc_getFieldValue(dialog, "Examens") || "";
     const remarquesRaw = mcc_getFieldValue(dialog, "Remarque(s)") || "";
+    const traitementsRaw = mcc_getFieldValue(dialog, "Traitements") || "";
     const extras = [];
     if (/canne/i.test(remarquesRaw)) extras.push("Canne récupéré");
     if (/fauteuil/i.test(remarquesRaw)) extras.push("Fauteuil récupéré");
@@ -197,6 +228,7 @@ function mcc_injectButton(dialog) {
         blessures: "VC",
         remarques,
         examens: mcc_buildExamensRAS(examensRaw),
+        traitements: mcc_buildTraitementsRetrait(traitementsRaw),
         zip: data.defaultHospitalZip || "",
       };
 
