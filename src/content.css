@@ -212,6 +212,43 @@
    Bilan Anatomique — bodyZoneCompletion.js
    ══════════════════════════════════════════════════════════════════════════════ */
 
+/* ── Bouton VC — vue détail rapport médical ──────────────────────────────── */
+
+.mcc-vc-btn {
+  position: absolute;
+  right: 26px;
+  z-index: 10;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  font-family: Roboto, Helvetica, Arial, sans-serif;
+  font-weight: 600;
+  font-size: 1rem;
+  line-height: 1.75;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  color: white;
+  background-color: transparent;
+  padding: 6px 18px;
+  border-radius: 4px;
+  border: 1px solid rgba(120, 176, 202, 0.5);
+  cursor: pointer;
+  transition:
+    background-color 250ms cubic-bezier(0.4, 0, 0.2, 1),
+    border-color 250ms cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+.mcc-vc-btn:hover:not(:disabled) {
+  background-color: rgba(120, 176, 202, 0.08);
+  border-color: rgba(120, 176, 202, 0.8);
+}
+
+.mcc-vc-btn--disabled {
+  opacity: 0.35;
+  cursor: default;
+  border-color: rgba(120, 176, 202, 0.2);
+}
+
 /* Bouton "Bilan" dans le formulaire */
 .bz-trigger-btn {
   position: absolute;

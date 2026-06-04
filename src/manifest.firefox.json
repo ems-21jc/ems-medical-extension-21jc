@@ -30,7 +30,8 @@
         "browser-polyfill.js",
         "dateFieldCompletion.js",
         "medicalFileCompletion.js",
-        "bodyZoneCompletion.js"
+        "bodyZoneCompletion.js",
+        "medicalCheckupCompletion.js"
       ],
       "css": [
         "content.css"
