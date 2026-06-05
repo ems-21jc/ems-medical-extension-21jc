@@ -1,9 +1,10 @@
-const mcc_storage = (typeof browser !== "undefined" ? browser : chrome).storage.local;
+const mcc_storage = (typeof browser !== "undefined" ? browser : chrome).storage
+  .local;
 
 // ══════════════════════════════════════════════════════════════════════════════
 // medicalCheckupCompletion.js
 // Bouton VC sur la vue détail d'un rapport médical :
-//  - Grisé si la date de visite de contrôle n'est pas encore passée (heure Paris)
+//  - Grisé si la date de visite de contrôle n'est pas encore passée (heure locale)
 //  - Au clic : ferme le dialog, ouvre "Nouveau rapport medical", injecte les champs
 // ══════════════════════════════════════════════════════════════════════════════
 
@@ -12,10 +13,12 @@ const mcc_storage = (typeof browser !== "undefined" ? browser : chrome).storage.
 function mcc_findDetailDialog() {
   for (const dialog of document.querySelectorAll('[role="dialog"]')) {
     const hasDateCreation = [...dialog.querySelectorAll("p")].some(
-      (p) => p.textContent.trim() === "Date de création"
+      (p) => p.textContent.trim() === "Date de création",
     );
     const isEditForm = [
-      ...dialog.querySelectorAll('h1, h2, h3, h4, h5, [class*="title"], [class*="Title"]'),
+      ...dialog.querySelectorAll(
+        'h1, h2, h3, h4, h5, [class*="title"], [class*="Title"]',
+      ),
     ].some((h) => h.textContent.includes("Nouveau rapport medical"));
     if (hasDateCreation && !isEditForm) return dialog;
   }
@@ -42,20 +45,25 @@ function mcc_hasValidDuration(dialog) {
   return duration !== "00:00:00";
 }
 
-// ── Vérifie si la date de visite de contrôle est passée (heure Paris) ────────
+// ── Vérifie si la date de visite de contrôle est passée (heure locale) ───────
 
 function mcc_isControlDatePassed(dateStr) {
-  if (!dateStr || /invalid/i.test(dateStr) || dateStr.trim() === "") return false;
+  if (!dateStr || /invalid/i.test(dateStr) || dateStr.trim() === "")
+    return false;
   const m = dateStr.match(/(\d{2})\/(\d{2})\/(\d{4})\s+(\d{2}):(\d{2})/);
   if (!m) return false;
   const [, dd, mm, yyyy, hh, min] = m;
   const nowParts = Object.fromEntries(
     new Intl.DateTimeFormat("fr-FR", {
-      timeZone: "Europe/Paris",
-      year: "numeric", month: "2-digit", day: "2-digit",
-      hour: "2-digit", minute: "2-digit",
+      year: "numeric",
+      month: "2-digit",
+      day: "2-digit",
+      hour: "2-digit",
+      minute: "2-digit",
       hourCycle: "h23",
-    }).formatToParts(new Date()).map((p) => [p.type, p.value])
+    })
+      .formatToParts(new Date())
+      .map((p) => [p.type, p.value]),
   );
   const controlStr = `${yyyy}-${mm}-${dd} ${hh}:${min}`;
   const nowStr = `${nowParts.year}-${nowParts.month}-${nowParts.day} ${nowParts.hour}:${nowParts.minute}`;
@@ -66,12 +74,9 @@ function mcc_isControlDatePassed(dateStr) {
 
 function mcc_buildTraitementsRetrait(traitementsText) {
   const items = [];
-  if (/corset/i.test(traitementsText))
-    items.push("Corset");
-  if (/bandage/i.test(traitementsText))
-    items.push("Bandage");
-  if (/ceinture/i.test(traitementsText))
-    items.push("Ceinture");
+  if (/corset/i.test(traitementsText)) items.push("Corset");
+  if (/bandage/i.test(traitementsText)) items.push("Bandage");
+  if (/ceinture/i.test(traitementsText)) items.push("Ceinture");
   const hasAttelleS = /attelle\s*souple/i.test(traitementsText);
   const hasAttelleR = /attelle\s*rigide/i.test(traitementsText);
   if (hasAttelleS) items.push("Attelle Souple");
@@ -80,14 +85,10 @@ function mcc_buildTraitementsRetrait(traitementsText) {
     items.push("Attelle");
   if (/minerve|collier cervicale?s?/i.test(traitementsText))
     items.push("Minerve");
-  if (/pl[aâ]tre/i.test(traitementsText))
-    items.push("Plâtre");
-  if (/[eé]paul/i.test(traitementsText))
-    items.push("Épaulière");
-  if (/[eé]charpe/i.test(traitementsText))
-    items.push("Écharpe");
-  if (/casque/i.test(traitementsText))
-    items.push("Casque");
+  if (/pl[aâ]tre/i.test(traitementsText)) items.push("Plâtre");
+  if (/[eé]paul/i.test(traitementsText)) items.push("Épaulière");
+  if (/[eé]charpe/i.test(traitementsText)) items.push("Écharpe");
+  if (/casque/i.test(traitementsText)) items.push("Casque");
   return items.length ? "Retrait " + items.join(" + ") : "";
 }
 
@@ -97,8 +98,10 @@ function mcc_buildExamensRAS(examensText) {
   const results = [];
   if (/radio/i.test(examensText)) results.push("Radio: RAS");
   if (/scanner|echo|irm/i.test(examensText)) results.push("Echo: RAS");
-  if (/auscultation|ausc|auscult/i.test(examensText)) results.push("Auscultation: RAS");
-  if (/constantes?\s*:?\s*faibles?/i.test(examensText)) results.push("Constantes: Normales");
+  if (/auscultation|ausc|auscult/i.test(examensText))
+    results.push("Auscultation: RAS");
+  if (/constantes?\s*:?\s*faibles?/i.test(examensText))
+    results.push("Constantes: Normales");
   return results.join(" // ");
 }
 
@@ -112,10 +115,15 @@ function mcc_setSelectOption(labelText, optionText) {
       if (!parent) continue;
       const combobox = parent.querySelector('[role="combobox"]');
       if (combobox) {
-        combobox.dispatchEvent(new MouseEvent("mousedown", { bubbles: true, cancelable: true }));
+        combobox.dispatchEvent(
+          new MouseEvent("mousedown", { bubbles: true, cancelable: true }),
+        );
         setTimeout(() => {
           for (const opt of document.querySelectorAll('[role="option"]')) {
-            if (opt.textContent.trim() === optionText) { opt.click(); return; }
+            if (opt.textContent.trim() === optionText) {
+              opt.click();
+              return;
+            }
           }
         }, 100);
         return;
@@ -128,16 +136,26 @@ function mcc_setSelectOption(labelText, optionText) {
 
 function mcc_setField(labelText, value) {
   let field = null;
-  for (const el of document.querySelectorAll('label, .label, [class*="label"]')) {
+  for (const el of document.querySelectorAll(
+    'label, .label, [class*="label"]',
+  )) {
     if (el.textContent.trim().includes(labelText)) {
       if (el.htmlFor) {
         const f = document.getElementById(el.htmlFor);
-        if (f) { field = f; break; }
+        if (f) {
+          field = f;
+          break;
+        }
       }
       const parent = el.closest("div, fieldset");
       if (parent) {
-        const f = parent.querySelector('textarea, input:not([type="checkbox"])');
-        if (f) { field = f; break; }
+        const f = parent.querySelector(
+          'textarea, input:not([type="checkbox"])',
+        );
+        if (f) {
+          field = f;
+          break;
+        }
       }
     }
   }
@@ -145,7 +163,10 @@ function mcc_setField(labelText, value) {
     for (const f of document.querySelectorAll("textarea, input")) {
       const p = f.placeholder || "";
       const a = f.getAttribute("aria-label") || "";
-      if (p.includes(labelText) || a.includes(labelText)) { field = f; break; }
+      if (p.includes(labelText) || a.includes(labelText)) {
+        field = f;
+        break;
+      }
     }
   }
   if (!field) return;
@@ -160,7 +181,8 @@ function mcc_findNewReportButton() {
   for (const btn of document.querySelectorAll('button, [role="button"]')) {
     if (btn.closest('[role="dialog"]')) continue;
     const text = btn.textContent.trim().toLowerCase();
-    if (text.includes("nouvelle entr") || text.includes("nouvelle entrée")) return btn;
+    if (text.includes("nouvelle entr") || text.includes("nouvelle entrée"))
+      return btn;
   }
   // Fallback : tout bouton hors dialog contenant "nouveau" ou "+"
   for (const btn of document.querySelectorAll('button, [role="button"]')) {
@@ -176,7 +198,9 @@ function mcc_findNewReportButton() {
 const mccFormFillObserver = new MutationObserver(() => {
   if (!window.__mcc_pending_vc) return;
   const hasForm = [
-    ...document.querySelectorAll('h1, h2, h3, h4, h5, [class*="title"], [class*="Title"]'),
+    ...document.querySelectorAll(
+      'h1, h2, h3, h4, h5, [class*="title"], [class*="Title"]',
+    ),
   ].some((el) => el.textContent.trim().includes("Nouveau rapport medical"));
   if (!hasForm) return;
 
@@ -224,7 +248,9 @@ function mcc_injectButton(dialog) {
     if (/fauteuil/i.test(remarquesRaw)) extras.push("Fauteuil récupéré");
     const remarques = "FDS" + (extras.length ? " + " + extras.join(" + ") : "");
     const traitementsBase = mcc_buildTraitementsRetrait(traitementsRaw);
-    const traitements = traitementsBase ? traitementsBase + " // Retrait IPT" : "Retrait IPT";
+    const traitements = traitementsBase
+      ? traitementsBase + " // Retrait IPT"
+      : "Retrait IPT";
 
     mcc_storage.get({ defaultHospitalZip: "1057" }, (data) => {
       window.__mcc_pending_vc = {
@@ -237,7 +263,11 @@ function mcc_injectButton(dialog) {
 
       // Ferme le dialog via Escape
       document.dispatchEvent(
-        new KeyboardEvent("keydown", { key: "Escape", bubbles: true, cancelable: true })
+        new KeyboardEvent("keydown", {
+          key: "Escape",
+          bubbles: true,
+          cancelable: true,
+        }),
       );
 
       // Puis clique sur le bouton "Nouveau rapport"
@@ -254,8 +284,9 @@ function mcc_injectButton(dialog) {
     const firstDivider = dialog.querySelector("hr, .MuiDivider-root");
     const dialogRect = dialog.getBoundingClientRect();
     if (firstDivider) {
-      const dividerTop = firstDivider.getBoundingClientRect().top - dialogRect.top;
-      btn.style.top = (dividerTop / 2 - btn.offsetHeight / 2) + "px";
+      const dividerTop =
+        firstDivider.getBoundingClientRect().top - dialogRect.top;
+      btn.style.top = dividerTop / 2 - btn.offsetHeight / 2 + "px";
     } else {
       btn.style.top = "16px";
     }
