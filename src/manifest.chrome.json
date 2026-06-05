@@ -1,7 +1,7 @@
 {
   "manifest_version": 3,
   "name": "EMS Medical Tools - 21JC",
-  "version": "0.7.1",
+  "version": "0.8.0",
   "description": "Extension Chrome pour aider à la rédaction de dossier pour les joueurs des EMS du serveur 21 Jump Click",
   "icons": {
     "16": "icons/icon16.png",

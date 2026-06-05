@@ -111,55 +111,212 @@ function findInputByLabel(labelText) {
 }
 
 function injectButton(input, format, label) {
-  if (input.parentElement.querySelector(".med-now-btn")) return;
+  const wrapper = input.parentElement;
+  // Vérifie dans tout le conteneur parent (MuiFormControl-root) si le bouton existe déjà
+  const outer = wrapper.closest(".MuiFormControl-root, .MuiBox-root") || wrapper.parentElement;
+  if (outer && outer.querySelector(".med-now-btn")) return;
 
-  const btn = document.createElement("button");
-  btn.type = "button";
-  btn.className = "med-now-btn";
-  btn.textContent = "🔃";
-  btn.title = format === "datetime" ? "Insérer date et heure actuelles" : "Insérer date actuelle";
+  // Couleur de fond commune : #212121
+  const BG_COLOR = "#212121";
+  const BG_HOVER = "#2d2d2d";
+  const BG_ACTIVE = "#1a1a1a";
+  const BG_SUCCESS = "#2e7d32";
+  const BG_ERROR = "#c62828";
+  const BORDER_COLOR = "#4c6875";
 
-  btn.addEventListener("click", () => {
-    const currentInput = findInputByLabel(label);
-    if (!currentInput) return;
+  // VM (date) : bouton pleine largeur, fond #212121, SVG médical bleu (#29b6f6), bordure #4c6875
+  // DDS (datetime) : bouton pleine largeur, fond #212121, SVG sang rouge (#ef5350), bordure #4c6875
+  // VC (control) : petit bouton à DROITE du champ (en dessous), fond #212121, SVG actualiser blanc, bordure #4c6875
 
-    let value;
-    if (format === "control") {
-      const result = formatControlDate();
-      if (result.error) {
-        btn.textContent = "⚠";
-        btn.title = result.error;
-        btn.classList.add("med-now-btn--error");
-        setTimeout(() => {
-          btn.textContent = "🔃";
-          btn.title = "Insérer date actuelle + durée d'invalidité";
-          btn.classList.remove("med-now-btn--error");
-        }, 2000);
-        return;
-      }
-      value = result.value;
+  if (format === "date") {
+    // VM - Visite Médicale - bouton EN DESSOUS du champ, MÊME LARGEUR, AVEC ESPACEMENT
+    const btnText = "VM Maintenant";
+    const btnTitle = "Insérer date actuelle pour la visite médicale";
+    // SVG médical (cross/heartbeat) - bleu #29b6f6
+    const svgIcon = `<svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="#29b6f6" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M22 12h-4l-3 9L9 3l-3 9H2"></path></svg>`;
+
+    const btn = document.createElement("button");
+    btn.type = "button";
+    btn.className = "med-now-btn med-now-btn--vm";
+    btn.title = btnTitle;
+    // Style : bouton pleine largeur, sans marge gauche/droite
+    btn.style.cssText =
+      "display:flex;align-items:center;justify-content:center;gap:8px;" +
+      "width:100%;padding:10px 0;font-size:14px;font-weight:500;" +
+      "color:#fff;background:" + BG_COLOR + ";border:1px solid " + BORDER_COLOR + ";border-radius:8px;" +
+      "cursor:pointer;transition:all 0.15s ease;" +
+      "font-family:inherit;white-space:nowrap;margin:8px 0;";
+    btn.innerHTML = svgIcon + btnText;
+
+    btn.addEventListener("mouseenter", () => {
+      btn.style.background = BG_HOVER;
+    });
+    btn.addEventListener("mouseleave", () => {
+      btn.style.background = BG_COLOR;
+    });
+    btn.addEventListener("mousedown", () => {
+      btn.style.background = BG_ACTIVE;
+    });
+    btn.addEventListener("mouseup", () => {
+      btn.style.background = BG_HOVER;
+    });
+    btn.addEventListener("click", () => {
+      const currentInput = findInputByLabel(label);
+      if (!currentInput) return;
+      const value = formatDate();
+      setNativeValue(currentInput, value);
+      btn.innerHTML = `<svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><polyline points="20 6 9 17 4 12"/></svg> OK`;
+      btn.style.background = BG_SUCCESS;
+      setTimeout(() => {
+        btn.innerHTML = svgIcon + btnText;
+        btn.style.background = BG_COLOR;
+      }, 1500);
+    });
+
+    // Place le bouton DANS le MuiFormControl-root, APRÈS le MuiInputBase-root (EN DESSOUS de l'input)
+    const inputBase = wrapper.closest(".MuiInputBase-root");
+    if (inputBase) {
+      inputBase.after(btn); // frère après l'input, dans le FormControl (colonne flex)
     } else {
-      value = format === "datetime" ? formatDateTime() : formatDate();
+      wrapper.after(btn);
     }
-    setNativeValue(currentInput, value);
-    btn.textContent = "✓";
-    btn.classList.add("med-now-btn--done");
-    setTimeout(() => {
-      btn.textContent = "🔃";
-      btn.classList.remove("med-now-btn--done");
-    }, 1500);
-    if (format === "datetime") {
+  }
+  else if (format === "datetime") {
+    // DDS - Don Du Sang - bouton EN DESSOUS du champ, MÊME LARGEUR, SANS MARGE GAUCHE/DROITE
+    const btnText = "DDS Maintenant";
+    const btnTitle = "Insérer date et heure actuelles pour le don du sang";
+    // SVG sang (heart/blood drop) - rouge #ef5350
+    const svgIcon = `<svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="#ef5350" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M12 22a7 7 0 0 0 7-7c0-4.3-7-13-7-13S5 10.7 5 15a7 7 0 0 0 7 7z"></path></svg>`;
+
+    const btn = document.createElement("button");
+    btn.type = "button";
+    btn.className = "med-now-btn med-now-btn--dds";
+    btn.title = btnTitle;
+    // Style : bouton pleine largeur, sans marge gauche/droite
+    btn.style.cssText =
+      "display:flex;align-items:center;justify-content:center;gap:8px;" +
+      "width:100%;padding:10px 0;font-size:14px;font-weight:500;" +
+      "color:#fff;background:" + BG_COLOR + ";border:1px solid " + BORDER_COLOR + ";border-radius:8px;" +
+      "cursor:pointer;transition:all 0.15s ease;" +
+      "font-family:inherit;white-space:nowrap;margin:8px 0;";
+    btn.innerHTML = svgIcon + btnText;
+
+    btn.addEventListener("mouseenter", () => {
+      btn.style.background = BG_HOVER;
+    });
+    btn.addEventListener("mouseleave", () => {
+      btn.style.background = BG_COLOR;
+    });
+    btn.addEventListener("mousedown", () => {
+      btn.style.background = BG_ACTIVE;
+    });
+    btn.addEventListener("mouseup", () => {
+      btn.style.background = BG_HOVER;
+    });
+    btn.addEventListener("click", () => {
+      const currentInput = findInputByLabel(label);
+      if (!currentInput) return;
+      const value = formatDateTime();
+      setNativeValue(currentInput, value);
+      btn.innerHTML = `<svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><polyline points="20 6 9 17 4 12"/></svg> OK`;
+      btn.style.background = BG_SUCCESS;
+      setTimeout(() => {
+        btn.innerHTML = svgIcon + btnText;
+        btn.style.background = BG_COLOR;
+      }, 1500);
       const enregistrer = [...document.querySelectorAll("button")].find(
         (b) => b.textContent.trim().toLowerCase() === "enregistrer",
       );
       if (enregistrer) setTimeout(() => enregistrer.click(), 200);
-    }
-  });
+    });
 
-  const wrapper = input.parentElement;
-  wrapper.style.display = "flex";
-  wrapper.style.alignItems = "center";
-  input.insertAdjacentElement("afterend", btn);
+    // Place le bouton DANS le MuiFormControl-root, APRÈS le MuiInputBase-root (EN DESSOUS de l'input)
+    const inputBase = wrapper.closest(".MuiInputBase-root");
+    if (inputBase) {
+      inputBase.after(btn); // frère après l'input, dans le FormControl (colonne flex)
+    } else {
+      wrapper.after(btn);
+    }
+  }
+  else if (format === "control") {
+    // VC - Visite de Contrôle - petit bouton À DROITE DU CHAMP (dans le MuiInputBase-root, même ligne, AVEC ESPACEMENT)
+    const btnTitle = "Calculer la date de visite de contrôle (admission + durée)";
+    // SVG actualiser (refresh) - blanc (currentColor)
+    const svgIcon = `<svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M21.5 2v6h-6M21.34 15.57a10 10 0 1 1-.57-8.38l5.67-5.67"/></svg>`;
+
+    const btn = document.createElement("button");
+    btn.type = "button";
+    btn.className = "med-now-btn med-now-btn--vc";
+    btn.title = btnTitle;
+    // Style : petit bouton carré à droite du champ (même hauteur que l'input ~36px), avec marge gauche
+    btn.style.cssText =
+      "display:inline-flex;align-items:center;justify-content:center;" +
+      "width:36px;height:36px;padding:0;margin-left:8px;" +
+      "color:#fff;background:" + BG_COLOR + ";border:1px solid " + BORDER_COLOR + ";border-radius:8px;" +
+      "cursor:pointer;transition:all 0.15s ease;" +
+      "flex-shrink:0;";
+    btn.innerHTML = svgIcon;
+
+    btn.addEventListener("mouseenter", () => {
+      btn.style.background = BG_HOVER;
+    });
+    btn.addEventListener("mouseleave", () => {
+      btn.style.background = BG_COLOR;
+    });
+    btn.addEventListener("mousedown", () => {
+      btn.style.background = BG_ACTIVE;
+    });
+    btn.addEventListener("mouseup", () => {
+      btn.style.background = BG_HOVER;
+    });
+    btn.addEventListener("click", () => {
+      const currentInput = findInputByLabel(label);
+      if (!currentInput) return;
+
+      const result = formatControlDate();
+      if (result.error) {
+        btn.innerHTML = `<svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"/><line x1="12" y1="8" x2="12" y2="12"/><line x1="12" y1="16" x2="12.01" y2="16"/></svg>`;
+        btn.title = result.error;
+        btn.style.background = BG_ERROR;
+        setTimeout(() => {
+          btn.innerHTML = svgIcon;
+          btn.title = btnTitle;
+          btn.style.background = BG_COLOR;
+        }, 2000);
+        return;
+      }
+      setNativeValue(currentInput, result.value);
+      btn.innerHTML = `<svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><polyline points="20 6 9 17 4 12"/></svg>`;
+      btn.style.background = BG_SUCCESS;
+      setTimeout(() => {
+        btn.innerHTML = svgIcon;
+        btn.style.background = BG_COLOR;
+      }, 1500);
+    });
+
+    // Trouve le MuiInputBase-root (le conteneur du champ input + adornment calendrier)
+    const inputBase = wrapper.closest(".MuiInputBase-root");
+    if (inputBase) {
+      // Crée un wrapper flex row autour de inputBase + bouton, AVEC GAP (8px)
+      const row = document.createElement("div");
+      row.style.cssText = "display:flex;gap:8px;align-items:center;width:100%;";
+      inputBase.parentNode.insertBefore(row, inputBase);
+      row.appendChild(inputBase);
+      row.appendChild(btn);
+      // inputBase prend flex:1, bouton reste taille fixe (36px)
+      inputBase.style.flex = "1 1 0%";
+      inputBase.style.minWidth = "0";
+      
+      // Masque le placeholder "DD/MM/YYYY hh:mm" pour le champ VC (format control)
+      const input = inputBase.querySelector("input");
+      if (input && input.placeholder) {
+        input.placeholder = "";
+      }
+    } else {
+      // Fallback : après le wrapper
+      wrapper.after(btn);
+    }
+  }
 }
 
 function tryInjectDates() {
@@ -518,6 +675,87 @@ function tryInjectInfos() {
 }
 
 // ════════════════════════════════════════════════════════════════════════════
+// Randomizer 🎲 Groupe Sanguin (popup examen médical)
+// ════════════════════════════════════════════════════════════════════════════
+
+const BLOOD_GROUPS = ["AB +", "AB -", "A +", "A -", "B +", "B -", "O +", "O -"];
+
+function injectBloodGroupRandomizer() {
+  for (const label of document.querySelectorAll('label[id="level-label"]')) {
+    const text = (label.firstChild?.textContent || label.textContent).trim();
+    if (text !== "Goupe Sanguin") continue;
+
+    const parent = label.closest(".MuiFormControl-root");
+    if (!parent) continue;
+    if (parent.querySelector(".med-blood-rnd")) return;
+
+    const btn = document.createElement("button");
+    btn.type = "button";
+    btn.className = "med-blood-rnd";
+    btn.textContent = "🎲";
+    btn.title = "Randomiser groupe sanguin";
+    btn.style.cssText =
+      "display:inline-flex;align-items:center;justify-content:center;" +
+      "width:32px;height:32px;padding:0;font-size:15px;" +
+      "color:#ccc;background:#2b2b2b;border:1px solid #444;border-radius:4px;" +
+      "cursor:pointer;transition:background 0.15s,border-color 0.15s,transform 0.1s;" +
+      "vertical-align:middle;flex-shrink:0;";
+
+    btn.addEventListener("mouseenter", () => {
+      btn.style.background = "#3a3a3a"; btn.style.borderColor = "#666"; btn.style.color = "#fff";
+    });
+    btn.addEventListener("mouseleave", () => {
+      btn.style.background = "#2b2b2b"; btn.style.borderColor = "#444"; btn.style.color = "#ccc";
+    });
+    btn.addEventListener("click", () => {
+      const group = BLOOD_GROUPS[Math.floor(Math.random() * BLOOD_GROUPS.length)];
+      // MUI Select : l'input natif a name="bloodgroup" (sans espace dans la valeur)
+      const nativeInput = parent.querySelector('input[name="bloodgroup"]');
+      const valueNoSpace = group.replace(/\s+/g, ""); // "O -" -> "O-"
+      if (nativeInput) {
+        nativeInput.value = valueNoSpace;
+        nativeInput.dispatchEvent(new Event("change", { bubbles: true }));
+        nativeInput.dispatchEvent(new Event("input", { bubbles: true }));
+        // Force React setter
+        const setter = Object.getOwnPropertyDescriptor(HTMLInputElement.prototype, "value")?.set;
+        if (setter) setter.call(nativeInput, valueNoSpace);
+      }
+      // Mettre à jour le texte affiché dans le combobox
+      const combobox = parent.querySelector('[role="combobox"]');
+      if (combobox) {
+        combobox.textContent = group;
+        combobox.dispatchEvent(new Event("input", { bubbles: true }));
+        combobox.dispatchEvent(new Event("change", { bubbles: true }));
+      }
+      btn.textContent = "✓";
+      btn.style.background = "#1e3d2a"; btn.style.borderColor = "#27ae60"; btn.style.color = "#27ae60";
+      setTimeout(() => {
+        btn.textContent = "🎲";
+        btn.style.background = "#2b2b2b"; btn.style.borderColor = "#444"; btn.style.color = "#ccc";
+      }, 1200);
+    });
+
+    const inputBase = parent.querySelector(".MuiInputBase-root");
+    if (inputBase) {
+      // Place le 🎲 EN DEHORS du MuiInputBase-root, à droite sur la même ligne
+      // en enveloppant inputBase + btn dans un conteneur flex row
+      btn.style.marginLeft = "4px";
+      btn.style.flexShrink = "0";
+      const row = document.createElement("div");
+      row.style.display = "flex";
+      row.style.alignItems = "center";
+      row.style.flex = "1 1 auto";
+      inputBase.parentNode.insertBefore(row, inputBase);
+      row.appendChild(inputBase);
+      row.appendChild(btn);
+    } else {
+      parent.appendChild(btn);
+    }
+    return;
+  }
+}
+
+// ════════════════════════════════════════════════════════════════════════════
 // Auto‑remplissage de la date d'admission à l'ouverture du formulaire
 // ════════════════════════════════════════════════════════════════════════════
 
@@ -547,6 +785,7 @@ const datesObserver = new MutationObserver(() => {
   tryInjectDates();
   tryInjectInfos();
   autoFillAdmissionDate();
+  injectBloodGroupRandomizer();
 });
 
 datesObserver.observe(document.body, { childList: true, subtree: true });
@@ -554,3 +793,4 @@ datesObserver.observe(document.body, { childList: true, subtree: true });
 tryInjectDates();
 tryInjectInfos();
 autoFillAdmissionDate();
+injectBloodGroupRandomizer();
