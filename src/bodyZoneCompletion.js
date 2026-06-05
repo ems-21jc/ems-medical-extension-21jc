@@ -50,8 +50,6 @@ function bz_prependToField(labelText, text, separator = " // ") {
 // ── Construction de la sidebar ────────────────────────────────────────────────
 function buildSidebar() {
 
-  // La sidebar est un élément fixe sur le côté droit de l'écran.
-  // Elle ne bloque pas le formulaire derrière.
   const sidebar = document.createElement("div");
   sidebar.className = "bz-sidebar";
   sidebar.id = "bz-sidebar";
@@ -77,7 +75,6 @@ function buildSidebar() {
   const selector = document.createElement("div");
   selector.className = "bz-selector";
 
-  // Colonne zones
   const zonesCol = document.createElement("div");
   zonesCol.className = "bz-zones-col";
 
@@ -90,7 +87,6 @@ function buildSidebar() {
   zoneList.className = "bz-zone-list";
   zonesCol.appendChild(zoneList);
 
-  // Colonne pathologies
   const pathoCol = document.createElement("div");
   pathoCol.className = "bz-patho-col";
 
@@ -111,8 +107,7 @@ function buildSidebar() {
   selector.appendChild(zonesCol);
   selector.appendChild(pathoCol);
 
-  // ── Stack — liste des pathologies ajoutées ───────────────────────────────────
-  // C'est ici qu'on voit ce qui sera injecté. Chaque entrée peut être supprimée.
+  // ── Stack ────────────────────────────────────────────────────────────────────
   const stackSection = document.createElement("div");
   stackSection.className = "bz-stack-section";
 
@@ -161,8 +156,6 @@ function buildSidebar() {
   actions.appendChild(injectBtn);
 
   // ── État ─────────────────────────────────────────────────────────────────────
-  // stack = tableau d'objets { zone, patho }
-  // Chaque ajout s'y ajoute et est affiché dans stackList.
   let stack = [];
 
   function renderStack() {
@@ -181,7 +174,7 @@ function buildSidebar() {
     injectBtn.textContent = `✚ Injecter (${stack.length})`;
 
     // Regroupe par patho.key pour afficher les fusions en temps réel
-    const groups = new Map(); // patho.key → { patho, entries: [{zone, stackIndex}] }
+    const groups = new Map();
     stack.forEach((entry, index) => {
       if (!groups.has(entry.patho.key)) {
         groups.set(entry.patho.key, { patho: entry.patho, entries: [] });
@@ -198,7 +191,6 @@ function buildSidebar() {
       const info = document.createElement("div");
       info.className = "bz-stack-item-info";
 
-      // Zones en vert, séparées par " + " si fusion
       const zoneName = document.createElement("span");
       zoneName.className = "bz-stack-item-zone";
       zoneName.textContent = entries.map((e) => e.zone.label).join(" + ");
@@ -214,7 +206,6 @@ function buildSidebar() {
       removeBtns.className = "bz-stack-remove-group";
 
       if (entries.length === 1) {
-        // Cas simple : un seul bouton ✕
         const removeBtn = document.createElement("button");
         removeBtn.type = "button";
         removeBtn.className = "bz-stack-remove-btn";
@@ -260,18 +251,92 @@ function buildSidebar() {
     }
   }
 
-  // ── Fusion des doublons ───────────────────────────────────────────────────────
-  // Regroupe les entrées du stack qui partagent le même patho.key.
-  // Pour chaque groupe, remplace le nom de zone dans les textes examens/soins
-  // par la liste des zones concernées, séparées par " + ".
+  // ── Constantes pour le nettoyage des soins ────────────────────────────────────
+  // Médicaments reconnus (sigles exacts, insensible à la casse)
+  const MEDS = ["AD", "AI", "AB", "AC", "AF"];
+  // Bobologie : expressions à repérer dans les soins
+  const BOBOLOGIE = ["Glace", "Pommade", "crème cicatrisante", "crème anesthésiante"];
+  // Appareils d'examen reconnus pour la fusion des examens
+  const APPAREILS = ["Radio", "Auscultation", "Echo", "IRM", "Constantes", "Ethylomètre", "Test salivaire", "Psy"];
+
+  // ── extractTerm ───────────────────────────────────────────────────────────────
+  // Retire d'un texte toutes les occurrences d'un terme et son séparateur " // " adjacent.
+  // Renvoie { cleaned, found }.
+  function extractTerm(text, term) {
+    const escaped = term.replace(/[.*+?^${}()|[\]\\]/g, "\\$&");
+    const re = new RegExp(
+      `(?:\\s*//\\s*${escaped}(?:\\s*\\([^)]*\\))?|${escaped}(?:\\s*\\([^)]*\\))?\\s*//\\s*|\\b${escaped}(?:\\s*\\([^)]*\\))?\\b)`,
+      "gi"
+    );
+    let found = false;
+    const cleaned = text.replace(re, (match) => { found = true; return ""; })
+      .replace(/\s*\/\/\s*\/\//g, " //")  // double séparateur résiduel
+      .replace(/^\s*\/\/\s*/g, "")         // séparateur en début
+      .replace(/\s*\/\/\s*$/g, "")         // séparateur en fin
+      .replace(/\s*\+\s*\/\//g, " //")     // "Zone + //" → "Zone //"
+      .replace(/\s*\/\/\s*\+\s*/g, " //")  // "// + Suite" → "// Suite"
+      .replace(/\s*\+\s*$/g, "")           // "Zone +" en fin de chaîne
+      .trim();
+    return { cleaned, found };
+  }
+
+  // ── mergeExamens ──────────────────────────────────────────────────────────────
+  // Reçoit un tableau de textes d'examens bruts (un par entrée du stack).
+  // Découpe chaque texte en segments " // ", regroupe par préfixe d'appareil,
+  // et fusionne les contenus avec " + ".
   //
-  // Exemple : Fracture Nette sur Bras Gauche + Pied Droit
-  //   examens : "Radio : Fracture nette Bras Gauche + Pied Droit"
-  //   soins   : "Attelle rigide Bras Gauche + Pied Droit // AD + AI"
+  // Exemple :
+  //   ["Radio : Fracture nette Bras Gauche", "Radio : Fracture nette Bras Droit",
+  //    "Radio : Fracture nette côte(s) torse", "Echo : Déchirure torse"]
+  //   → "Radio : Fracture nette Bras Gauche + Fracture nette Bras Droit + Fracture nette côte(s) torse // Echo : Déchirure torse"
+  //
+  // Les segments sans préfixe reconnu sont conservés à la fin tels quels.
+  function mergeExamens(examensArray) {
+    const groups  = new Map(); // clé MAJUSCULES → { label: string, contents: string[] }
+    const order   = [];
+    const orphans = [];
+
+    for (const examens of examensArray) {
+      const segments = examens.split(/\s*\/\/\s*/);
+      for (const seg of segments) {
+        if (!seg.trim()) continue;
+        const match = seg.match(new RegExp(`^(${APPAREILS.join("|")})\\s*:\\s*(.+)$`, "i"));
+        if (match) {
+          const key     = match[1].toUpperCase();
+          const label   = match[1]; // casse du premier segment rencontré
+          const content = match[2].trim();
+          if (!groups.has(key)) {
+            groups.set(key, { label, contents: [] });
+            order.push(key);
+          }
+          groups.get(key).contents.push(content);
+        } else {
+          orphans.push(seg.trim());
+        }
+      }
+    }
+
+    const merged = order.map((key) => {
+      const { label, contents } = groups.get(key);
+      return `${label} : ${contents.join(" + ")}`;
+    });
+    return [...merged, ...orphans].join(" // ");
+  }
+
+  // ── mergeStack ────────────────────────────────────────────────────────────────
+  // Ordre des étapes :
+  //   1. mergeExamens sur les textes bruts du JSON → un seul texte d'examens fusionné
+  //   2. Fusion des soins par patho.key + remplacement des noms de zone
+  //   3. Nettoyage global des soins : médicaments, bobologie et Repos extraits
+  //      vers un suffixe commun dédupliqué
   function mergeStack(stack) {
-    // 1. Regroupe par patho.key en conservant l'ordre de première apparition
+
+    // Étape 1 — examens : fusion par appareil sur les textes originaux du JSON
+    const examensText = mergeExamens(stack.map((e) => e.patho.examens));
+
+    // Étape 2 — soins : regroupement par patho.key + fusion des zones
     const groups = [];
-    const seen = new Map(); // patho.key → index dans groups
+    const seen   = new Map();
 
     for (const entry of stack) {
       if (seen.has(entry.patho.key)) {
@@ -282,33 +347,51 @@ function buildSidebar() {
       }
     }
 
-    // 2. Pour chaque groupe, reconstruit les textes en fusionnant les zones
-    return groups.map(({ patho, zones }) => {
-      if (zones.length === 1) {
-        // Pas de doublon : on renvoie les textes tels quels
-        return { examens: patho.examens, soins: patho.soins };
-      }
-
-      // Plusieurs zones : on cherche le label de la première zone dans les textes
-      // et on remplace par "Zone1 + Zone2 + ..."
-      const firstZoneLabel = zones[0].label;
+    const mergedSoins = groups.map(({ patho, zones }) => {
+      if (zones.length === 1) return patho.soins;
+      const firstZoneLabel  = zones[0].label;
       const mergedZoneLabel = zones.map((z) => z.label).join(" + ");
-
-      const examens = patho.examens.replaceAll(firstZoneLabel, mergedZoneLabel);
-      const soins   = patho.soins.replaceAll(firstZoneLabel, mergedZoneLabel);
-
-      return { examens, soins };
+      return patho.soins.replaceAll(firstZoneLabel, mergedZoneLabel);
     });
+
+    // Étape 3 — nettoyage des soins : collecte et déduplique meds, bobo, Repos
+    const collectedMeds = new Set();
+    const collectedBobo = new Set();
+    let   hasRepos      = false;
+
+    const cleanedSoins = mergedSoins.map((soins) => {
+      let s = soins;
+      for (const m of MEDS) {
+        const { cleaned, found } = extractTerm(s, m);
+        if (found) { collectedMeds.add(m); s = cleaned; }
+      }
+      for (const b of BOBOLOGIE) {
+        const { cleaned, found } = extractTerm(s, b);
+        if (found) { collectedBobo.add(b); s = cleaned; }
+      }
+      const { cleaned: r, found: fr } = extractTerm(s, "Repos");
+      if (fr) { hasRepos = true; s = r; }
+      return s;
+    });
+
+    // Suffixe commun : bobologie // médicaments // Repos
+    const suffix = [
+      ...[...collectedBobo],
+      collectedMeds.size > 0 ? [...collectedMeds].join(" + ") : null,
+      hasRepos ? "Repos" : null,
+    ].filter(Boolean).join(" // ");
+
+    return { examensText, cleanedSoins, suffix };
   }
 
-  // Injecte toutes les pathologies du stack dans le formulaire
+  // ── injectAll ─────────────────────────────────────────────────────────────────
   function injectAll() {
     if (stack.length === 0) return;
 
-    const merged = mergeStack(stack);
+    const { examensText, cleanedSoins, suffix } = mergeStack(stack);
 
-    const examensText = merged.map((e) => e.examens).join(" // ");
-    const soinsText   = merged.map((e) => e.soins).join(" // ");
+    const soinsBody = cleanedSoins.filter(Boolean).join(" // ");
+    const soinsText = [soinsBody, suffix].filter(Boolean).join(" // ");
 
     bz_appendToField("Examens", examensText);
     bz_prependToField("Traitements", soinsText);
@@ -316,19 +399,16 @@ function buildSidebar() {
     closeSidebar();
   }
 
-  // Quand on clique une pathologie → on propose le bouton "Ajouter au bilan"
+  // ── Sélection d'une pathologie ────────────────────────────────────────────────
   function selectPatho(zone, patho, pBtn) {
-    // Retire le highlight des autres boutons de pathologie
     pathoList.querySelectorAll(".bz-patho-btn").forEach((b) => {
       b.classList.remove("bz-patho-btn--active");
-      // Remet le texte original si ce bouton avait été transformé en "Ajouter"
       const orig = b.dataset.origLabel;
       if (orig) b.textContent = orig;
     });
 
     pBtn.classList.add("bz-patho-btn--active");
 
-    // Vérifie si cette pathologie est déjà dans le stack
     const alreadyIn = stack.some(
       (e) => e.zone.key === zone.key && e.patho.key === patho.key
     );
@@ -338,7 +418,6 @@ function buildSidebar() {
     } else {
       pBtn.dataset.origLabel = patho.label;
       pBtn.textContent = `+ Ajouter — ${patho.label}`;
-      // Un second clic sur le bouton actif = on l'ajoute au stack
       pBtn.addEventListener("click", function addToStack() {
         if (stack.some((e) => e.zone.key === zone.key && e.patho.key === patho.key)) return;
         stack.push({ zone, patho });
@@ -354,7 +433,7 @@ function buildSidebar() {
     }
   }
 
-  // Quand on clique une zone → recharge les pathologies
+  // ── Sélection d'une zone ──────────────────────────────────────────────────────
   function selectZone(zone, zBtn) {
     zoneList.querySelectorAll(".bz-zone-btn").forEach((b) =>
       b.classList.remove("bz-zone-btn--active")
@@ -368,7 +447,6 @@ function buildSidebar() {
       pBtn.className = "bz-patho-btn";
       pBtn.dataset.origLabel = patho.label;
 
-      // Indique visuellement si déjà dans le stack
       const alreadyIn = stack.some(
         (e) => e.zone.key === zone.key && e.patho.key === patho.key
       );
@@ -376,7 +454,7 @@ function buildSidebar() {
       if (alreadyIn) pBtn.classList.add("bz-patho-btn--in-stack");
 
       pBtn.addEventListener("click", () => {
-        if (alreadyIn) return; // déjà dans le stack, clic ignoré
+        if (alreadyIn) return;
         selectPatho(zone, patho, pBtn);
       });
 
@@ -394,7 +472,6 @@ function buildSidebar() {
     zoneList.appendChild(zBtn);
   }
 
-  // Init du stack vide
   renderStack();
 
   // ── Assemblage ────────────────────────────────────────────────────────────────
@@ -409,11 +486,9 @@ function buildSidebar() {
 // ── Ouverture / fermeture de la sidebar ───────────────────────────────────────
 
 function openSidebar() {
-  // Ne pas ouvrir deux fois
   if (document.getElementById("bz-sidebar")) return;
   const sidebar = buildSidebar();
   document.body.appendChild(sidebar);
-  // Lance l'animation d'entrée (slide-in depuis la gauche)
   requestAnimationFrame(() => sidebar.classList.add("bz-sidebar--open"));
 }
 
@@ -421,7 +496,6 @@ function closeSidebar() {
   const sidebar = document.getElementById("bz-sidebar");
   if (!sidebar) return;
   sidebar.classList.remove("bz-sidebar--open");
-  // Attend la fin de la transition CSS avant de retirer l'élément du DOM
   sidebar.addEventListener("transitionend", () => sidebar.remove(), { once: true });
 }
 
@@ -447,11 +521,11 @@ function injectBodyZoneButton(titleEl) {
       (b) => b.textContent.trim().toLowerCase() === "enregistrer"
     );
     if (enregistrerBtn) {
-      const containerRect = container.getBoundingClientRect();
+      const containerRect   = container.getBoundingClientRect();
       const enregistrerRect = enregistrerBtn.getBoundingClientRect();
-      const rightOffset = containerRect.right - enregistrerRect.right;
-      btn.style.right = rightOffset + "px";
-      const completionBtn = container.querySelector(".med-completion-btn");
+      const rightOffset     = containerRect.right - enregistrerRect.right;
+      btn.style.right       = rightOffset + "px";
+      const completionBtn   = container.querySelector(".med-completion-btn");
       if (completionBtn) {
         completionBtn.style.right = (rightOffset + btn.offsetWidth + 8) + "px";
       }
