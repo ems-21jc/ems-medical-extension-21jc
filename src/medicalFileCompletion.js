@@ -21,7 +21,14 @@ const COMPLETION_CONFIG = [
         label: "Moto",
         parent: "avp",
         level: 1,
-        disabledBy: ["pieton", "parebrise"],
+        disabledBy: ["pieton", "parebrise", "velo"],
+      },
+      {
+        key: "velo",
+        label: "Vélo",
+        parent: "avp",
+        level: 1,
+        disabledBy: ["moto", "pieton", "parebrise"],
       },
       { key: "casque", label: "Casque", parent: "moto", level: 2 },
       {
@@ -29,14 +36,14 @@ const COMPLETION_CONFIG = [
         label: "Pare Brise",
         parent: "avp",
         level: 1,
-        disabledBy: ["moto", "pieton"],
+        disabledBy: ["moto", "pieton", "velo"],
       },
       {
         key: "pieton",
         label: "Piéton",
         parent: "avp",
         level: 1,
-        disabledBy: ["moto", "parebrise"],
+        disabledBy: ["moto", "parebrise", "velo"],
       },
       { key: "cb", label: "Coup & Blessure" },
       { key: "arme_blanche", label: "Arme Blanche", parent: "cb", level: 1 },
@@ -295,6 +302,7 @@ async function applyCompletion(sel) {
       s += " Moto";
       s += sel.casque ? " Casque" : " sans Casque";
     }
+    if (sel.velo) s += " Vélo";
     if (sel.parebrise) s += " Pare Brise";
     if (sel.pieton) s += " Piéton";
     blessures.push(s);
