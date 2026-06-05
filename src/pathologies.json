@@ -463,19 +463,19 @@
         "key": "fissure_cote",
         "label": "Fissure Côte(s)",
         "examens": "Radio : Fissure côte(s) torse",
-        "soins": "Attelle rigide torse // AD + AI"
+        "soins": "Bandage de maintien torse // AD + AI"
       },
       {
         "key": "fracture_nette_cote",
         "label": "Fracture Nette Côte(s)",
         "examens": "Radio : Fracture nette côte(s) torse",
-        "soins": "Attelle rigide torse // AD + AI"
+        "soins": "Bandage de maintien torse // AD + AI"
       },
       {
         "key": "fracture_deplacee_cote",
         "label": "Fracture Déplacée Côte(s)",
         "examens": "Radio : Fracture déplacée côte(s) torse",
-        "soins": "Chir AG ou AL : Cautérisation + Nettoyage fragments + Os réaxé + Pose plaque et vis (Mg) + PDS musculaires & cutanés // Attelle rigide torse // AD + AI + AB + AC"
+        "soins": "Chir AG ou AL : Cautérisation + Nettoyage fragments + Os réaxé + Pose plaque et vis (Mg) + PDS musculaires & cutanés // Bandage de maintien torse // AD + AI + AB + AC"
       },
       {
         "key": "brulure_1",
