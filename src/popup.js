@@ -1,5 +1,4 @@
-const storage = (typeof browser !== "undefined" ? browser : chrome).storage
-  .local;
+const storage = (typeof browser !== "undefined" ? browser : chrome).storage.local;
 
 // 🔗 CONFIGURATION DES LIENS EN FONCTION DE L'HÔPITAL CHOISI
 const URLS_CONFIG = {
@@ -15,7 +14,40 @@ const URLS_CONFIG = {
   },
 };
 
+// ── Titre + Footer : nom + version depuis le manifest ──────────────────────
+function renderManifestInfo() {
+  const runtime = (typeof browser !== "undefined" ? browser : chrome).runtime;
+  if (!runtime || !runtime.getManifest) {
+    console.warn("[popup] runtime.getManifest non disponible");
+    return;
+  }
+  const manifest = runtime.getManifest();
+  if (!manifest) {
+    console.warn("[popup] manifest non trouvé");
+    return;
+  }
+
+  const fullName = manifest.name || "EMS Medical Tools";
+
+  console.log("[popup] manifest.name:", fullName, "| version:", manifest.version);
+
+    const titleEl = document.getElementById("popupTitleText");
+    if (titleEl) {
+      titleEl.textContent = fullName;
+      console.log("[popup] titre mis à jour:", titleEl.textContent);
+  } else {
+    console.warn("[popup] #popupTitleText introuvable");
+  }
+
+  const footer = document.getElementById("popupFooter");
+  if (footer) {
+    footer.innerHTML =
+      `<img src="icons/icon16.png" alt=""> ${fullName} • v${manifest.version}`;
+  }
+}
+
 document.addEventListener("DOMContentLoaded", async () => {
+  renderManifestInfo();
   const zipInput = document.getElementById("defaultZip");
   const hospitalSelect = document.getElementById("hospitalSelect");
   const statusMsg = document.getElementById("status");
