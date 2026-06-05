@@ -3,7 +3,7 @@ const mcc_storage = (typeof browser !== "undefined" ? browser : chrome).storage.
 // ══════════════════════════════════════════════════════════════════════════════
 // medicalCheckupCompletion.js
 // Bouton VC sur la vue détail d'un rapport médical :
-//  - Grisé si la date de visite de contrôle n'est pas encore passée (heure Paris)
+//  - Grisé si la date de visite de contrôle n'est pas encore passée (heure locale)
 //  - Au clic : ferme le dialog, ouvre "Nouveau rapport medical", injecte les champs
 // ══════════════════════════════════════════════════════════════════════════════
 
@@ -42,23 +42,17 @@ function mcc_hasValidDuration(dialog) {
   return duration !== "00:00:00";
 }
 
-// ── Vérifie si la date de visite de contrôle est passée (heure Paris) ────────
+// ── Vérifie si la date de visite de contrôle est passée (heure locale) ───────
 
 function mcc_isControlDatePassed(dateStr) {
   if (!dateStr || /invalid/i.test(dateStr) || dateStr.trim() === "") return false;
   const m = dateStr.match(/(\d{2})\/(\d{2})\/(\d{4})\s+(\d{2}):(\d{2})/);
   if (!m) return false;
   const [, dd, mm, yyyy, hh, min] = m;
-  const nowParts = Object.fromEntries(
-    new Intl.DateTimeFormat("fr-FR", {
-      timeZone: "Europe/Paris",
-      year: "numeric", month: "2-digit", day: "2-digit",
-      hour: "2-digit", minute: "2-digit",
-      hourCycle: "h23",
-    }).formatToParts(new Date()).map((p) => [p.type, p.value])
-  );
+  const now = new Date();
+  const pad = (n) => String(n).padStart(2, "0");
   const controlStr = `${yyyy}-${mm}-${dd} ${hh}:${min}`;
-  const nowStr = `${nowParts.year}-${nowParts.month}-${nowParts.day} ${nowParts.hour}:${nowParts.minute}`;
+  const nowStr = `${now.getFullYear()}-${pad(now.getMonth() + 1)}-${pad(now.getDate())} ${pad(now.getHours())}:${pad(now.getMinutes())}`;
   return nowStr >= controlStr;
 }
 

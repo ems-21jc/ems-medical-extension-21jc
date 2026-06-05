@@ -211,27 +211,25 @@ function setDuration(durationStr) {
   );
 }
 
-function parisDateParts(date) {
-  const parts = new Intl.DateTimeFormat("fr-FR", {
-    timeZone: "Europe/Paris",
-    year: "numeric",
-    month: "2-digit",
-    day: "2-digit",
-    hour: "2-digit",
-    minute: "2-digit",
-    hourCycle: "h23",
-  }).formatToParts(date);
-  return Object.fromEntries(parts.map((p) => [p.type, p.value]));
+function localDateParts(date) {
+  const pad = (n) => String(n).padStart(2, "0");
+  return {
+    year: String(date.getFullYear()),
+    month: pad(date.getMonth() + 1),
+    day: pad(date.getDate()),
+    hour: pad(date.getHours()),
+    minute: pad(date.getMinutes()),
+  };
 }
 
-// Calcule date actuelle + durée HH:MM:SS → format DD/MM/YYYY HH:MM (heure Paris)
+// Calcule date actuelle + durée HH:MM:SS → format DD/MM/YYYY HH:MM (heure locale)
 function calcDateFromDuration(durationStr) {
   const parts = durationStr.split(":");
   const totalSeconds =
     (parseInt(parts[0], 10) || 0) * 3600 +
     (parseInt(parts[1], 10) || 0) * 60 +
     (parseInt(parts[2], 10) || 0);
-  const p = parisDateParts(new Date(Date.now() + totalSeconds * 1000));
+  const p = localDateParts(new Date(Date.now() + totalSeconds * 1000));
   return `${p.day}/${p.month}/${p.year} ${p.hour}:${p.minute}`;
 }
 

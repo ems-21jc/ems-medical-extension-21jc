@@ -32,7 +32,7 @@ function formatDateTime() {
   return `${p.day}/${p.month}/${p.year} ${p.hour}:${p.minute}`;
 }
 
-// Parse une date/heure au format "DD/MM/YYYY hh:mm" → Date (Europe/Paris)
+// Parse une date/heure au format "DD/MM/YYYY hh:mm" → Date (heure locale)
 function parseAdmissionDate(str) {
   const [datePart, timePart = "00:00"] = str.trim().split(/\s+/);
   const [day, month, year] = datePart.split("/").map(Number);
