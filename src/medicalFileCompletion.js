@@ -76,8 +76,20 @@ const COMPLETION_CONFIG = [
     group: "Autre",
     items: [
       { key: "coma", label: "Coma" },
-      { key: "douleur", label: "Douleur", type: "slider", min: 0, max: 10, disabledBy: ["inconscient"] },
-      { key: "inconscient", label: "Inconscient", requiresGroup: "Accident", disabledWhenNonZero: ["douleur"] },
+      {
+        key: "douleur",
+        label: "Douleur",
+        type: "slider",
+        min: 0,
+        max: 10,
+        disabledBy: ["inconscient"],
+      },
+      {
+        key: "inconscient",
+        label: "Inconscient",
+        requiresGroup: "Accident",
+        disabledWhenNonZero: ["douleur"],
+      },
       { key: "canne", label: "Canne" },
       { key: "fauteuil", label: "Fauteuil" },
     ],
@@ -212,14 +224,15 @@ function setDuration(durationStr) {
 }
 
 function localDateParts(date) {
-  const pad = (n) => String(n).padStart(2, "0");
-  return {
-    year: String(date.getFullYear()),
-    month: pad(date.getMonth() + 1),
-    day: pad(date.getDate()),
-    hour: pad(date.getHours()),
-    minute: pad(date.getMinutes()),
-  };
+  const parts = new Intl.DateTimeFormat("fr-FR", {
+    year: "numeric",
+    month: "2-digit",
+    day: "2-digit",
+    hour: "2-digit",
+    minute: "2-digit",
+    hourCycle: "h23",
+  }).formatToParts(date);
+  return Object.fromEntries(parts.map((p) => [p.type, p.value]));
 }
 
 // Calcule date actuelle + durée HH:MM:SS → format DD/MM/YYYY HH:MM (heure locale)
@@ -341,8 +354,7 @@ async function applyCompletion(sel) {
     appendToField("Blessures", blessures.join(" + "), " + ");
   if (sel.douleur > 0)
     appendToField("Blessures", `// Douleur: ${sel.douleur}`, " ");
-  if (sel.inconscient)
-    appendToField("Blessures", "// Inconscient", " ");
+  if (sel.inconscient) appendToField("Blessures", "// Inconscient", " ");
 
   // ── Examens ───────────────────────────────────────────────────────────────
   if (sel.depo) appendToField("Examens", "Echo: Présence Dépot Poumon");
@@ -420,11 +432,16 @@ function computeDisabled(item, panel) {
     if (!anyChecked) return true;
   }
   if (item.disabledWhenNonZero) {
-    const keys = Array.isArray(item.disabledWhenNonZero) ? item.disabledWhenNonZero : [item.disabledWhenNonZero];
-    if (keys.some((key) => {
-      const el = panel.querySelector(`#med-compl-${key}`);
-      return el && parseInt(el.value, 10) > 0;
-    })) return true;
+    const keys = Array.isArray(item.disabledWhenNonZero)
+      ? item.disabledWhenNonZero
+      : [item.disabledWhenNonZero];
+    if (
+      keys.some((key) => {
+        const el = panel.querySelector(`#med-compl-${key}`);
+        return el && parseInt(el.value, 10) > 0;
+      })
+    )
+      return true;
   }
   return false;
 }
@@ -437,8 +454,10 @@ function updateAllStates(panel) {
     if (!el) return;
     const newDisabled = computeDisabled(item, panel);
     if (newDisabled) {
-      if (item.type === "slider") { el.value = 0; updateSliderDisplay(el); }
-      else if (!el.disabled) el.checked = false;
+      if (item.type === "slider") {
+        el.value = 0;
+        updateSliderDisplay(el);
+      } else if (!el.disabled) el.checked = false;
     }
     el.disabled = newDisabled;
     if (row) row.classList.toggle("med-completion-row--disabled", newDisabled);
@@ -446,7 +465,9 @@ function updateAllStates(panel) {
 }
 
 function updateSliderDisplay(sliderEl) {
-  const display = sliderEl.parentElement?.querySelector(".med-completion-slider-value");
+  const display = sliderEl.parentElement?.querySelector(
+    ".med-completion-slider-value",
+  );
   if (display) display.textContent = sliderEl.value;
 }
 
