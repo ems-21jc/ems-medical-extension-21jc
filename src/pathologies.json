@@ -1,5 +1,29 @@
 ﻿[
   {
+    "key": "global",
+    "label": "Global",
+    "pathologies": [
+      {
+        "key": "surdose_drogue",
+        "label": "Surdose de Drogue",
+        "examens": "Constantes : hautes // Test salivaire : positif",
+        "soins": "Cannabis : régulation glycémie + réhydratation // Cocaïne : réhydratation + couverture refroidissante + anti-convulsif + bêta-bloquant // Méthamphétamine : réhydratation + couverture refroidissante + anti-convulsif + bêta-bloquant // Repos"
+      },
+      {
+        "key": "surdose_alcool",
+        "label": "Surdose d'Alcool",
+        "examens": "Ethylomètre : xx mg/L",
+        "soins": "Lavage d'estomac // Poche glucose + hydratation // Repos"
+      },
+      {
+        "key": "prise_otage",
+        "label": "Prise d'Otage (PO)",
+        "examens": "Constantes : élevées // Psy : agacé / frustré / choqué / paniqué",
+        "soins": "Repos // Programmer RDV psy"
+      }
+    ]
+  },
+  {
     "key": "tete",
     "label": "Tête",
     "pathologies": [
@@ -524,36 +548,6 @@
         "label": "BPB Traversant",
         "examens": "Radio : BPB T torse + Fracture ou Fissure côte(s) // Echo : Déchirure musculaire torse",
         "soins": "Chir AL ou AG : Cautérisation + PDS muscle + PDS cutané // Bandage torse // AI + AD + AB + AC"
-      },
-      {
-        "key": "deshydratation",
-        "label": "Déshydratation",
-        "examens": "Constantes : Faibles",
-        "soins": "Poche réhydratante"
-      },
-      {
-        "key": "hypoglycemie",
-        "label": "Hypoglycémie",
-        "examens": "Constantes : Faibles",
-        "soins": "Poche de glucose"
-      },
-      {
-        "key": "surdose_drogue",
-        "label": "Surdose de Drogue",
-        "examens": "Constantes : hautes // Test salivaire : positif",
-        "soins": "Cannabis : régulation glycémie + réhydratation // Cocaïne : réhydratation + couverture refroidissante + anti-convulsif + bêta-bloquant // Méthamphétamine : réhydratation + couverture refroidissante + anti-convulsif + bêta-bloquant // Repos"
-      },
-      {
-        "key": "surdose_alcool",
-        "label": "Surdose d'Alcool",
-        "examens": "Ethylomètre : xx mg/L",
-        "soins": "Lavage d'estomac // Poche glucose + hydratation // Repos"
-      },
-      {
-        "key": "prise_otage",
-        "label": "Prise d'Otage (PO)",
-        "examens": "Constantes : élevées // Psy : agacé / frustré / choqué / paniqué",
-        "soins": "Repos // Programmer RDV psy"
       }
     ]
   },
