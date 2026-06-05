@@ -552,6 +552,72 @@
     ]
   },
   {
+    "key": "dos",
+    "label": "Dos",
+    "pathologies": [
+      {
+        "key": "fissure_vert",
+        "label": "Fissure Vertèbre(s)",
+        "examens": "Radio : Fissure vertèbre(s) dos",
+        "soins": "Bandage de maintien dos // AD + AI"
+      },
+      {
+        "key": "fracture_nette_vert",
+        "label": "Fracture Nette Vertèbre(s)",
+        "examens": "Radio : Fracture nette vertèbre(s) dos",
+        "soins": "Bandage de maintien dos // AD + AI"
+      },
+      {
+        "key": "fracture_deplacee_vert",
+        "label": "Fracture Déplacée Vertèbre(s)",
+        "examens": "Radio : Fracture déplacée vertèbre(s) dos",
+        "soins": "Chir AG ou AL : Cautérisation + Nettoyage fragments + Os réaxé + Pose plaque et vis (Mg) + PDS musculaires & cutanés // Bandage de maintien dos // AD + AI + AB + AC"
+      },
+      {
+        "key": "brulure_1",
+        "label": "Brûlure 1er degré",
+        "examens": "Auscultation : Brûlures 1er degré dos",
+        "soins": "Nettoyage plaies (sérum phy) + crème cicatrisante // Bandages dos // AD + AI + AB"
+      },
+      {
+        "key": "brulure_2",
+        "label": "Brûlure 2e degré",
+        "examens": "Auscultation : Brûlures 2e degré dos",
+        "soins": "Chir AG ou AL : Nettoyage plaies (sérum phy) + retrait chairs mortes // Bandages + tulles gras dos // AD + AI + AB"
+      },
+      {
+        "key": "brulure_3",
+        "label": "Brûlure 3e degré",
+        "examens": "Auscultation : Brûlures 3e degré dos",
+        "soins": "Chir AG : Nettoyage plaies (sérum phy) + retrait peaux mortes + Greffon synthétique/prélèvement de peau dos + PDS cutanés // Bandages + Tulles gras // AD + AI + AB"
+      },
+      {
+        "key": "noyade",
+        "label": "Noyade",
+        "examens": "IRM ou Echo : Présence d'eau dans les poumons",
+        "soins": "Expectorants + Sirop pour la gorge // AD + AI + AB + AF"
+      },
+      {
+        "key": "attaque_animale",
+        "label": "Attaque Animale",
+        "examens": "Auscultation : Traces de morsures/Lacérations dos // Echo : Déchirure musculaire dos",
+        "soins": "Vaccin anti-rabique // PDS muscle + PDS cutanées // Bandages dos"
+      },
+      {
+        "key": "bpb_nt",
+        "label": "BPB Non Traversant",
+        "examens": "Radio : BPB NT dos + Fracture ou Fissure vertèbre(s) // Echo : Déchirure musculaire dos",
+        "soins": "Chir AL ou AG : Retrait balles + cautérisation + PDS muscle + PDS cutané // Bandage dos // AI + AD + AB + AC"
+      },
+      {
+        "key": "bpb_t",
+        "label": "BPB Traversant",
+        "examens": "Radio : BPB T dos + Fracture ou Fissure vertèbre(s) // Echo : Déchirure musculaire dos",
+        "soins": "Chir AL ou AG : Cautérisation + PDS muscle + PDS cutané // Bandage dos // AI + AD + AB + AC"
+      }
+    ]
+  },
+  {
     "key": "bassin",
     "label": "Bassin",
     "pathologies": [
