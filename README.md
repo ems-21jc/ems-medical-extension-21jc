@@ -30,11 +30,19 @@ Chaque zone propose une liste de pathologies avec examens et soins pré-remplis.
 ### 📅 Remplissage rapide des dates (`dateFieldCompletion.js`)
 Injecte un bouton 🔃 à côté de trois champs de date :
 
-- **Date de visite médicale** - insère la date actuelle (`JJ/MM/AAAA`)
+- **Date visite médicale** - insère la date actuelle (`JJ/MM/AAAA`)
 - **Date du don de sang** - insère la date et l'heure actuelles (`JJ/MM/AAAA HH:MM`), puis déclenche automatiquement le bouton *Enregistrer*
-- **Date de visite de contrôle** - calcule et insère la date actuelle + la durée d'invalidité renseignée dans le champ *Durée d'invalidité* (`HH:MM:SS`)
+- **Date de visite de contrôle** - calcule et insère la **date d'admission** + la **durée d'invalidité** renseignée dans le champ *Durée d'invalidité* (`HH:MM:SS`)
 
-Toutes les dates sont calculées sur le **fuseau horaire Europe/Paris**.
+Le champ **Date d'admission** est automatiquement pré-rempli avec la date et l'heure actuelles à l'ouverture de la popup *Nouveau rapport médical*.
+
+Toutes les dates sont calculées sur le **fuseau horaire local** du poste.
+
+### 🏷️ Gestion des chips "Infos ok" / "Infos pas ok"
+Dans le champ **En cas d'urgence**, deux boutons `+ Infos ok` et `+ Infos pas ok` sont injectés pour ajouter ou retirer ces statuts. Les chips MUI correspondants sont colorés (vert pour "Infos ok", rouge pour "Infos pas ok"). Le texte brut en dehors des chips est également coloré.
+
+### 🩺 Remplissage automatique d'examen médical (`medicalCheckupCompletion.js`)
+Injecte un bouton dans la popup d'examen médical (fiche médicale d'un joueur) pour compléter automatiquement l'état de santé, le groupe sanguin, le tabagisme, les médicaments, les antécédents et les allergies.
 
 ### ⚙️ Popup de configuration (`popup.html` / `popup.js`)
 Interface accessible depuis l'icône de l'extension dans la barre d'outils :
@@ -70,10 +78,11 @@ Extension_EMS_21jc/
 │   │   ├── icon48.png              # Icône de barre d'outils (48x48)
 │   │   └── icon128.png             # Icône détaillée du store (128x128)
 │   ├── bodyZoneCompletion.js       # Sidebar du Bilan Anatomique (zones, pathologies, stack, injection)
-│   ├── content.css                 # Styles CSS injectés (boutons, panneau de complétion, sidebar)
-│   ├── dateFieldCompletion.js      # Insertion et calcul automatique des dates
+│   ├── content.css                 # Styles CSS injectés (boutons, panneaux, sidebar, chips)
+│   ├── dateFieldCompletion.js      # Insertion et calcul automatique des dates + chips Infos ok/pas ok
 │   ├── manifest.chrome.json        # Configuration de l'extension pour Google Chrome (Manifest V3)
 │   ├── manifest.firefox.json       # Configuration de l'extension pour Mozilla Firefox (Manifest V3)
+│   ├── medicalCheckupCompletion.js # Complétion automatique de l'examen médical (fiche joueur)
 │   ├── medicalFileCompletion.js    # Panneau de complétion du rapport médical (cases, slider, incapacités)
 │   ├── pathologies.json            # Base de données des pathologies par zone anatomique
 │   ├── popup.html                  # Interface graphique du menu d'options
@@ -133,7 +142,6 @@ Exécute `build:chrome` puis `build:firefox` séquentiellement. Les deux builds 
 
 ---
 
-
 ## ⚙️ Configuration du Build (Vite)
 
 Ce projet utilise `vite.config.js` pour automatiser le processus de build et assurer la compatibilité multi-navigateurs. Le système gère les tâches suivantes :
@@ -141,15 +149,13 @@ Ce projet utilise `vite.config.js` pour automatiser le processus de build et ass
 * **Entrées Dynamiques** : Tous les fichiers `.js` situés à la racine du dossier `src/` sont automatiquement détectés et compilés comme points d'entrée indépendants. Aucune déclaration manuelle n'est nécessaire.
 * **Gestion Multi-Cible** : Le build génère des dossiers distincts selon la cible (`dist/chrome/` ou `dist/firefox/`). Le fichier `manifest.json` final est généré en fusionnant la version du `package.json` avec le manifeste spécifique (`manifest.chrome.json` ou `manifest.firefox.json`).
 * **Synchronisation des Ressources** : Les assets nécessaires au fonctionnement de l'extension sont copiés automatiquement dans le dossier de sortie :
-* Fichiers CSS (`content.css`) et HTML (`popup.html`).
-* Données JSON additionnelles (ex: `pathologies.json`).
-* Icônes du dossier `src/icons/`.
-* Le polyfill `browser-polyfill.js` pour la compatibilité WebExtensions.
-
-
+  * Fichiers CSS (`content.css`) et HTML (`popup.html`).
+  * Données JSON additionnelles (ex: `pathologies.json`).
+  * Icônes du dossier `src/icons/`.
+  * Le polyfill `browser-polyfill.js` pour la compatibilité WebExtensions.
 * **Optimisation du Développement** :
-* La configuration `emptyOutDir: false` permet de maintenir les fichiers dans `dist/` lors du mode `watch`, évitant ainsi les rechargements intempestifs de l'extension dans votre navigateur.
-* Le système surveille les modifications de fichiers (`watchFile`) pour déclencher une reconstruction immédiate lors de vos changements.
+  * La configuration `emptyOutDir: false` permet de maintenir les fichiers dans `dist/` lors du mode `watch`, évitant ainsi les rechargements intempestifs de l'extension dans votre navigateur.
+  * Le système surveille les modifications de fichiers (`watchFile`) pour déclencher une reconstruction immédiate lors de vos changements.
 
 ---
 
