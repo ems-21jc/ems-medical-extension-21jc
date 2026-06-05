@@ -56,7 +56,7 @@ const COMPLETION_CONFIG = [
       { key: "noyade", label: "Noyade" },
       { key: "depo", label: "Dépôt", parent: "noyade", level: 1 },
       { key: "chute", label: "Chute" },
-      { key: "chute_15m", label: "15m", parent: "chute", level: 1 },
+      { key: "chute_15m", label: "+15m", parent: "chute", level: 1 },
       { key: "explosion", label: "Explosion" },
       { key: "brulure", label: "Brulure" },
       { key: "attaque_animal", label: "Attaque Animal" },
@@ -351,7 +351,7 @@ async function applyCompletion(sel) {
 
   if (sel.chute) {
     let s = "Chute";
-    s += sel.chute_15m ? " 15m" : " -15m";
+    s += sel.chute_15m ? " +15m" : " -15m";
     blessures.push(s);
   }
   if (sel.explosion) blessures.push("Explosion");
