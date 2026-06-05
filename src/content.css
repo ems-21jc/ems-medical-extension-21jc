@@ -30,10 +30,38 @@
   transform: scale(0.94);
 }
 
+.med-blood-rnd:active {
+  transform: scale(0.94);
+}
+
 .med-now-btn--done {
   background: #1e3d2a;
   border-color: #27ae60;
   color: #27ae60;
+}
+
+/* ── Randomizer Groupe Sanguin ─────────────────────────────────────────── */
+.med-blood-rnd {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 36px;
+  height: 36px;
+  padding: 0;
+  color: #fff;
+  background: #212121;
+  border: 1px solid #4c6875;
+  border-radius: 8px;
+  cursor: pointer;
+  transition: background 0.15s ease, transform 0.1s ease;
+  flex-shrink: 0;
+}
+.med-blood-rnd:hover {
+  background: #2d2d2d;
+}
+.med-blood-rnd:active {
+  background: #1a1a1a;
+  transform: scale(0.94);
 }
 
 .med-now-btn--error {

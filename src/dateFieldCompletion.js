@@ -689,65 +689,76 @@ function injectBloodGroupRandomizer() {
     if (!parent) continue;
     if (parent.querySelector(".med-blood-rnd")) return;
 
+    // Constantes de style identiques aux autres boutons (VC, VM, DDS)
+    const BG_COLOR = "#212121";
+    const BG_HOVER = "#2d2d2d";
+    const BG_ACTIVE = "#1a1a1a";
+    const BG_SUCCESS = "#2e7d32";
+    const BORDER_COLOR = "#4c6875";
+
+    // SVG aléatoire / shuffle (deux flèches croisées)
+    const svgRandom = `<svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><polyline points="16 3 21 3 21 8"></polyline><line x1="4" y1="20" x2="21" y2="3"></line><polyline points="21 16 21 21 16 21"></polyline><line x1="15" y1="15" x2="21" y2="21"></line><line x1="4" y1="4" x2="9" y2="9"></line></svg>`;
+
     const btn = document.createElement("button");
     btn.type = "button";
     btn.className = "med-blood-rnd";
-    btn.textContent = "🎲";
     btn.title = "Randomiser groupe sanguin";
+    btn.innerHTML = svgRandom;
     btn.style.cssText =
       "display:inline-flex;align-items:center;justify-content:center;" +
-      "width:32px;height:32px;padding:0;font-size:15px;" +
-      "color:#ccc;background:#2b2b2b;border:1px solid #444;border-radius:4px;" +
-      "cursor:pointer;transition:background 0.15s,border-color 0.15s,transform 0.1s;" +
-      "vertical-align:middle;flex-shrink:0;";
+      "width:36px;height:36px;padding:0;" +
+      "color:#fff;background:" + BG_COLOR + ";border:1px solid " + BORDER_COLOR + ";border-radius:8px;" +
+      "cursor:pointer;transition:all 0.15s ease;" +
+      "flex-shrink:0;";
 
     btn.addEventListener("mouseenter", () => {
-      btn.style.background = "#3a3a3a"; btn.style.borderColor = "#666"; btn.style.color = "#fff";
+      btn.style.background = BG_HOVER;
     });
     btn.addEventListener("mouseleave", () => {
-      btn.style.background = "#2b2b2b"; btn.style.borderColor = "#444"; btn.style.color = "#ccc";
+      btn.style.background = BG_COLOR;
+    });
+    btn.addEventListener("mousedown", () => {
+      btn.style.background = BG_ACTIVE;
+    });
+    btn.addEventListener("mouseup", () => {
+      btn.style.background = BG_HOVER;
     });
     btn.addEventListener("click", () => {
       const group = BLOOD_GROUPS[Math.floor(Math.random() * BLOOD_GROUPS.length)];
-      // MUI Select : l'input natif a name="bloodgroup" (sans espace dans la valeur)
       const nativeInput = parent.querySelector('input[name="bloodgroup"]');
-      const valueNoSpace = group.replace(/\s+/g, ""); // "O -" -> "O-"
+      const valueNoSpace = group.replace(/\s+/g, "");
       if (nativeInput) {
         nativeInput.value = valueNoSpace;
         nativeInput.dispatchEvent(new Event("change", { bubbles: true }));
         nativeInput.dispatchEvent(new Event("input", { bubbles: true }));
-        // Force React setter
         const setter = Object.getOwnPropertyDescriptor(HTMLInputElement.prototype, "value")?.set;
         if (setter) setter.call(nativeInput, valueNoSpace);
       }
-      // Mettre à jour le texte affiché dans le combobox
       const combobox = parent.querySelector('[role="combobox"]');
       if (combobox) {
         combobox.textContent = group;
         combobox.dispatchEvent(new Event("input", { bubbles: true }));
         combobox.dispatchEvent(new Event("change", { bubbles: true }));
       }
-      btn.textContent = "✓";
-      btn.style.background = "#1e3d2a"; btn.style.borderColor = "#27ae60"; btn.style.color = "#27ae60";
+      // Feedback visuel succès (✓ vert) comme les autres boutons
+      btn.innerHTML = `<svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><polyline points="20 6 9 17 4 12"/></svg>`;
+      btn.style.background = BG_SUCCESS;
       setTimeout(() => {
-        btn.textContent = "🎲";
-        btn.style.background = "#2b2b2b"; btn.style.borderColor = "#444"; btn.style.color = "#ccc";
+        btn.innerHTML = svgRandom;
+        btn.style.background = BG_COLOR;
       }, 1200);
     });
 
+    // Même placement que VC : à droite du champ, dans un flex row avec gap 8px
     const inputBase = parent.querySelector(".MuiInputBase-root");
     if (inputBase) {
-      // Place le 🎲 EN DEHORS du MuiInputBase-root, à droite sur la même ligne
-      // en enveloppant inputBase + btn dans un conteneur flex row
-      btn.style.marginLeft = "4px";
-      btn.style.flexShrink = "0";
       const row = document.createElement("div");
-      row.style.display = "flex";
-      row.style.alignItems = "center";
-      row.style.flex = "1 1 auto";
+      row.style.cssText = "display:flex;gap:8px;align-items:center;width:100%;";
       inputBase.parentNode.insertBefore(row, inputBase);
       row.appendChild(inputBase);
       row.appendChild(btn);
+      inputBase.style.flex = "1 1 0%";
+      inputBase.style.minWidth = "0";
     } else {
       parent.appendChild(btn);
     }
