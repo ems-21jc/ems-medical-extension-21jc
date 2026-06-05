@@ -180,37 +180,124 @@ function buildSidebar() {
     injectBtn.disabled = false;
     injectBtn.textContent = `✚ Injecter (${stack.length})`;
 
+    // Regroupe par patho.key pour afficher les fusions en temps réel
+    const groups = new Map(); // patho.key → { patho, entries: [{zone, stackIndex}] }
     stack.forEach((entry, index) => {
+      if (!groups.has(entry.patho.key)) {
+        groups.set(entry.patho.key, { patho: entry.patho, entries: [] });
+      }
+      groups.get(entry.patho.key).entries.push({ zone: entry.zone, index });
+    });
+
+    for (const { patho, entries } of groups.values()) {
       const item = document.createElement("div");
-      item.className = "bz-stack-item";
+      item.className = entries.length > 1
+        ? "bz-stack-item bz-stack-item--merged"
+        : "bz-stack-item";
 
       const info = document.createElement("div");
       info.className = "bz-stack-item-info";
 
+      // Zones en vert, séparées par " + " si fusion
       const zoneName = document.createElement("span");
       zoneName.className = "bz-stack-item-zone";
-      zoneName.textContent = entry.zone.label;
+      zoneName.textContent = entries.map((e) => e.zone.label).join(" + ");
 
       const pathoName = document.createElement("span");
       pathoName.className = "bz-stack-item-patho";
-      pathoName.textContent = entry.patho.label;
+      pathoName.textContent = patho.label;
 
       info.appendChild(zoneName);
       info.appendChild(pathoName);
 
-      const removeBtn = document.createElement("button");
-      removeBtn.type = "button";
-      removeBtn.className = "bz-stack-remove-btn";
-      removeBtn.textContent = "✕";
-      removeBtn.title = "Retirer";
-      removeBtn.addEventListener("click", () => {
-        stack.splice(index, 1);
-        renderStack();
-      });
+      const removeBtns = document.createElement("div");
+      removeBtns.className = "bz-stack-remove-group";
+
+      if (entries.length === 1) {
+        // Cas simple : un seul bouton ✕
+        const removeBtn = document.createElement("button");
+        removeBtn.type = "button";
+        removeBtn.className = "bz-stack-remove-btn";
+        removeBtn.textContent = "✕";
+        removeBtn.title = `Retirer ${entries[0].zone.label}`;
+        removeBtn.addEventListener("click", () => {
+          stack.splice(entries[0].index, 1);
+          renderStack();
+        });
+        removeBtns.appendChild(removeBtn);
+      } else {
+        // Fusion : un ✕ par zone pour retirer individuellement
+        for (const entry of entries) {
+          const wrap = document.createElement("div");
+          wrap.className = "bz-stack-remove-wrap";
+
+          const zoneTag = document.createElement("span");
+          zoneTag.className = "bz-stack-remove-zone-tag";
+          zoneTag.textContent = entry.zone.label;
+
+          const removeBtn = document.createElement("button");
+          removeBtn.type = "button";
+          removeBtn.className = "bz-stack-remove-btn bz-stack-remove-btn--small";
+          removeBtn.textContent = "✕";
+          removeBtn.title = `Retirer ${entry.zone.label}`;
+          removeBtn.addEventListener("click", () => {
+            const currentIndex = stack.findIndex(
+              (e) => e.zone.key === entry.zone.key && e.patho.key === patho.key
+            );
+            if (currentIndex !== -1) stack.splice(currentIndex, 1);
+            renderStack();
+          });
+
+          wrap.appendChild(zoneTag);
+          wrap.appendChild(removeBtn);
+          removeBtns.appendChild(wrap);
+        }
+      }
 
       item.appendChild(info);
-      item.appendChild(removeBtn);
+      item.appendChild(removeBtns);
       stackList.appendChild(item);
+    }
+  }
+
+  // ── Fusion des doublons ───────────────────────────────────────────────────────
+  // Regroupe les entrées du stack qui partagent le même patho.key.
+  // Pour chaque groupe, remplace le nom de zone dans les textes examens/soins
+  // par la liste des zones concernées, séparées par " + ".
+  //
+  // Exemple : Fracture Nette sur Bras Gauche + Pied Droit
+  //   examens : "Radio : Fracture nette Bras Gauche + Pied Droit"
+  //   soins   : "Attelle rigide Bras Gauche + Pied Droit // AD + AI"
+  function mergeStack(stack) {
+    // 1. Regroupe par patho.key en conservant l'ordre de première apparition
+    const groups = [];
+    const seen = new Map(); // patho.key → index dans groups
+
+    for (const entry of stack) {
+      if (seen.has(entry.patho.key)) {
+        groups[seen.get(entry.patho.key)].zones.push(entry.zone);
+      } else {
+        seen.set(entry.patho.key, groups.length);
+        groups.push({ patho: entry.patho, zones: [entry.zone] });
+      }
+    }
+
+    // 2. Pour chaque groupe, reconstruit les textes en fusionnant les zones
+    return groups.map(({ patho, zones }) => {
+      if (zones.length === 1) {
+        // Pas de doublon : on renvoie les textes tels quels
+        return { examens: patho.examens, soins: patho.soins };
+      }
+
+      // Plusieurs zones : on cherche le label de la première zone dans les textes
+      // et on remplace par "Zone1 + Zone2 + ..."
+      const firstZoneLabel = zones[0].label;
+      const mergedZoneLabel = zones.map((z) => z.label).join(" + ");
+
+      const examens = patho.examens.replaceAll(firstZoneLabel, mergedZoneLabel);
+      const soins   = patho.soins.replaceAll(firstZoneLabel, mergedZoneLabel);
+
+      return { examens, soins };
     });
   }
 
@@ -218,8 +305,10 @@ function buildSidebar() {
   function injectAll() {
     if (stack.length === 0) return;
 
-    const examensText = stack.map((e) => e.patho.examens).join(" // ");
-    const soinsText = stack.map((e) => e.patho.soins).join(" // ");
+    const merged = mergeStack(stack);
+
+    const examensText = merged.map((e) => e.examens).join(" // ");
+    const soinsText   = merged.map((e) => e.soins).join(" // ");
 
     bz_appendToField("Examens", examensText);
     bz_prependToField("Traitements", soinsText);
