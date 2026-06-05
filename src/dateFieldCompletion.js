@@ -33,12 +33,24 @@ function formatDateTime() {
   return `${p.day}/${p.month}/${p.year} ${p.hour}:${p.minute}`;
 }
 
-// Date actuelle + durée HH:MM:SS du champ "Durée d'invalidité"
+// Parse une date/heure au format "DD/MM/YYYY hh:mm" → Date (Europe/Paris)
+function parseAdmissionDate(str) {
+  const [datePart, timePart = "00:00"] = str.trim().split(/\s+/);
+  const [day, month, year] = datePart.split("/").map(Number);
+  const [hour, minute] = timePart.split(":").map(Number);
+  return new Date(year, month - 1, day, hour || 0, minute || 0);
+}
+
+// Date d'admission + durée HH:MM:SS du champ "Durée d'invalidité"
 // Retourne { value, error } pour éviter alert() qui provoque un re-render React
 function formatControlDate() {
   const dureeInput = findInputByLabel("Durée d'invalidité");
   if (!dureeInput || !dureeInput.value.trim()) {
     return { value: null, error: 'Remplis "Durée d\'invalidité" (HH:MM:SS)' };
+  }
+  const admissionInput = findInputByLabel("Date d'admission");
+  if (!admissionInput || !admissionInput.value.trim()) {
+    return { value: null, error: 'Remplis "Date d\'admission" d\'abord' };
   }
   const parts = dureeInput.value.trim().split(":");
   if (parts.length < 2) {
@@ -48,7 +60,13 @@ function formatControlDate() {
     (parseInt(parts[0], 10) || 0) * 3600 +
     (parseInt(parts[1], 10) || 0) * 60 +
     (parseInt(parts[2], 10) || 0);
-  const p = parisDateParts(new Date(Date.now() + totalSeconds * 1000));
+
+  const admissionDate = parseAdmissionDate(admissionInput.value.trim());
+  if (isNaN(admissionDate.getTime())) {
+    return { value: null, error: "Date d'admission invalide (DD/MM/YYYY hh:mm)" };
+  }
+
+  const p = parisDateParts(new Date(admissionDate.getTime() + totalSeconds * 1000));
   return { value: `${p.day}/${p.month}/${p.year} ${p.hour}:${p.minute}`, error: null };
 }
 
@@ -501,13 +519,39 @@ function tryInjectInfos() {
 }
 
 // ════════════════════════════════════════════════════════════════════════════
+// Auto‑remplissage de la date d'admission à l'ouverture du formulaire
+// ════════════════════════════════════════════════════════════════════════════
+
+function autoFillAdmissionDate() {
+  // Cible le champ "Date d'admission" dans la popup "Nouveau rapport médical"
+  const admissionInput = document.querySelector(
+    'input[name="admission"]'
+  ) || findInputByLabel("Date d'admission");
+  if (!admissionInput) return;
+
+  // Ne remplir que si le champ est vide (évite d'écraser une valeur existante)
+  if (admissionInput.value.trim()) return;
+
+  // Vérifie qu'on est bien dans un formulaire "Nouveau rapport médical"
+  const dialog = admissionInput.closest('[role="dialog"], .MuiDialog-paper');
+  if (!dialog) return;
+  if (!dialog.textContent.toLowerCase().includes("nouveau rapport medical")) return;
+
+  const p = parisDateParts(new Date());
+  const value = `${p.day}/${p.month}/${p.year} ${p.hour}:${p.minute}`;
+  setNativeValue(admissionInput, value);
+}
+
+// ════════════════════════════════════════════════════════════════════════════
 
 const datesObserver = new MutationObserver(() => {
   tryInjectDates();
   tryInjectInfos();
+  autoFillAdmissionDate();
 });
 
 datesObserver.observe(document.body, { childList: true, subtree: true });
 
 tryInjectDates();
 tryInjectInfos();
+autoFillAdmissionDate();
