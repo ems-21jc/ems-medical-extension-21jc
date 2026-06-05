@@ -13,9 +13,8 @@ const FIELDS = [
   },
 ];
 
-function parisDateParts(date) {
+function localDateParts(date) {
   const parts = new Intl.DateTimeFormat("fr-FR", {
-    timeZone: "Europe/Paris",
     year: "numeric", month: "2-digit", day: "2-digit",
     hour: "2-digit", minute: "2-digit",
     hourCycle: "h23",
@@ -24,12 +23,12 @@ function parisDateParts(date) {
 }
 
 function formatDate() {
-  const p = parisDateParts(new Date());
+  const p = localDateParts(new Date());
   return `${p.day}/${p.month}/${p.year}`;
 }
 
 function formatDateTime() {
-  const p = parisDateParts(new Date());
+  const p = localDateParts(new Date());
   return `${p.day}/${p.month}/${p.year} ${p.hour}:${p.minute}`;
 }
 
@@ -66,7 +65,7 @@ function formatControlDate() {
     return { value: null, error: "Date d'admission invalide (DD/MM/YYYY hh:mm)" };
   }
 
-  const p = parisDateParts(new Date(admissionDate.getTime() + totalSeconds * 1000));
+  const p = localDateParts(new Date(admissionDate.getTime() + totalSeconds * 1000));
   return { value: `${p.day}/${p.month}/${p.year} ${p.hour}:${p.minute}`, error: null };
 }
 
@@ -537,7 +536,7 @@ function autoFillAdmissionDate() {
   if (!dialog) return;
   if (!dialog.textContent.toLowerCase().includes("nouveau rapport medical")) return;
 
-  const p = parisDateParts(new Date());
+  const p = localDateParts(new Date());
   const value = `${p.day}/${p.month}/${p.year} ${p.hour}:${p.minute}`;
   setNativeValue(admissionInput, value);
 }
