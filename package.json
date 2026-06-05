@@ -5,8 +5,8 @@
   "type": "module",
   "description": "Extension pour aider à la rédaction de dossier pour les joueurs des EMS du serveur 21 Jump Click",
   "scripts": {
-    "build:chrome": "vite build --mode chrome",
-    "build:firefox": "vite build --mode firefox",
+    "build:chrome": "vite build --mode chrome && node scripts/zip.mjs chrome",
+    "build:firefox": "vite build --mode firefox && node scripts/zip.mjs firefox",
     "build:all": "npm run build:chrome && npm run build:firefox",
     "dev:chrome": "vite build --mode chrome --watch",
     "dev:firefox": "vite build --mode firefox --watch"
@@ -15,6 +15,7 @@
     "webextension-polyfill": "^0.12.0"
   },
   "devDependencies": {
+    "archiver": "^8.0.0",
     "vite": "^8.0.16"
   }
 }
