@@ -1,4 +1,4 @@
-# EMS Medical Tools - 21 Jump Click
+# EMS Medical Extension - 21 Jump Click
 
 Extension pour navigateurs (Chrome et Firefox) conçue pour automatiser et faciliter la rédaction des dossiers et rapports médicaux pour les joueurs EMS sur l'intranet du serveur **21 Jump Click**.
 
