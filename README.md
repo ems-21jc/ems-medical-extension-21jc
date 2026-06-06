@@ -41,7 +41,7 @@ Toutes les dates sont calculées sur le **fuseau horaire local** du poste via `I
 ### 🏷️ Gestion des chips "Infos ok" / "Infos pas ok"
 Dans le champ **En cas d'urgence**, deux boutons `+ Infos ok` et `+ Infos pas ok` sont injectés pour ajouter ou retirer ces statuts via l'Autocomplete MUI. Le bouton opposé est automatiquement retiré (mutex). Les chips MUI correspondants sont colorés (vert pour "Infos ok", rouge pour "Infos pas ok"). Le texte brut en dehors des chips (autres contacts d'urgence) est également coloré en vert/rouge autour des mentions "Infos ok" / "Infos pas ok".
 
-### 🩺 Bouton VC — Visite de Contrôle (`medicalCheckupCompletion.js`)
+### 🩺 Bouton VC - Visite de Contrôle (`medicalCheckupCompletion.js`)
 Injecte un bouton **"VC"** dans la popup de **vue détail d'un rapport médical** (popup qui s'ouvre au clic sur un rapport dans la liste). Le bouton est **grisé et désactivé** tant que la date de visite de contrôle n'est pas échue (comparaison avec l'heure locale). Au clic, le bouton :
 
 1. Lit les champs *Examens*, *Remarque(s)* et *Traitements* du rapport d'origine.
