@@ -15,8 +15,11 @@ const FIELDS = [
 
 function localDateParts(date) {
   const parts = new Intl.DateTimeFormat("fr-FR", {
-    year: "numeric", month: "2-digit", day: "2-digit",
-    hour: "2-digit", minute: "2-digit",
+    year: "numeric",
+    month: "2-digit",
+    day: "2-digit",
+    hour: "2-digit",
+    minute: "2-digit",
     hourCycle: "h23",
   }).formatToParts(date);
   return Object.fromEntries(parts.map((p) => [p.type, p.value]));
@@ -49,7 +52,7 @@ function formatControlDate() {
   }
   const admissionInput = findInputByLabel("Date d'admission");
   if (!admissionInput || !admissionInput.value.trim()) {
-    return { value: null, error: 'Remplis "Date d\'admission" d\'abord' };
+    return { value: null, error: "Remplis \"Date d'admission\" d'abord" };
   }
   const parts = dureeInput.value.trim().split(":");
   if (parts.length < 2) {
@@ -62,11 +65,19 @@ function formatControlDate() {
 
   const admissionDate = parseAdmissionDate(admissionInput.value.trim());
   if (isNaN(admissionDate.getTime())) {
-    return { value: null, error: "Date d'admission invalide (DD/MM/YYYY hh:mm)" };
+    return {
+      value: null,
+      error: "Date d'admission invalide (DD/MM/YYYY hh:mm)",
+    };
   }
 
-  const p = localDateParts(new Date(admissionDate.getTime() + totalSeconds * 1000));
-  return { value: `${p.day}/${p.month}/${p.year} ${p.hour}:${p.minute}`, error: null };
+  const p = localDateParts(
+    new Date(admissionDate.getTime() + totalSeconds * 1000),
+  );
+  return {
+    value: `${p.day}/${p.month}/${p.year} ${p.hour}:${p.minute}`,
+    error: null,
+  };
 }
 
 // Compatible React : execCommand opère sous la couche synthétique de React,
@@ -77,7 +88,8 @@ function setNativeValue(input, value) {
   const ok = document.execCommand("insertText", false, value);
   if (!ok) {
     const setter = Object.getOwnPropertyDescriptor(
-      HTMLInputElement.prototype, "value",
+      HTMLInputElement.prototype,
+      "value",
     )?.set;
     if (setter) setter.call(input, value);
     else input.value = value;
@@ -87,13 +99,17 @@ function setNativeValue(input, value) {
 }
 
 function findInputByLabel(labelText) {
-  for (const el of document.querySelectorAll('label, .label, [class*="label"]')) {
+  for (const el of document.querySelectorAll(
+    'label, .label, [class*="label"]',
+  )) {
     if (el.textContent.trim().includes(labelText)) {
       if (el.htmlFor) {
         const input = document.getElementById(el.htmlFor);
         if (input) return input;
       }
-      const parent = el.closest("div, fieldset, .field, .input-wrapper, .form-group");
+      const parent = el.closest(
+        "div, fieldset, .field, .input-wrapper, .form-group",
+      );
       if (parent) {
         const input = parent.querySelector("input");
         if (input) return input;
@@ -113,7 +129,9 @@ function findInputByLabel(labelText) {
 function injectButton(input, format, label) {
   const wrapper = input.parentElement;
   // Vérifie dans tout le conteneur parent (MuiFormControl-root) si le bouton existe déjà
-  const outer = wrapper.closest(".MuiFormControl-root, .MuiBox-root") || wrapper.parentElement;
+  const outer =
+    wrapper.closest(".MuiFormControl-root, .MuiBox-root") ||
+    wrapper.parentElement;
   if (outer && outer.querySelector(".med-now-btn")) return;
 
   // Couleur de fond commune : #212121
@@ -143,7 +161,11 @@ function injectButton(input, format, label) {
     btn.style.cssText =
       "display:flex;align-items:center;justify-content:center;gap:8px;" +
       "width:100%;padding:10px 0;font-size:14px;font-weight:500;" +
-      "color:#fff;background:" + BG_COLOR + ";border:1px solid " + BORDER_COLOR + ";border-radius:8px;" +
+      "color:#fff;background:" +
+      BG_COLOR +
+      ";border:1px solid " +
+      BORDER_COLOR +
+      ";border-radius:8px;" +
       "cursor:pointer;transition:all 0.15s ease;" +
       "font-family:inherit;white-space:nowrap;margin:8px 0;";
     btn.innerHTML = svgIcon + btnText;
@@ -180,8 +202,7 @@ function injectButton(input, format, label) {
     } else {
       wrapper.after(btn);
     }
-  }
-  else if (format === "datetime") {
+  } else if (format === "datetime") {
     // DDS - Don Du Sang - bouton EN DESSOUS du champ, MÊME LARGEUR, SANS MARGE GAUCHE/DROITE
     const btnText = "DDS Maintenant";
     const btnTitle = "Insérer date et heure actuelles pour le don du sang";
@@ -196,7 +217,11 @@ function injectButton(input, format, label) {
     btn.style.cssText =
       "display:flex;align-items:center;justify-content:center;gap:8px;" +
       "width:100%;padding:10px 0;font-size:14px;font-weight:500;" +
-      "color:#fff;background:" + BG_COLOR + ";border:1px solid " + BORDER_COLOR + ";border-radius:8px;" +
+      "color:#fff;background:" +
+      BG_COLOR +
+      ";border:1px solid " +
+      BORDER_COLOR +
+      ";border-radius:8px;" +
       "cursor:pointer;transition:all 0.15s ease;" +
       "font-family:inherit;white-space:nowrap;margin:8px 0;";
     btn.innerHTML = svgIcon + btnText;
@@ -237,10 +262,10 @@ function injectButton(input, format, label) {
     } else {
       wrapper.after(btn);
     }
-  }
-  else if (format === "control") {
+  } else if (format === "control") {
     // VC - Visite de Contrôle - petit bouton À DROITE DU CHAMP (dans le MuiInputBase-root, même ligne, AVEC ESPACEMENT)
-    const btnTitle = "Calculer la date de visite de contrôle (admission + durée)";
+    const btnTitle =
+      "Calculer la date de visite de contrôle (admission + durée)";
     // SVG actualiser (refresh) - blanc (currentColor)
     const svgIcon = `<svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M21.5 2v6h-6M21.34 15.57a10 10 0 1 1-.57-8.38l5.67-5.67"/></svg>`;
 
@@ -252,7 +277,11 @@ function injectButton(input, format, label) {
     btn.style.cssText =
       "display:inline-flex;align-items:center;justify-content:center;" +
       "width:36px;height:36px;padding:0;margin-left:8px;" +
-      "color:#fff;background:" + BG_COLOR + ";border:1px solid " + BORDER_COLOR + ";border-radius:8px;" +
+      "color:#fff;background:" +
+      BG_COLOR +
+      ";border:1px solid " +
+      BORDER_COLOR +
+      ";border-radius:8px;" +
       "cursor:pointer;transition:all 0.15s ease;" +
       "flex-shrink:0;";
     btn.innerHTML = svgIcon;
@@ -306,7 +335,7 @@ function injectButton(input, format, label) {
       // inputBase prend flex:1, bouton reste taille fixe (36px)
       inputBase.style.flex = "1 1 0%";
       inputBase.style.minWidth = "0";
-      
+
       // Masque le placeholder "DD/MM/YYYY hh:mm" pour le champ VC (format control)
       const input = inputBase.querySelector("input");
       if (input && input.placeholder) {
@@ -348,8 +377,10 @@ function isInfosOk(text) {
 
 function isInfosPasOk(text) {
   const t = normalizeChipText(text);
-  return /\binfo(?:s|rmation(?:s)?)?\s*pas\s*ok\b/.test(t) ||
-    /\binfo(?:s|rmation(?:s)?)?\s*pasok\b/.test(t);
+  return (
+    /\binfo(?:s|rmation(?:s)?)?\s*pas\s*ok\b/.test(t) ||
+    /\binfo(?:s|rmation(?:s)?)?\s*pasok\b/.test(t)
+  );
 }
 
 // Découpe un texte en segments colorables.
@@ -418,8 +449,13 @@ function colorizeTextNodesIn(root) {
       const parent = node.parentElement;
       if (!parent) return NodeFilter.FILTER_REJECT;
       const tag = parent.tagName;
-      if (tag === "SCRIPT" || tag === "STYLE" || tag === "INPUT" ||
-          tag === "TEXTAREA" || tag === "BUTTON") {
+      if (
+        tag === "SCRIPT" ||
+        tag === "STYLE" ||
+        tag === "INPUT" ||
+        tag === "TEXTAREA" ||
+        tag === "BUTTON"
+      ) {
         return NodeFilter.FILTER_REJECT;
       }
       if (parent.closest(".MuiChip-root")) {
@@ -428,7 +464,11 @@ function colorizeTextNodesIn(root) {
       if (parent.closest("[data-med-inline-colored]")) {
         return NodeFilter.FILTER_REJECT;
       }
-      if (!/(info(?:s|rmation(?:s)?)?\s*(?:pas\s*ok|pasok|ok))/i.test(node.nodeValue)) {
+      if (
+        !/(info(?:s|rmation(?:s)?)?\s*(?:pas\s*ok|pasok|ok))/i.test(
+          node.nodeValue,
+        )
+      ) {
         return NodeFilter.FILTER_REJECT;
       }
       return NodeFilter.FILTER_ACCEPT;
@@ -442,7 +482,10 @@ function colorizeTextNodesIn(root) {
   for (const textNode of targets) {
     // Si le textNode a déjà été remplacé (par un span inline-colored),
     // on l'ignore pour éviter une boucle.
-    if (textNode.parentElement && textNode.parentElement.dataset.medInlineColored) {
+    if (
+      textNode.parentElement &&
+      textNode.parentElement.dataset.medInlineColored
+    ) {
       continue;
     }
 
@@ -534,7 +577,9 @@ function injectInfosButtons() {
   btnPasOk.className = "med-infos-btn med-infos-btn--pas-ok";
   btnPasOk.textContent = "+ Infos pas ok";
   btnPasOk.title = "Ajouter « Infos pas ok » (retire « Infos ok » si présent)";
-  btnPasOk.addEventListener("click", () => toggleInfoChip("Infos pas ok", btnPasOk));
+  btnPasOk.addEventListener("click", () =>
+    toggleInfoChip("Infos pas ok", btnPasOk),
+  );
 
   btnGroup.appendChild(btnOk);
   btnGroup.appendChild(btnPasOk);
@@ -564,7 +609,8 @@ function toggleInfoChip(text, btn) {
     const newValue = current + prefix + text;
 
     const setter = Object.getOwnPropertyDescriptor(
-      HTMLInputElement.prototype, "value",
+      HTMLInputElement.prototype,
+      "value",
     )?.set;
     if (setter) setter.call(iceInput, newValue);
     else iceInput.value = newValue;
@@ -573,18 +619,36 @@ function toggleInfoChip(text, btn) {
 
     setTimeout(() => {
       iceInput.focus();
-      iceInput.dispatchEvent(new KeyboardEvent("keydown", {
-        key: "Enter", code: "Enter", keyCode: 13, which: 13,
-        bubbles: true, cancelable: true,
-      }));
-      iceInput.dispatchEvent(new KeyboardEvent("keypress", {
-        key: "Enter", code: "Enter", keyCode: 13, which: 13,
-        bubbles: true, cancelable: true,
-      }));
-      iceInput.dispatchEvent(new KeyboardEvent("keyup", {
-        key: "Enter", code: "Enter", keyCode: 13, which: 13,
-        bubbles: true, cancelable: true,
-      }));
+      iceInput.dispatchEvent(
+        new KeyboardEvent("keydown", {
+          key: "Enter",
+          code: "Enter",
+          keyCode: 13,
+          which: 13,
+          bubbles: true,
+          cancelable: true,
+        }),
+      );
+      iceInput.dispatchEvent(
+        new KeyboardEvent("keypress", {
+          key: "Enter",
+          code: "Enter",
+          keyCode: 13,
+          which: 13,
+          bubbles: true,
+          cancelable: true,
+        }),
+      );
+      iceInput.dispatchEvent(
+        new KeyboardEvent("keyup", {
+          key: "Enter",
+          code: "Enter",
+          keyCode: 13,
+          which: 13,
+          bubbles: true,
+          cancelable: true,
+        }),
+      );
       iceInput.blur();
     }, 80);
   }
@@ -621,7 +685,10 @@ function getReactFiber(el) {
 function findClickHandler(el) {
   let fiber = getReactFiber(el);
   while (fiber) {
-    if (fiber.memoizedProps && typeof fiber.memoizedProps.onClick === "function") {
+    if (
+      fiber.memoizedProps &&
+      typeof fiber.memoizedProps.onClick === "function"
+    ) {
       return fiber.memoizedProps.onClick;
     }
     fiber = fiber.return;
@@ -662,7 +729,11 @@ function removeInfoChipsByConcept(kind) {
     }
     try {
       del.dispatchEvent(
-        new MouseEvent("click", { bubbles: true, cancelable: true, view: window }),
+        new MouseEvent("click", {
+          bubbles: true,
+          cancelable: true,
+          view: window,
+        }),
       );
       del.click();
     } catch (e) {}
@@ -707,7 +778,11 @@ function injectBloodGroupRandomizer() {
     btn.style.cssText =
       "display:inline-flex;align-items:center;justify-content:center;" +
       "width:36px;height:36px;padding:0;" +
-      "color:#fff;background:" + BG_COLOR + ";border:1px solid " + BORDER_COLOR + ";border-radius:8px;" +
+      "color:#fff;background:" +
+      BG_COLOR +
+      ";border:1px solid " +
+      BORDER_COLOR +
+      ";border-radius:8px;" +
       "cursor:pointer;transition:all 0.15s ease;" +
       "flex-shrink:0;";
 
@@ -724,14 +799,18 @@ function injectBloodGroupRandomizer() {
       btn.style.background = BG_HOVER;
     });
     btn.addEventListener("click", () => {
-      const group = BLOOD_GROUPS[Math.floor(Math.random() * BLOOD_GROUPS.length)];
+      const group =
+        BLOOD_GROUPS[Math.floor(Math.random() * BLOOD_GROUPS.length)];
       const nativeInput = parent.querySelector('input[name="bloodgroup"]');
       const valueNoSpace = group.replace(/\s+/g, "");
       if (nativeInput) {
         nativeInput.value = valueNoSpace;
         nativeInput.dispatchEvent(new Event("change", { bubbles: true }));
         nativeInput.dispatchEvent(new Event("input", { bubbles: true }));
-        const setter = Object.getOwnPropertyDescriptor(HTMLInputElement.prototype, "value")?.set;
+        const setter = Object.getOwnPropertyDescriptor(
+          HTMLInputElement.prototype,
+          "value",
+        )?.set;
         if (setter) setter.call(nativeInput, valueNoSpace);
       }
       const combobox = parent.querySelector('[role="combobox"]');
@@ -772,9 +851,9 @@ function injectBloodGroupRandomizer() {
 
 function autoFillAdmissionDate() {
   // Cible le champ "Date d'admission" dans la popup "Nouveau rapport médical"
-  const admissionInput = document.querySelector(
-    'input[name="admission"]'
-  ) || findInputByLabel("Date d'admission");
+  const admissionInput =
+    document.querySelector('input[name="admission"]') ||
+    findInputByLabel("Date d'admission");
   if (!admissionInput) return;
 
   // Ne remplir que si le champ est vide (évite d'écraser une valeur existante)
@@ -783,7 +862,8 @@ function autoFillAdmissionDate() {
   // Vérifie qu'on est bien dans un formulaire "Nouveau rapport médical"
   const dialog = admissionInput.closest('[role="dialog"], .MuiDialog-paper');
   if (!dialog) return;
-  if (!dialog.textContent.toLowerCase().includes("nouveau rapport medical")) return;
+  if (!dialog.textContent.toLowerCase().includes("nouveau rapport medical"))
+    return;
 
   const p = localDateParts(new Date());
   const value = `${p.day}/${p.month}/${p.year} ${p.hour}:${p.minute}`;

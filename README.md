@@ -60,17 +60,23 @@ Le bouton n'est injecté que si le rapport d'origine a une **Durée d'invalidit�
 Dans la popup d'**examen médical** d'un joueur, un petit bouton 🎲 (SVG shuffle, 36×36) est injecté à droite du champ **Groupe Sanguin**. Au clic, il remplit aléatoirement le champ avec un des 8 groupes possibles : `AB+`, `AB-`, `A+`, `A-`, `B+`, `B-`, `O+`, `O-` (le `+`/`-` est stocké sans espace). Feedback visuel vert pendant ~1,2 s.
 
 ### ⚙️ Popup de configuration (`popup.html` / `popup.js`)
-Interface accessible depuis l'icône de l'extension dans la barre d'outils :
+Interface accessible depuis l'icône de l'extension dans la barre d'outils (styles + icônes via CDN `@tabler/icons-webfont`) :
 
 - Sélection de l'**hôpital actif** (BCES ou LSES)
-- Définition d'un **code ZIP par défaut** (utilisé par la Complétion et le bouton VC)
+- Définition d'un **code ZIP par défaut** (utilisé par la Complétion et le bouton VC) : valeurs par défaut pré-réglées **BCES → 1057**, **LSES → 8040** ; le ZIP suit automatiquement le changement d'hôpital sauf si l'utilisateur l'a personnalisé
 - Raccourcis vers les **dispatches BCES, LSES et l'Intranet 21** (les liens BCES/LSES s'adaptent selon l'hôpital sélectionné ; le lien Intra-21 reste constant)
 - Le titre de la popup et son footer sont automatiquement remplis avec le nom et la version du `manifest.json` (en exécution)
 
 ### 🌐 Compatibilité Cross-Browser
 Support natif Chrome (Manifest V3) et Firefox (Manifest V3 + `browser_specific_settings` avec un `gecko.id` dédié) via l'intégration de `webextension-polyfill` (toujours chargé en premier dans le `content_scripts`).
 
----
+### 🔔 Service Worker & Première installation (`background.js` / `welcome.html` / `welcome.js`)
+Un **service worker** (Chrome) / **event page** (Firefox) gère le cycle de vie de l'extension :
+
+- **`background.js`** : à la première installation, ouvre automatiquement la page de bienvenue ; expose une API `checkPinStatus` pour vérifier si l'extension est épinglée à la barre d'outils (via `chrome.action.getUserSettings` sur Chrome 102+) et mémorise le choix de l'utilisateur (`pinPromptDismissed`).
+- **`welcome.html` / `welcome.js`** : page d'instructions (CDN @tabler/icons) qui s'ouvre dans un nouvel onglet à l'installation, avec un guide visuel en 4 étapes pour épingler l'extension + lien direct vers l'intranet 21.
+- **Bannière d'épinglage dans le popup** : si l'extension n'est pas épinglée, une bannière orange s'affiche avec un bouton « Comment faire ? » (ouvre `welcome.html`) et un bouton « × » pour ne plus l'afficher.
+
 
 ## 🛠️ Installation et Configuration Initiale
 
@@ -95,6 +101,7 @@ Extension_EMS_21jc/
 │   │   ├── icon32.png              # Icône de la liste d'extensions (32x32)
 │   │   ├── icon48.png              # Icône de barre d'outils (48x48)
 │   │   └── icon128.png             # Icône détaillée du store (128x128)
+│   ├── background.js               # Service worker (installation, mise à jour, vérification épinglage)
 │   ├── bodyZoneCompletion.js       # Sidebar du Bilan Anatomique (zones, pathologies, stack, injection, fusion)
 │   ├── content.css                 # Styles CSS injectés (boutons, panneaux, sidebar, chips)
 │   ├── dateFieldCompletion.js      # VM/DDS/VC + auto-fill admission + chips Infos ok/pas ok + randomizer groupe sanguin
@@ -104,11 +111,13 @@ Extension_EMS_21jc/
 │   ├── medicalFileCompletion.js    # Panneau de complétion du rapport médical (cases, slider, incapacités)
 │   ├── pathologies.json            # Base de données des pathologies par zone anatomique
 │   ├── popup.html                  # Interface graphique du menu d'options
-│   └── popup.js                    # Logique de la popup (hôpital, ZIP, liens dispatches)
+│   ├── popup.js                    # Logique de la popup (hôpital, ZIP, liens dispatches)
+│   ├── welcome.html                # Page de bienvenue à l'installation (guide d'épinglage)
+│   └── welcome.js                  # Script minimal de la page de bienvenue
 ├── .gitignore
 ├── package-lock.json
 ├── package.json                    # Scripts npm et dépendances
-└── vite.config.js                  # Configuration de build Vite (compilation + copie des manifests)
+└── vite.config.js                  # Configuration de build Vite (compilation + copie des manifests + welcome.html)
 ```
 
 ---
@@ -170,15 +179,15 @@ dist/<name>-v<version>-<target>.zip
 
 où :
 
-- `<name>` est le champ `name` du `package.json` (ex. `ems-medical-tools-21jc`)
-- `<version>` est le champ `version` du `package.json` (ex. `0.8.2`)
+- `<name>` est le champ `name` du `package.json` (ex. `ems-medical-extension-21jc`)
+- `<version>` est le champ `version` du `package.json` (ex. `0.9.0`)
 - `<target>` vaut `chrome` ou `firefox`
 
 **Usage manuel** (si tu veux régénérer le zip sans recompiler, par exemple après avoir modifié des ressources copiées) :
 
 ```bash
-node scripts/zip.mjs chrome     # produit dist/ems-medical-tools-21jc-v0.8.2-chrome.zip
-node scripts/zip.mjs firefox    # produit dist/ems-medical-tools-21jc-v0.8.2-firefox.zip
+node scripts/zip.mjs chrome     # produit dist/ems-medical-extension-21jc-v0.9.0-chrome.zip
+node scripts/zip.mjs firefox    # produit dist/ems-medical-extension-21jc-v0.9.0-firefox.zip
 ```
 
 Le script :
@@ -197,7 +206,7 @@ Ce projet utilise `vite.config.js` pour automatiser le processus de build et ass
 * **Entrées Dynamiques** : Tous les fichiers `.js` situés à la racine du dossier `src/` sont automatiquement détectés et compilés comme points d'entrée indépendants. Aucune déclaration manuelle n'est nécessaire.
 * **Gestion Multi-Cible** : Le build génère des dossiers distincts selon la cible (`dist/chrome/` ou `dist/firefox/`). Le fichier `manifest.json` final est généré en fusionnant la version du `package.json` avec le manifeste spécifique (`manifest.chrome.json` ou `manifest.firefox.json`).
 * **Synchronisation des Ressources** : Les assets nécessaires au fonctionnement de l'extension sont copiés automatiquement dans le dossier de sortie :
-  * Fichiers CSS (`content.css`) et HTML (`popup.html`).
+  * Fichiers CSS (`content.css`) et **tous les fichiers HTML** (`popup.html`, `welcome.html`, etc.).
   * Données JSON additionnelles (ex: `pathologies.json`, hors fichiers `manifest.*.json`).
   * Icônes du dossier `src/icons/`.
   * Le polyfill `webextension-polyfill` copié depuis `node_modules/webextension-polyfill/dist/browser-polyfill.js` sous le nom `browser-polyfill.js` dans le dossier de sortie.

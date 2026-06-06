@@ -34,7 +34,9 @@ const zipName = `${pkg.name}-v${pkg.version}-${target}.zip`;
 const zipPath = path.join(projectRoot, "dist", zipName);
 
 if (!fs.existsSync(distDir)) {
-  console.error(`❌ Le dossier ${distDir} n'existe pas. Lance d'abord le build.`);
+  console.error(
+    `❌ Le dossier ${distDir} n'existe pas. Lance d'abord le build.`,
+  );
   process.exit(1);
 }
 

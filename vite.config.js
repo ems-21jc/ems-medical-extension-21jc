@@ -129,10 +129,6 @@ export default defineConfig(({ mode }) => {
 
           const cssTarget = resolve(__dirname, `dist/${target}/content.css`);
 
-          const popupSource = resolve(__dirname, "src/popup.html");
-
-          const popupTarget = resolve(__dirname, `dist/${target}/popup.html`);
-
           const polyfillSource = resolve(
             __dirname,
             "node_modules/webextension-polyfill/dist/browser-polyfill.js",
@@ -163,6 +159,17 @@ export default defineConfig(({ mode }) => {
             });
           }
 
+          // Copie de tous les fichiers HTML (popup.html, welcome.html, etc.)
+          if (fs.existsSync(srcDir)) {
+            const files = fs.readdirSync(srcDir);
+
+            files.forEach((file) => {
+              if (extname(file) === ".html") {
+                fs.copyFileSync(resolve(srcDir, file), resolve(distDir, file));
+              }
+            });
+          }
+
           // Génération du manifest
           if (fs.existsSync(manifestSource)) {
             const manifestData = JSON.parse(
@@ -180,11 +187,6 @@ export default defineConfig(({ mode }) => {
           // CSS
           if (fs.existsSync(cssSource)) {
             fs.copyFileSync(cssSource, cssTarget);
-          }
-
-          // Popup
-          if (fs.existsSync(popupSource)) {
-            fs.copyFileSync(popupSource, popupTarget);
           }
 
           // Polyfill

@@ -53,7 +53,9 @@
   border: 1px solid #4c6875;
   border-radius: 8px;
   cursor: pointer;
-  transition: background 0.15s ease, transform 0.1s ease;
+  transition:
+    background 0.15s ease,
+    transform 0.1s ease;
   flex-shrink: 0;
 }
 .med-blood-rnd:hover {
@@ -148,7 +150,11 @@
   border-radius: 14px;
   border: 1px solid;
   cursor: pointer;
-  transition: background 0.15s, border-color 0.15s, color 0.15s, transform 0.1s;
+  transition:
+    background 0.15s,
+    border-color 0.15s,
+    color 0.15s,
+    transform 0.1s;
   background: transparent;
 }
 .med-infos-btn:active {
@@ -179,7 +185,6 @@
 }
 
 /* ── Complétion ─────────────────────────────────────────────────────────────── */
-
 
 .med-completion-btn {
   position: absolute;
@@ -344,7 +349,6 @@
   color: #fff;
 }
 
-
 /* ══════════════════════════════════════════════════════════════════════════════
    Bilan Anatomique — bodyZoneCompletion.js
    ══════════════════════════════════════════════════════════════════════════════ */
@@ -466,7 +470,9 @@
   cursor: pointer;
   padding: 2px 6px;
   border-radius: 4px;
-  transition: color 0.15s, background 0.15s;
+  transition:
+    color 0.15s,
+    background 0.15s;
 }
 .bz-close-btn:hover {
   color: #fff;
@@ -520,7 +526,10 @@
   padding: 6px 8px;
   text-align: left;
   cursor: pointer;
-  transition: background 0.1s, color 0.1s, border-color 0.1s;
+  transition:
+    background 0.1s,
+    color 0.1s,
+    border-color 0.1s;
   white-space: nowrap;
   overflow: hidden;
   text-overflow: ellipsis;
@@ -559,7 +568,10 @@
   padding: 6px 9px;
   text-align: left;
   cursor: pointer;
-  transition: background 0.1s, color 0.1s, border-color 0.1s;
+  transition:
+    background 0.1s,
+    color 0.1s,
+    border-color 0.1s;
 }
 .bz-patho-btn:hover {
   background: #252525;
@@ -604,7 +616,9 @@
   cursor: pointer;
   padding: 2px 6px;
   border-radius: 3px;
-  transition: color 0.15s, background 0.15s;
+  transition:
+    color 0.15s,
+    background 0.15s;
 }
 .bz-clear-all-btn:hover {
   color: #e05555;
@@ -659,7 +673,9 @@
   padding: 2px 5px;
   border-radius: 3px;
   flex-shrink: 0;
-  transition: color 0.15s, background 0.15s;
+  transition:
+    color 0.15s,
+    background 0.15s;
 }
 .bz-stack-remove-btn:hover {
   color: #e05555;
@@ -723,7 +739,9 @@
   font-size: 12px;
   font-weight: 600;
   cursor: pointer;
-  transition: background 0.15s, opacity 0.15s;
+  transition:
+    background 0.15s,
+    opacity 0.15s;
 }
 .bz-btn--cancel {
   flex: 1;

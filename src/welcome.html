@@ -1,0 +1,319 @@
+<!DOCTYPE html>
+<html lang="fr">
+
+<head>
+    <meta charset="UTF-8">
+    <title>EMS Medical Extension - Installation réussie</title>
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@tabler/icons-webfont@3.34.0/dist/tabler-icons.min.css">
+    <style>
+        *,
+        *::before,
+        *::after {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+        }
+
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background: #1a1a1a;
+            color: #e0e0e0;
+            min-height: 100vh;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            padding: 20px;
+        }
+
+        .card {
+            background: #242424;
+            border: 1px solid #333;
+            border-radius: 12px;
+            padding: 2rem;
+            max-width: 560px;
+            width: 100%;
+            box-shadow: 0 10px 40px rgba(0, 0, 0, 0.5);
+        }
+
+        /* Header */
+        .header {
+            display: flex;
+            align-items: center;
+            gap: 14px;
+            margin-bottom: 1.5rem;
+            padding-bottom: 1.5rem;
+            border-bottom: 1px solid #333;
+        }
+
+        .icon-circle {
+            width: 52px;
+            height: 52px;
+            border-radius: 50%;
+            background: rgba(46, 204, 113, 0.15);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            flex-shrink: 0;
+        }
+
+        .icon-circle i {
+            font-size: 26px;
+            color: #2ecc71;
+        }
+
+        .header h1 {
+            font-size: 18px;
+            font-weight: 600;
+            color: #fff;
+            margin: 0 0 4px;
+        }
+
+        .header p {
+            font-size: 13px;
+            color: #888;
+            margin: 0;
+        }
+
+        /* Alert */
+        .alert {
+            background: rgba(243, 156, 18, 0.08);
+            border: 1px solid rgba(243, 156, 18, 0.35);
+            border-radius: 8px;
+            padding: 14px 16px;
+            margin-bottom: 1.5rem;
+            display: flex;
+            gap: 12px;
+            align-items: flex-start;
+        }
+
+        .alert i {
+            font-size: 20px;
+            color: #f39c12;
+            flex-shrink: 0;
+            margin-top: 1px;
+        }
+
+        .alert-body h2 {
+            font-size: 13px;
+            font-weight: 600;
+            color: #f39c12;
+            margin: 0 0 6px;
+        }
+
+        .alert-body p {
+            font-size: 13px;
+            color: #bbb;
+            line-height: 1.6;
+            margin: 0;
+        }
+
+        /* Steps */
+        .steps-box {
+            background: #1a1a1a;
+            border-radius: 8px;
+            padding: 1.25rem;
+            margin-bottom: 1.5rem;
+        }
+
+        .steps-label {
+            font-size: 11px;
+            text-transform: uppercase;
+            letter-spacing: 0.07em;
+            color: #666;
+            font-weight: 600;
+            margin: 0 0 16px;
+        }
+
+        .step {
+            display: flex;
+            gap: 14px;
+            align-items: flex-start;
+            margin-bottom: 14px;
+        }
+
+        .step:last-child {
+            margin-bottom: 0;
+        }
+
+        .step-num {
+            width: 24px;
+            height: 24px;
+            border-radius: 50%;
+            background: rgba(52, 152, 219, 0.15);
+            color: #3498db;
+            font-size: 12px;
+            font-weight: 600;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            flex-shrink: 0;
+        }
+
+        .step-content {
+            font-size: 13px;
+            color: #bbb;
+            line-height: 1.6;
+            padding-top: 2px;
+        }
+
+        .step-content strong {
+            color: #e0e0e0;
+            font-weight: 600;
+        }
+
+        .step-content i {
+            font-size: 15px;
+            vertical-align: -2px;
+            color: #888;
+        }
+
+        .divider {
+            height: 1px;
+            background: #2e2e2e;
+            margin: 12px 0;
+        }
+
+        /* Keyboard shortcut */
+        kbd {
+            background: #111;
+            border: 1px solid #444;
+            border-radius: 4px;
+            padding: 1px 6px;
+            font-size: 11px;
+            font-family: 'Consolas', 'Courier New', monospace;
+            color: #ddd;
+        }
+
+        /* Actions */
+        .actions {
+            display: flex;
+            gap: 10px;
+            justify-content: flex-end;
+        }
+
+        .btn {
+            padding: 8px 18px;
+            border-radius: 7px;
+            font-size: 13px;
+            font-weight: 500;
+            cursor: pointer;
+            border: 1px solid #444;
+            background: transparent;
+            color: #ccc;
+            text-decoration: none;
+            display: inline-flex;
+            align-items: center;
+            gap: 7px;
+            transition: background 0.15s, border-color 0.15s;
+            font-family: inherit;
+        }
+
+        .btn:hover {
+            background: #2e2e2e;
+            border-color: #555;
+        }
+
+        .btn i {
+            font-size: 15px;
+        }
+
+        .btn-primary {
+            background: rgba(46, 204, 113, 0.12);
+            border-color: rgba(46, 204, 113, 0.4);
+            color: #2ecc71;
+        }
+
+        .btn-primary:hover {
+            background: rgba(46, 204, 113, 0.2);
+            border-color: rgba(46, 204, 113, 0.6);
+        }
+
+        .btn-primary:disabled {
+            opacity: 0.6;
+            cursor: default;
+        }
+    </style>
+</head>
+
+<body>
+    <div class="card">
+
+        <div class="header">
+            <div class="icon-circle">
+                <i class="ti ti-circle-check" aria-hidden="true"></i>
+            </div>
+            <div>
+                <h1>Installation réussie</h1>
+                <p>L'extension EMS Medical Extension est prête à être utilisée</p>
+            </div>
+        </div>
+
+        <div class="alert">
+            <i class="ti ti-pin" aria-hidden="true"></i>
+            <div class="alert-body">
+                <h2>Épinglez l'extension à votre barre d'outils</h2>
+                <p>
+                    Pour y accéder rapidement sans passer par le menu des extensions,
+                    nous vous recommandons de l'épingler à la barre de votre navigateur.
+                </p>
+            </div>
+        </div>
+
+        <div class="steps-box">
+            <p class="steps-label">Comment épingler l'extension</p>
+
+            <div class="step">
+                <div class="step-num">1</div>
+                <div class="step-content">
+                    Cliquez sur l'icône <i class="ti ti-puzzle" aria-hidden="true"></i>
+                    <strong>Extensions</strong> à droite de la barre d'adresse de votre navigateur.
+                </div>
+            </div>
+
+            <div class="divider"></div>
+
+            <div class="step">
+                <div class="step-num">2</div>
+                <div class="step-content">
+                    Repérez <strong>EMS Medical Extension – 21JC</strong> dans la liste qui s'ouvre.
+                </div>
+            </div>
+
+            <div class="divider"></div>
+
+            <div class="step">
+                <div class="step-num">3</div>
+                <div class="step-content">
+                    Cliquez sur l'icône <i class="ti ti-pin" aria-hidden="true"></i>
+                    <strong>épingle</strong> à côté du nom pour la fixer à la barre d'outils.
+                </div>
+            </div>
+
+            <div class="divider"></div>
+
+            <div class="step">
+                <div class="step-num">4</div>
+                <div class="step-content">
+                    L'icône de l'extension apparaît maintenant en permanence dans votre barre.
+                    Astuce : <kbd>Ctrl</kbd> + <kbd>Shift</kbd> + clic sur l'icône pour l'ouvrir rapidement.
+                </div>
+            </div>
+        </div>
+
+        <div class="actions">
+            <a href="https://intra.21jumpclick.fr/" target="_blank" class="btn">
+                <i class="ti ti-external-link" aria-hidden="true"></i>
+                Ouvrir l'intranet 21
+            </a>
+            <button id="closeBtn" class="btn btn-primary">
+                <i class="ti ti-check" aria-hidden="true"></i>
+                J'ai compris
+            </button>
+        </div>
+
+    </div>
+
+    <script type="module" src="welcome.js"></script>
+</body>
+
+</html>

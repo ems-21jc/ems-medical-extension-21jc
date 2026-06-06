@@ -498,7 +498,8 @@ function buildPanel() {
       row.className = "med-completion-row";
       if (item.level) row.style.paddingLeft = item.level * 14 + "px";
 
-      const startsDisabled = !!item.parent || !!item.requiresGroup || !!item.disabledWhenNonZero;
+      const startsDisabled =
+        !!item.parent || !!item.requiresGroup || !!item.disabledWhenNonZero;
 
       const lbl = document.createElement("label");
       lbl.className = "med-completion-label";

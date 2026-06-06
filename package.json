@@ -1,7 +1,7 @@
 {
   "name": "ems-medical-extension-21jc",
   "private": true,
-  "version": "0.8.3",
+  "version": "0.9.0",
   "type": "module",
   "description": "Extension pour aider à la rédaction de dossier pour les joueurs des EMS du serveur 21 Jump Click",
   "scripts": {

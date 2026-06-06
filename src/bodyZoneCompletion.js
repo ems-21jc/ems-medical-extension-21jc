@@ -9,7 +9,9 @@ import BODY_ZONES from "./pathologies.json";
 // ── Utilitaires d'injection ───────────────────────────────────────────────────
 
 function bz_findFieldByLabel(labelText) {
-  for (const el of document.querySelectorAll('label, .label, [class*="label"]')) {
+  for (const el of document.querySelectorAll(
+    'label, .label, [class*="label"]',
+  )) {
     if (el.textContent.trim().includes(labelText)) {
       if (el.htmlFor) {
         const field = document.getElementById(el.htmlFor);
@@ -17,7 +19,9 @@ function bz_findFieldByLabel(labelText) {
       }
       const parent = el.closest("div, fieldset");
       if (parent) {
-        const field = parent.querySelector('textarea, input:not([type="checkbox"])');
+        const field = parent.querySelector(
+          'textarea, input:not([type="checkbox"])',
+        );
         if (field) return field;
       }
     }
@@ -44,12 +48,15 @@ function bz_prependToField(labelText, text, separator = " // ") {
   if (!field) return;
   field.focus();
   field.setSelectionRange(0, 0);
-  document.execCommand("insertText", false, text + (field.value.trim() ? separator : ""));
+  document.execCommand(
+    "insertText",
+    false,
+    text + (field.value.trim() ? separator : ""),
+  );
 }
 
 // ── Construction de la sidebar ────────────────────────────────────────────────
 function buildSidebar() {
-
   const sidebar = document.createElement("div");
   sidebar.className = "bz-sidebar";
   sidebar.id = "bz-sidebar";
@@ -184,9 +191,10 @@ function buildSidebar() {
 
     for (const { patho, entries } of groups.values()) {
       const item = document.createElement("div");
-      item.className = entries.length > 1
-        ? "bz-stack-item bz-stack-item--merged"
-        : "bz-stack-item";
+      item.className =
+        entries.length > 1
+          ? "bz-stack-item bz-stack-item--merged"
+          : "bz-stack-item";
 
       const info = document.createElement("div");
       info.className = "bz-stack-item-info";
@@ -228,12 +236,13 @@ function buildSidebar() {
 
           const removeBtn = document.createElement("button");
           removeBtn.type = "button";
-          removeBtn.className = "bz-stack-remove-btn bz-stack-remove-btn--small";
+          removeBtn.className =
+            "bz-stack-remove-btn bz-stack-remove-btn--small";
           removeBtn.textContent = "✕";
           removeBtn.title = `Retirer ${entry.zone.label}`;
           removeBtn.addEventListener("click", () => {
             const currentIndex = stack.findIndex(
-              (e) => e.zone.key === entry.zone.key && e.patho.key === patho.key
+              (e) => e.zone.key === entry.zone.key && e.patho.key === patho.key,
             );
             if (currentIndex !== -1) stack.splice(currentIndex, 1);
             renderStack();
@@ -255,9 +264,23 @@ function buildSidebar() {
   // Médicaments reconnus (sigles exacts, insensible à la casse)
   const MEDS = ["AD", "AI", "AB", "AC", "AF"];
   // Bobologie : expressions à repérer dans les soins
-  const BOBOLOGIE = ["Glace", "Pommade", "crème cicatrisante", "crème anesthésiante"];
+  const BOBOLOGIE = [
+    "Glace",
+    "Pommade",
+    "crème cicatrisante",
+    "crème anesthésiante",
+  ];
   // Appareils d'examen reconnus pour la fusion des examens
-  const APPAREILS = ["Radio", "Auscultation", "Echo", "IRM", "Constantes", "Ethylomètre", "Test salivaire", "Psy"];
+  const APPAREILS = [
+    "Radio",
+    "Auscultation",
+    "Echo",
+    "IRM",
+    "Constantes",
+    "Ethylomètre",
+    "Test salivaire",
+    "Psy",
+  ];
 
   // ── extractTerm ───────────────────────────────────────────────────────────────
   // Retire d'un texte toutes les occurrences d'un terme et son séparateur " // " adjacent.
@@ -266,16 +289,20 @@ function buildSidebar() {
     const escaped = term.replace(/[.*+?^${}()|[\]\\]/g, "\\$&");
     const re = new RegExp(
       `(?:\\s*//\\s*${escaped}(?:\\s*\\([^)]*\\))?|${escaped}(?:\\s*\\([^)]*\\))?\\s*//\\s*|\\b${escaped}(?:\\s*\\([^)]*\\))?\\b)`,
-      "gi"
+      "gi",
     );
     let found = false;
-    const cleaned = text.replace(re, (match) => { found = true; return ""; })
-      .replace(/\s*\/\/\s*\/\//g, " //")  // double séparateur résiduel
-      .replace(/^\s*\/\/\s*/g, "")         // séparateur en début
-      .replace(/\s*\/\/\s*$/g, "")         // séparateur en fin
-      .replace(/\s*\+\s*\/\//g, " //")     // "Zone + //" → "Zone //"
-      .replace(/\s*\/\/\s*\+\s*/g, " //")  // "// + Suite" → "// Suite"
-      .replace(/\s*\+\s*$/g, "")           // "Zone +" en fin de chaîne
+    const cleaned = text
+      .replace(re, (match) => {
+        found = true;
+        return "";
+      })
+      .replace(/\s*\/\/\s*\/\//g, " //") // double séparateur résiduel
+      .replace(/^\s*\/\/\s*/g, "") // séparateur en début
+      .replace(/\s*\/\/\s*$/g, "") // séparateur en fin
+      .replace(/\s*\+\s*\/\//g, " //") // "Zone + //" → "Zone //"
+      .replace(/\s*\/\/\s*\+\s*/g, " //") // "// + Suite" → "// Suite"
+      .replace(/\s*\+\s*$/g, "") // "Zone +" en fin de chaîne
       .trim();
     return { cleaned, found };
   }
@@ -292,18 +319,20 @@ function buildSidebar() {
   //
   // Les segments sans préfixe reconnu sont conservés à la fin tels quels.
   function mergeExamens(examensArray) {
-    const groups  = new Map(); // clé MAJUSCULES → { label: string, contents: string[] }
-    const order   = [];
+    const groups = new Map(); // clé MAJUSCULES → { label: string, contents: string[] }
+    const order = [];
     const orphans = [];
 
     for (const examens of examensArray) {
       const segments = examens.split(/\s*\/\/\s*/);
       for (const seg of segments) {
         if (!seg.trim()) continue;
-        const match = seg.match(new RegExp(`^(${APPAREILS.join("|")})\\s*:\\s*(.+)$`, "i"));
+        const match = seg.match(
+          new RegExp(`^(${APPAREILS.join("|")})\\s*:\\s*(.+)$`, "i"),
+        );
         if (match) {
-          const key     = match[1].toUpperCase();
-          const label   = match[1]; // casse du premier segment rencontré
+          const key = match[1].toUpperCase();
+          const label = match[1]; // casse du premier segment rencontré
           const content = match[2].trim();
           if (!groups.has(key)) {
             groups.set(key, { label, contents: [] });
@@ -330,13 +359,12 @@ function buildSidebar() {
   //   3. Nettoyage global des soins : médicaments, bobologie et Repos extraits
   //      vers un suffixe commun dédupliqué
   function mergeStack(stack) {
-
     // Étape 1 — examens : fusion par appareil sur les textes originaux du JSON
     const examensText = mergeExamens(stack.map((e) => e.patho.examens));
 
     // Étape 2 — soins : regroupement par patho.key + fusion des zones
     const groups = [];
-    const seen   = new Map();
+    const seen = new Map();
 
     for (const entry of stack) {
       if (seen.has(entry.patho.key)) {
@@ -349,7 +377,7 @@ function buildSidebar() {
 
     const mergedSoins = groups.map(({ patho, zones }) => {
       if (zones.length === 1) return patho.soins;
-      const firstZoneLabel  = zones[0].label;
+      const firstZoneLabel = zones[0].label;
       const mergedZoneLabel = zones.map((z) => z.label).join(" + ");
       return patho.soins.replaceAll(firstZoneLabel, mergedZoneLabel);
     });
@@ -357,20 +385,29 @@ function buildSidebar() {
     // Étape 3 — nettoyage des soins : collecte et déduplique meds, bobo, Repos
     const collectedMeds = new Set();
     const collectedBobo = new Set();
-    let   hasRepos      = false;
+    let hasRepos = false;
 
     const cleanedSoins = mergedSoins.map((soins) => {
       let s = soins;
       for (const m of MEDS) {
         const { cleaned, found } = extractTerm(s, m);
-        if (found) { collectedMeds.add(m); s = cleaned; }
+        if (found) {
+          collectedMeds.add(m);
+          s = cleaned;
+        }
       }
       for (const b of BOBOLOGIE) {
         const { cleaned, found } = extractTerm(s, b);
-        if (found) { collectedBobo.add(b); s = cleaned; }
+        if (found) {
+          collectedBobo.add(b);
+          s = cleaned;
+        }
       }
       const { cleaned: r, found: fr } = extractTerm(s, "Repos");
-      if (fr) { hasRepos = true; s = r; }
+      if (fr) {
+        hasRepos = true;
+        s = r;
+      }
       return s;
     });
 
@@ -379,7 +416,9 @@ function buildSidebar() {
       ...[...collectedBobo],
       collectedMeds.size > 0 ? [...collectedMeds].join(" + ") : null,
       hasRepos ? "Repos" : null,
-    ].filter(Boolean).join(" // ");
+    ]
+      .filter(Boolean)
+      .join(" // ");
 
     return { examensText, cleanedSoins, suffix };
   }
@@ -410,7 +449,7 @@ function buildSidebar() {
     pBtn.classList.add("bz-patho-btn--active");
 
     const alreadyIn = stack.some(
-      (e) => e.zone.key === zone.key && e.patho.key === patho.key
+      (e) => e.zone.key === zone.key && e.patho.key === patho.key,
     );
 
     if (alreadyIn) {
@@ -418,26 +457,35 @@ function buildSidebar() {
     } else {
       pBtn.dataset.origLabel = patho.label;
       pBtn.textContent = `+ Ajouter — ${patho.label}`;
-      pBtn.addEventListener("click", function addToStack() {
-        if (stack.some((e) => e.zone.key === zone.key && e.patho.key === patho.key)) return;
-        stack.push({ zone, patho });
-        renderStack();
-        pBtn.textContent = "✓ Ajoutée !";
-        pBtn.removeEventListener("click", addToStack);
-        setTimeout(() => {
-          if (pBtn.classList.contains("bz-patho-btn--active")) {
-            pBtn.textContent = "✓ Déjà ajoutée";
-          }
-        }, 1200);
-      }, { once: true });
+      pBtn.addEventListener(
+        "click",
+        function addToStack() {
+          if (
+            stack.some(
+              (e) => e.zone.key === zone.key && e.patho.key === patho.key,
+            )
+          )
+            return;
+          stack.push({ zone, patho });
+          renderStack();
+          pBtn.textContent = "✓ Ajoutée !";
+          pBtn.removeEventListener("click", addToStack);
+          setTimeout(() => {
+            if (pBtn.classList.contains("bz-patho-btn--active")) {
+              pBtn.textContent = "✓ Déjà ajoutée";
+            }
+          }, 1200);
+        },
+        { once: true },
+      );
     }
   }
 
   // ── Sélection d'une zone ──────────────────────────────────────────────────────
   function selectZone(zone, zBtn) {
-    zoneList.querySelectorAll(".bz-zone-btn").forEach((b) =>
-      b.classList.remove("bz-zone-btn--active")
-    );
+    zoneList
+      .querySelectorAll(".bz-zone-btn")
+      .forEach((b) => b.classList.remove("bz-zone-btn--active"));
     zBtn.classList.add("bz-zone-btn--active");
 
     pathoList.innerHTML = "";
@@ -448,7 +496,7 @@ function buildSidebar() {
       pBtn.dataset.origLabel = patho.label;
 
       const alreadyIn = stack.some(
-        (e) => e.zone.key === zone.key && e.patho.key === patho.key
+        (e) => e.zone.key === zone.key && e.patho.key === patho.key,
       );
       pBtn.textContent = alreadyIn ? `✓ ${patho.label}` : patho.label;
       if (alreadyIn) pBtn.classList.add("bz-patho-btn--in-stack");
@@ -496,7 +544,9 @@ function closeSidebar() {
   const sidebar = document.getElementById("bz-sidebar");
   if (!sidebar) return;
   sidebar.classList.remove("bz-sidebar--open");
-  sidebar.addEventListener("transitionend", () => sidebar.remove(), { once: true });
+  sidebar.addEventListener("transitionend", () => sidebar.remove(), {
+    once: true,
+  });
 }
 
 // ── Injection du bouton déclencheur dans le formulaire ────────────────────────
@@ -518,16 +568,16 @@ function injectBodyZoneButton(titleEl) {
 
   setTimeout(() => {
     const enregistrerBtn = [...document.querySelectorAll("button")].find(
-      (b) => b.textContent.trim().toLowerCase() === "enregistrer"
+      (b) => b.textContent.trim().toLowerCase() === "enregistrer",
     );
     if (enregistrerBtn) {
-      const containerRect   = container.getBoundingClientRect();
+      const containerRect = container.getBoundingClientRect();
       const enregistrerRect = enregistrerBtn.getBoundingClientRect();
-      const rightOffset     = containerRect.right - enregistrerRect.right;
-      btn.style.right       = rightOffset + "px";
-      const completionBtn   = container.querySelector(".med-completion-btn");
+      const rightOffset = containerRect.right - enregistrerRect.right;
+      btn.style.right = rightOffset + "px";
+      const completionBtn = container.querySelector(".med-completion-btn");
       if (completionBtn) {
-        completionBtn.style.right = (rightOffset + btn.offsetWidth + 8) + "px";
+        completionBtn.style.right = rightOffset + btn.offsetWidth + 8 + "px";
       }
     }
   }, 50);
@@ -537,7 +587,7 @@ function injectBodyZoneButton(titleEl) {
 
 function tryInjectBodyZone() {
   for (const el of document.querySelectorAll(
-    'h1, h2, h3, h4, h5, [class*="title"], [class*="Title"]'
+    'h1, h2, h3, h4, h5, [class*="title"], [class*="Title"]',
   )) {
     if (el.textContent.trim().includes("Nouveau rapport medical")) {
       injectBodyZoneButton(el);
@@ -549,9 +599,11 @@ function tryInjectBodyZone() {
 const bodyZoneObserver = new MutationObserver(() => {
   tryInjectBodyZone();
   if (document.getElementById("bz-sidebar")) {
-    const formOpen = [...document.querySelectorAll(
-      'h1, h2, h3, h4, h5, [class*="title"], [class*="Title"]'
-    )].some(el => el.textContent.trim().includes("Nouveau rapport medical"));
+    const formOpen = [
+      ...document.querySelectorAll(
+        'h1, h2, h3, h4, h5, [class*="title"], [class*="Title"]',
+      ),
+    ].some((el) => el.textContent.trim().includes("Nouveau rapport medical"));
     if (!formOpen) closeSidebar();
   }
 });
