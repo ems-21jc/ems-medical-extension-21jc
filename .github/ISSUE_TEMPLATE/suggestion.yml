@@ -1,0 +1,82 @@
+name: 💡 Suggestion de fonctionnalité
+description: Proposez une nouvelle fonctionnalité ou une amélioration pour l'extension.
+title: "[Suggestion] : "
+labels: ["enhancement", "needs-triage"]
+
+body:
+  - type: markdown
+    attributes:
+      value: |
+        Vous avez une idée pour améliorer l'extension ? ✨
+        Partagez-la ici ! Plus votre description est détaillée, plus elle sera facile à évaluer.
+
+  - type: checkboxes
+    id: preflight
+    attributes:
+      label: Avant de continuer
+      options:
+        - label: J'ai vérifié qu'aucune suggestion similaire n'existe déjà
+          required: true
+
+  - type: dropdown
+    id: category
+    attributes:
+      label: Catégorie
+      description: À quelle catégorie se rattache votre suggestion ?
+      options:
+        - 🩺 Dossier médical (remplissage automatique, champs, etc.)
+        - 📅 Dates et timeline
+        - 🧍 Zones du corps
+        - 🔬 Pathologies / Bilan médical
+        - 🎨 Interface / UX
+        - ⚙️ Paramètres / Configuration
+        - 📚 Documentation
+        - 🔌 Compatibilité navigateur
+        - 🧰 Autre
+    validations:
+      required: true
+
+  - type: dropdown
+    id: priority
+    attributes:
+      label: Importance
+      description: À quel point cette suggestion est-elle importante pour vous ?
+      options:
+        - ⭐ Critique - Bloque mon utilisation
+        - 🔥 Haute - Améliorerait fortement mon usage
+        - 👌 Moyenne - Apporterait un confort appréciable
+        - 💤 Basse - Agréable mais pas indispensable
+    validations:
+      required: true
+
+  - type: textarea
+    id: problem
+    attributes:
+      label: Problème ou besoin
+      description: Quel problème cette fonctionnalité résoudrait-elle ?
+      placeholder: "Ce qui me gêne actuellement, c'est que..."
+
+  - type: textarea
+    id: solution
+    attributes:
+      label: Solution proposée
+      description: Décrivez la fonctionnalité que vous aimeriez voir ajoutée.
+      placeholder: |
+        J'aimerais que l'extension puisse...
+        Idéalement, voici comment ça fonctionnerait :
+    validations:
+      required: true
+
+  - type: textarea
+    id: alternatives
+    attributes:
+      label: Alternatives envisagées
+      description: Avez-vous pensé à d'autres façons de résoudre ce problème ?
+      placeholder: "J'avais pensé à X, mais Y me semble mieux car..."
+
+  - type: textarea
+    id: context
+    attributes:
+      label: Contexte additionnel
+      description: Captures d'écran, exemples concrets d'utilisation, ou toute autre information utile.
+      placeholder: "Glissez-déposez vos images ici si applicable..."

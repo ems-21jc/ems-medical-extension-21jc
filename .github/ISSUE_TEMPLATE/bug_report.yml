@@ -1,0 +1,120 @@
+name: 🐛 Rapport de bug
+description: Signalez un problème ou un comportement inattendu de l'extension.
+title: "[Bug] "
+labels: ["bug", "needs-triage"]
+
+body:
+  - type: markdown
+    attributes:
+      value: |
+        Merci de prendre le temps de signaler ce bug ! 🙏
+        Plus votre description est précise, plus il sera facile de corriger le problème.
+
+  - type: checkboxes
+    id: preflight
+    attributes:
+      label: Avant de continuer
+      options:
+        - label: J'ai vérifié qu'aucune issue similaire n'existe déjà
+          required: true
+
+  - type: input
+    id: version
+    attributes:
+      label: Version de l'extension
+      description: Visible dans le menu de l'extension.
+      placeholder: "ex: 1.0.0"
+    validations:
+      required: true
+
+  - type: dropdown
+    id: browser
+    attributes:
+      label: Navigateur
+      options:
+        - Chrome
+        - Firefox
+        - Edge
+        - Autre
+    validations:
+      required: true
+
+  - type: input
+    id: browser_other
+    attributes:
+      label: Précisez le navigateur
+      description: Uniquement si vous avez sélectionné "Autre" ci-dessus.
+      placeholder: "ex: Opera, Brave, Safari..."
+
+  - type: dropdown
+    id: os
+    attributes:
+      label: Système d'exploitation
+      options:
+        - Windows
+        - macOS
+        - Linux
+        - Autre
+    validations:
+      required: true
+
+  - type: dropdown
+    id: severity
+    attributes:
+      label: Sévérité
+      description: Quel est l'impact du bug sur votre utilisation ?
+      options:
+        - 🔴 Bloquant - Empêche totalement l'utilisation
+        - 🟠 Majeur - Fonctionnalité principale cassée
+        - 🟡 Mineur - Petit désagrément, contournement possible
+        - 🟢 Cosmétique - Problème visuel sans impact fonctionnel
+    validations:
+      required: true
+
+  - type: textarea
+    id: description
+    attributes:
+      label: Description du bug
+      placeholder: "L'extension ne fait pas X quand je clique sur Y..."
+    validations:
+      required: true
+
+  - type: textarea
+    id: reproduction
+    attributes:
+      label: Étapes pour reproduire
+      description: Décrivez les étapes permettant de reproduire le bug.
+      placeholder: |
+        1. Aller sur '...'
+        2. Cliquer sur '...'
+        3. Le bug apparaît
+    validations:
+      required: true
+
+  - type: textarea
+    id: expected
+    attributes:
+      label: Comportement attendu
+      placeholder: "L'extension aurait dû..."
+    validations:
+      required: true
+
+  - type: textarea
+    id: actual
+    attributes:
+      label: Comportement observé
+      placeholder: "À la place, l'extension..."
+    validations:
+      required: true
+
+  - type: textarea
+    id: screenshots
+    attributes:
+      label: Captures d'écran
+      description: Glissez-déposez vos images ici si applicable.
+
+  - type: textarea
+    id: context
+    attributes:
+      label: Contexte additionnel
+      description: Tout autre élément qui pourrait aider.
