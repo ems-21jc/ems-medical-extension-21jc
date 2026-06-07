@@ -1,9 +1,16 @@
 {
   "name": "ems-medical-extension-21jc",
-  "private": true,
   "version": "0.9.1",
   "type": "module",
   "description": "Extension pour aider à la rédaction de dossier pour les joueurs des EMS du serveur 21 Jump Click",
+  "homepage": "https://github.com/ems-21jc/ems-medical-extension-21jc",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/ems-21jc/ems-medical-extension-21jc.git"
+  },
+  "bugs": {
+    "url": "https://github.com/ems-21jc/ems-medical-extension-21jc/issues"
+  },
   "scripts": {
     "build:chrome": "vite build --mode chrome && node scripts/zip.mjs chrome",
     "build:firefox": "vite build --mode firefox && node scripts/zip.mjs firefox",
