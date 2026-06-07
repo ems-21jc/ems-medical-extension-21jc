@@ -252,29 +252,21 @@ function mcc_injectButton(dialog) {
       ? traitementsBase + " // Retrait IPT"
       : "Retrait IPT";
 
-    mcc_storage.get({ defaultHospitalZip: "1057" }, (data) => {
+    mcc_storage.get({ defaultHospitalZip: "1057" }).then((data) => {
       window.__mcc_pending_vc = {
         blessures: "VC",
         remarques,
         examens: mcc_buildExamensRAS(examensRaw),
         traitements,
-        zip: data.defaultHospitalZip || "",
+        zip: data.defaultHospitalZip || "1057",
       };
 
-      // Ferme le dialog via Escape
-      document.dispatchEvent(
-        new KeyboardEvent("keydown", {
-          key: "Escape",
-          bubbles: true,
-          cancelable: true,
-        }),
-      );
+      mcc_closeDialog(dialog);
 
-      // Puis clique sur le bouton "Nouveau rapport"
       setTimeout(() => {
         const newBtn = mcc_findNewReportButton();
         if (newBtn) newBtn.click();
-      }, 300);
+      }, 450);
     });
   });
 
@@ -293,13 +285,47 @@ function mcc_injectButton(dialog) {
   });
 }
 
+// ── Fermeture du dialog via événements React ──────────────────────────────────
+
+function mcc_closeDialog(dialog) {
+  // Escape sur le dialog et le document
+  [dialog, document].forEach((target) => {
+    target.dispatchEvent(
+      new KeyboardEvent("keydown", {
+        key: "Escape", code: "Escape", keyCode: 27,
+        bubbles: true, cancelable: true, composed: true,
+      }),
+    );
+  });
+  // Fallback : clic sur le backdrop
+  setTimeout(() => {
+    const backdrop = document.querySelector(".MuiBackdrop-root");
+    if (backdrop) {
+      backdrop.dispatchEvent(
+        new MouseEvent("click", { bubbles: true, cancelable: true, composed: true }),
+      );
+    }
+  }, 80);
+}
+
 // ── Détection et observer principal ──────────────────────────────────────────
 
 function mcc_tryInject() {
   const dialog = mcc_findDetailDialog();
-  if (dialog) mcc_injectButton(dialog);
+  if (!dialog) return;
+  // Retry si le contenu du dialog n'est pas encore rendu (race condition)
+  if (!mcc_hasValidDuration(dialog)) {
+    setTimeout(mcc_tryInject, 150);
+    return;
+  }
+  mcc_injectButton(dialog);
 }
 
 const mccObserver = new MutationObserver(() => mcc_tryInject());
 mccObserver.observe(document.body, { childList: true, subtree: true });
+
+// Déclencheur supplémentaire au clic (couvre les navigateurs où le MutationObserver
+// peut être retardé, comme Opera GX)
+document.addEventListener("click", () => setTimeout(mcc_tryInject, 250));
+
 mcc_tryInject();
