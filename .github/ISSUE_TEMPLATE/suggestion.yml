@@ -1,7 +1,7 @@
 name: 💡 Suggestion de fonctionnalité
 description: Proposez une nouvelle fonctionnalité ou une amélioration pour l'extension.
-title: "[Suggestion] : "
-labels: ["enhancement", "needs-triage"]
+title: "[Suggestion] "
+labels: ["enhancement"]
 
 body:
   - type: markdown

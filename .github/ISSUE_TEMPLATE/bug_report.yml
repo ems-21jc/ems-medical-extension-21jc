@@ -1,7 +1,7 @@
 name: 🐛 Rapport de bug
 description: Signalez un problème ou un comportement inattendu de l'extension.
 title: "[Bug] "
-labels: ["bug", "needs-triage"]
+labels: ["bug"]
 
 body:
   - type: markdown
