@@ -23,6 +23,7 @@ const COMPLETION_CONFIG = [
         level: 1,
         disabledBy: ["pieton", "parebrise", "velo"],
       },
+      { key: "casque", label: "Casque", parent: "moto", level: 2 },
       {
         key: "velo",
         label: "Vélo",
@@ -30,7 +31,6 @@ const COMPLETION_CONFIG = [
         level: 1,
         disabledBy: ["moto", "pieton", "parebrise"],
       },
-      { key: "casque", label: "Casque", parent: "moto", level: 2 },
       {
         key: "parebrise",
         label: "Pare Brise",
