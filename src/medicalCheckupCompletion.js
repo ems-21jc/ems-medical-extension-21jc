@@ -97,7 +97,7 @@ function mcc_buildTraitementsRetrait(traitementsText) {
 function mcc_buildExamensRAS(examensText) {
   const results = [];
   if (/radio/i.test(examensText)) results.push("Radio: RAS");
-  if (/scanner|echo|irm/i.test(examensText)) results.push("Echo: RAS");
+  if (/scanner|[eé]cho|irm/i.test(examensText)) results.push("Echo: RAS");
   if (/auscultation|ausc|auscult/i.test(examensText))
     results.push("Auscultation: RAS");
   if (/constantes?\s*:?\s*faibles?/i.test(examensText))
