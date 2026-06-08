@@ -2203,6 +2203,243 @@
       }
     ]
   },
+    {
+    "key": "dos",
+    "label": "Dos",
+    "pathologies": [
+      {
+        "key": "fissure_vertebre",
+        "label": "Fissure Vertèbre(s)",
+        "examens": [
+          {
+            "appareil": "Radio",
+            "contenu": "Fissure vertèbre(s)"
+          }
+        ],
+        "soins": [
+          {
+            "type": "immo",
+            "contenu": "Bandage de Maintient"
+          },
+          {
+            "type": "meds",
+            "contenu": "AD + AI"
+          }
+        ]
+      },
+      {
+        "key": "tassement_vertebre_legee",
+        "label": "Tassement Vertébral Légé",
+        "examens": [
+          {
+            "appareil": "Radio",
+            "contenu": "Tassement légé Vertèbre(s)"
+          }
+        ],
+        "soins": [
+          {
+            "type": "chir",
+            "contenu": "Réaxage Manuel"
+          },
+          {
+            "type": "immo",
+            "contenu": "Bandage de Maintient"
+          },
+          {
+            "type": "meds",
+            "contenu": "AD + AI"
+          }
+        ]
+      },
+      {
+        "key": "tassement_vertebre_lourd",
+        "label": "Tassement Vertébral Important",
+        "examens": [
+          {
+            "appareil": "Radio",
+            "contenu": "Tassement Important Vertèbre(s)"
+          }
+        ],
+        "soins": [
+          {
+            "type": "chir",
+            "prefixe": "Chir AL",
+            "contenu": "Injection de gaz"
+          },
+          {
+            "type": "immo",
+            "contenu": "Bandage de Maintient"
+          },
+          {
+            "type": "meds",
+            "contenu": "AD + AI + AB"
+          }
+        ]
+      },
+      {
+        "key": "brulure_1",
+        "label": "Brûlure 1er degré",
+        "examens": [
+          {
+            "appareil": "Auscultation",
+            "contenu": "Brûlures 1er degré dos"
+          }
+        ],
+        "soins": [
+          {
+            "type": "chir",
+            "prefixe": "Chir AL ou AG",
+            "contenu": "Nettoyage plaies (sérum phy) + crème cicatrisante"
+          },
+          {
+            "type": "immo",
+            "contenu": "Bandages dos"
+          },
+          {
+            "type": "meds",
+            "contenu": "Glace + AD + AI + AB"
+          }
+        ]
+      },
+      {
+        "key": "brulure_2",
+        "label": "Brûlure 2e degré",
+        "examens": [
+          {
+            "appareil": "Auscultation",
+            "contenu": "Brûlures 2e degré dos"
+          }
+        ],
+        "soins": [
+          {
+            "type": "chir",
+            "prefixe": "Chir AL ou AG",
+            "contenu": "Nettoyage plaies (sérum phy) + retrait chairs mortes"
+          },
+          {
+            "type": "immo",
+            "contenu": "Bandages + tulles gras dos"
+          },
+          {
+            "type": "meds",
+            "contenu": "Glace + AD + AI + AB"
+          }
+        ]
+      },
+      {
+        "key": "brulure_3",
+        "label": "Brûlure 3e degré",
+        "examens": [
+          {
+            "appareil": "Auscultation",
+            "contenu": "Brûlures 3e degré dos"
+          }
+        ],
+        "soins": [
+          {
+            "type": "chir",
+            "prefixe": "Chir AG",
+            "contenu": "Nettoyage plaies (sérum phy) + retrait peaux mortes + greffon synthétique/prélèvement de peau dos + PDS cutanés"
+          },
+          {
+            "type": "immo",
+            "contenu": "Bandages + tulles gras dos"
+          },
+          {
+            "type": "meds",
+            "contenu": "Glace + AD + AI + AB"
+          }
+        ]
+      },
+      {
+        "key": "attaque_animale",
+        "label": "Attaque Animale",
+        "examens": [
+          {
+            "appareil": "Auscultation",
+            "contenu": "Traces de morsures/lacérations dos"
+          },
+          {
+            "appareil": "Echo",
+            "contenu": "Déchirure musculaire dos"
+          }
+        ],
+        "soins": [
+          {
+            "type": "chir",
+            "prefixe": "Chir AL ou AG",
+            "contenu": "PDS muscle + PDS cutanées"
+          },
+          {
+            "type": "immo",
+            "contenu": "Bandages dos"
+          },
+          {
+            "type": "meds",
+            "contenu": "Vaccin anti-rabique + AB"
+          }
+        ]
+      },
+      {
+        "key": "bpb_nt",
+        "label": "BPB Non Traversant",
+        "examens": [
+          {
+            "appareil": "Radio",
+            "contenu": "BPB NT dos"
+          },
+          {
+            "appareil": "Echo",
+            "contenu": "Déchirure musculaire dos"
+          }
+        ],
+        "soins": [
+          {
+            "type": "chir",
+            "prefixe": "Chir AL ou AG",
+            "contenu": "Retrait balles + cautérisation + PDS muscle + PDS cutané"
+          },
+          {
+            "type": "immo",
+            "contenu": "Bandage & attelle rigide dos"
+          },
+          {
+            "type": "meds",
+            "contenu": "AD + AI + AB + AC"
+          }
+        ]
+      },
+      {
+        "key": "bpb_t",
+        "label": "BPB Traversant",
+        "examens": [
+          {
+            "appareil": "Radio",
+            "contenu": "BPB T dos"
+          },
+          {
+            "appareil": "Echo",
+            "contenu": "Déchirure musculaire dos"
+          }
+        ],
+        "soins": [
+          {
+            "type": "chir",
+            "prefixe": "Chir AL ou AG",
+            "contenu": "Cautérisation + PDS muscle + PDS cutané"
+          },
+          {
+            "type": "immo",
+            "contenu": "Bandage & attelle rigide dos"
+          },
+          {
+            "type": "meds",
+            "contenu": "AD + AI + AB + AC"
+          }
+        ]
+      }
+    ]
+  },
   {
     "key": "bassin",
     "label": "Bassin",
