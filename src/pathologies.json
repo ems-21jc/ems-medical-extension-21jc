@@ -676,7 +676,7 @@
         "examens": [
           {
             "appareil": "Radio",
-            "contenu": "BPB NT Épaules + Fracture ou Fissure Épaules"
+            "contenu": "BPB NT Épaules"
           },
           {
             "appareil": "Echo",
@@ -705,7 +705,7 @@
         "examens": [
           {
             "appareil": "Radio",
-            "contenu": "BPB T Épaules + Fracture ou Fissure Épaules"
+            "contenu": "BPB T Épaules"
           },
           {
             "appareil": "Echo",
@@ -986,7 +986,7 @@
         "examens": [
           {
             "appareil": "Radio",
-            "contenu": "BPB NT Bras Gauche + Fracture ou Fissure Bras Gauche"
+            "contenu": "BPB NT Bras Gauche"
           },
           {
             "appareil": "Echo",
@@ -1015,7 +1015,7 @@
         "examens": [
           {
             "appareil": "Radio",
-            "contenu": "BPB T Bras Gauche + Fracture ou Fissure Bras Gauche"
+            "contenu": "BPB T Bras Gauche"
           },
           {
             "appareil": "Echo",
@@ -1296,7 +1296,7 @@
         "examens": [
           {
             "appareil": "Radio",
-            "contenu": "BPB NT Bras Droit + Fracture ou Fissure Bras Droit"
+            "contenu": "BPB NT Bras Droit"
           },
           {
             "appareil": "Echo",
@@ -1325,7 +1325,7 @@
         "examens": [
           {
             "appareil": "Radio",
-            "contenu": "BPB T Bras Droit + Fracture ou Fissure Bras Droit"
+            "contenu": "BPB T Bras Droit"
           },
           {
             "appareil": "Echo",
@@ -1606,7 +1606,7 @@
         "examens": [
           {
             "appareil": "Radio",
-            "contenu": "BPB NT Main Gauche + Fracture ou Fissure Main Gauche"
+            "contenu": "BPB NT Main Gauche"
           },
           {
             "appareil": "Echo",
@@ -1635,7 +1635,7 @@
         "examens": [
           {
             "appareil": "Radio",
-            "contenu": "BPB T Main Gauche + Fracture ou Fissure Main Gauche"
+            "contenu": "BPB T Main Gauche"
           },
           {
             "appareil": "Echo",
@@ -1916,7 +1916,7 @@
         "examens": [
           {
             "appareil": "Radio",
-            "contenu": "BPB NT Main Droite + Fracture ou Fissure Main Droite"
+            "contenu": "BPB NT Main Droite"
           },
           {
             "appareil": "Echo",
@@ -1945,7 +1945,7 @@
         "examens": [
           {
             "appareil": "Radio",
-            "contenu": "BPB T Main Droite + Fracture ou Fissure Main Droite"
+            "contenu": "BPB T Main Droite"
           },
           {
             "appareil": "Echo",
@@ -2149,7 +2149,7 @@
         "examens": [
           {
             "appareil": "Radio",
-            "contenu": "BPB NT torse + Fracture ou Fissure côte(s)"
+            "contenu": "BPB NT torse"
           },
           {
             "appareil": "Echo",
@@ -2178,7 +2178,7 @@
         "examens": [
           {
             "appareil": "Radio",
-            "contenu": "BPB T torse + Fracture ou Fissure côte(s)"
+            "contenu": "BPB T torse"
           },
           {
             "appareil": "Echo",
@@ -2411,7 +2411,7 @@
         "examens": [
           {
             "appareil": "Radio",
-            "contenu": "BPB NT bassin + Fracture ou Fissure bassin"
+            "contenu": "BPB NT bassin"
           },
           {
             "appareil": "Echo",
@@ -2440,7 +2440,7 @@
         "examens": [
           {
             "appareil": "Radio",
-            "contenu": "BPB T bassin + Fracture ou Fissure bassin"
+            "contenu": "BPB T bassin"
           },
           {
             "appareil": "Echo",
@@ -2721,7 +2721,7 @@
         "examens": [
           {
             "appareil": "Radio",
-            "contenu": "BPB NT Jambe Gauche + Fracture ou Fissure Jambe Gauche"
+            "contenu": "BPB NT Jambe Gauche"
           },
           {
             "appareil": "Echo",
@@ -2750,7 +2750,7 @@
         "examens": [
           {
             "appareil": "Radio",
-            "contenu": "BPB T Jambe Gauche + Fracture ou Fissure Jambe Gauche"
+            "contenu": "BPB T Jambe Gauche"
           },
           {
             "appareil": "Echo",
@@ -3031,7 +3031,7 @@
         "examens": [
           {
             "appareil": "Radio",
-            "contenu": "BPB NT Jambe Droite + Fracture ou Fissure Jambe Droite"
+            "contenu": "BPB NT Jambe Droite"
           },
           {
             "appareil": "Echo",
@@ -3060,7 +3060,7 @@
         "examens": [
           {
             "appareil": "Radio",
-            "contenu": "BPB T Jambe Droite + Fracture ou Fissure Jambe Droite"
+            "contenu": "BPB T Jambe Droite"
           },
           {
             "appareil": "Echo",
@@ -3341,7 +3341,7 @@
         "examens": [
           {
             "appareil": "Radio",
-            "contenu": "BPB NT Pied Gauche + Fracture ou Fissure Pied Gauche"
+            "contenu": "BPB NT Pied Gauche"
           },
           {
             "appareil": "Echo",
@@ -3370,7 +3370,7 @@
         "examens": [
           {
             "appareil": "Radio",
-            "contenu": "BPB T Pied Gauche + Fracture ou Fissure Pied Gauche"
+            "contenu": "BPB T Pied Gauche"
           },
           {
             "appareil": "Echo",
@@ -3651,7 +3651,7 @@
         "examens": [
           {
             "appareil": "Radio",
-            "contenu": "BPB NT Pied Droit + Fracture ou Fissure Pied Droit"
+            "contenu": "BPB NT Pied Droit"
           },
           {
             "appareil": "Echo",
@@ -3680,7 +3680,7 @@
         "examens": [
           {
             "appareil": "Radio",
-            "contenu": "BPB T Pied Droit + Fracture ou Fissure Pied Droit"
+            "contenu": "BPB T Pied Droit"
           },
           {
             "appareil": "Echo",
