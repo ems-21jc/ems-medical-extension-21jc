@@ -55,6 +55,7 @@ const COMPLETION_CONFIG = [
       { key: "hypoglycemie", label: "Hypoglycémie" },
       { key: "noyade", label: "Noyade" },
       { key: "depo", label: "Dépôt", parent: "noyade", level: 1 },
+      { key: "intox_fumee", label: "Intox Fumée" },
       { key: "chute", label: "Chute" },
       { key: "chute_15m", label: "+15m", parent: "chute", level: 1 },
       { key: "explosion", label: "Explosion" },
@@ -348,6 +349,11 @@ async function applyCompletion(sel) {
     if (cbSaut && !cbSaut.checked) cbSaut.click();
     if (cbCourse && !cbCourse.checked) cbCourse.click();
   }
+  if (sel.intox_fumee) {
+    blessures.push("Intoxication Fumée");
+    if (cbSaut && !cbSaut.checked) cbSaut.click();
+    if (cbCourse && !cbCourse.checked) cbCourse.click();
+  }
 
   if (sel.chute) {
     let s = "Chute";
@@ -365,9 +371,14 @@ async function applyCompletion(sel) {
   if (sel.inconscient) appendToField("Blessures", "// Inconscient", " ");
 
   // ── Examens ───────────────────────────────────────────────────────────────
-  if (sel.depo) appendToField("Examens", "Echo: Présence Dépot Poumon");
+  if (sel.noyade) {
+    if (sel.depo) appendToField("Examens", "Echo: Présence Dépot Poumon");
+    else appendToField("Examens", "Echo: RAS");
+  }
+  if (sel.intox_fumee) appendToField("Examens", "Echo: Brulure Bronches");
 
   // ── Traitements ───────────────────────────────────────────────────────────
+  if (sel.intox_fumee) appendToField("Traitements", "Bouteille d'O² // AI + AD");
   if (sel.noyade) {
     appendToField("Traitements", "AI + AD + AB + AF + Expectorant");
   } else {
@@ -386,6 +397,7 @@ async function applyCompletion(sel) {
   const durations = [];
   if (sel.desydratation || sel.hypoglycemie) durations.push("00:30:00");
   if (sel.noyade) durations.push(sel.coma ? "00:45:00" : "00:30:00");
+  if (sel.intox_fumee) durations.push(sel.coma ? "00:45:00" : "00:30:00");
   if (sel.attaque_animal) durations.push(sel.coma ? "00:45:00" : "00:30:00");
   if (sel.brulure && !sel.explosion)
     durations.push(sel.coma ? "00:45:00" : "00:30:00");
