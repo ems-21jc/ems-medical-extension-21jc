@@ -125,6 +125,7 @@ function initIncapaciteCbs() {
 
 function findCheckboxByLabel(labelText) {
   for (const el of document.querySelectorAll("label, span")) {
+    if (el.closest(".med-completion-btn")) continue;
     if (el.textContent.trim() === labelText) {
       if (el.htmlFor) {
         const cb = document.getElementById(el.htmlFor);
@@ -149,6 +150,7 @@ function findFieldByLabel(labelText) {
   for (const el of document.querySelectorAll(
     'label, .label, [class*="label"]',
   )) {
+    if (el.closest(".med-completion-btn")) continue;
     if (el.textContent.trim().includes(labelText)) {
       if (el.htmlFor) {
         const field = document.getElementById(el.htmlFor);
