@@ -4,7 +4,7 @@
  * Crée un zip de l'extension buildée pour distribution.
  *
  * Usage : node scripts/zip.mjs <target>
- *   <target> = chrome | firefox
+ * <target> = chrome | firefox | chrome-lite | firefox-lite
  *
  * Le zip est généré dans dist/<name>-v<version>-<target>.zip
  */
@@ -19,9 +19,10 @@ const __dirname = path.dirname(__filename);
 const projectRoot = path.resolve(__dirname, "..");
 
 const target = process.argv[2];
+const validTargets = ["chrome", "firefox", "chrome-lite", "firefox-lite"];
 
-if (!target || (target !== "chrome" && target !== "firefox")) {
-  console.error("❌ Usage: node scripts/zip.mjs <chrome|firefox>");
+if (!target || !validTargets.includes(target)) {
+  console.error(`❌ Usage: node scripts/zip.mjs <${validTargets.join("|")}>`);
   process.exit(1);
 }
 

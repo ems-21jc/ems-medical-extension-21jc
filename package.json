@@ -14,9 +14,15 @@
   "scripts": {
     "build:chrome": "vite build --mode chrome && node scripts/zip.mjs chrome",
     "build:firefox": "vite build --mode firefox && node scripts/zip.mjs firefox",
+    "build:chrome-lite": "vite build --mode chrome-lite && node scripts/zip.mjs chrome-lite",
+    "build:firefox-lite": "vite build --mode firefox-lite && node scripts/zip.mjs firefox-lite",
     "build:all": "npm run build:chrome && npm run build:firefox",
+    "build:all-lite": "npm run build:chrome-lite && npm run build:firefox-lite",
+    "build:everything": "npm run build:all && npm run build:all-lite",
     "dev:chrome": "vite build --mode chrome --watch",
-    "dev:firefox": "vite build --mode firefox --watch"
+    "dev:firefox": "vite build --mode firefox --watch",
+    "dev:chrome-lite": "vite build --mode chrome-lite --watch",
+    "dev:firefox-lite": "vite build --mode firefox-lite --watch"
   },
   "dependencies": {
     "webextension-polyfill": "^0.12.0"
