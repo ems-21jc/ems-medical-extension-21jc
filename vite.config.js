@@ -173,7 +173,7 @@ export default defineConfig(({ mode }) => {
             // 🌟 LOGIQUE DYNAMIQUE LITE 🌟
             if (isLite) {
               // 1. On modifie le nom pour le store
-              manifestData.name = `${manifestData.name}-lite`;
+              manifestData.name = `${manifestData.name} - Lite`;
 
               // 2. On nettoie le tableau content_scripts pour ne garder que ce qui est compilé
               if (manifestData.content_scripts) {
