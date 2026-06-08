@@ -4,34 +4,161 @@
     "label": "Global",
     "pathologies": [
       {
+        "key": "deshydratation",
+        "label": "Déshydratation",
+        "examens": [
+          {
+            "appareil": "Constantes",
+            "contenu": "Faibles"
+          }
+        ],
+        "soins": [
+          {
+            "type": "immo",
+            "contenu": "Repos"
+          },
+          {
+            "type": "meds",
+            "contenu": "Poche réhydratante"
+          }
+        ]
+      },
+      {
+        "key": "hypoglycemie",
+        "label": "Hypoglycémie",
+        "examens": [
+          {
+            "appareil": "Constantes",
+            "contenu": "Faibles"
+          }
+        ],
+        "soins": [
+          {
+            "type": "immo",
+            "contenu": "Repos"
+          },
+          {
+            "type": "meds",
+            "contenu": "Poche de glucose"
+          }
+        ]
+      },
+      {
         "key": "surdose_drogue",
         "label": "Surdose de Drogue",
-        "examens": "Constantes : hautes // Test salivaire : positif",
-        "soins": "Cannabis : régulation glycémie + réhydratation // Cocaïne : réhydratation + couverture refroidissante + anti-convulsif + bêta-bloquant // Méthamphétamine : réhydratation + couverture refroidissante + anti-convulsif + bêta-bloquant // Repos"
+        "examens": [
+          {
+            "appareil": "Constantes",
+            "contenu": "Hautes"
+          },
+          {
+            "appareil": "Test salivaire",
+            "contenu": "Positif"
+          }
+        ],
+        "soins": [
+          {
+            "type": "immo",
+            "contenu": "Repos"
+          },
+          {
+            "type": "meds",
+            "contenu": "Réhydratation + couverture refroidissante + anti-convulsif + bêta-bloquant"
+          }
+        ]
       },
       {
         "key": "surdose_alcool",
         "label": "Surdose d'Alcool",
-        "examens": "Ethylomètre : xx mg/L",
-        "soins": "Lavage d'estomac // Poche glucose + hydratation // Repos"
+        "examens": [
+          {
+            "appareil": "Ethylomètre",
+            "contenu": "xx mg/L"
+          }
+        ],
+        "soins": [
+          {
+            "type": "chir",
+            "prefixe": "Chir AL ou AG",
+            "contenu": "Lavage d'estomac"
+          },
+          {
+            "type": "immo",
+            "contenu": "Repos"
+          },
+          {
+            "type": "meds",
+            "contenu": "Poche glucose + hydratation"
+          }
+        ]
       },
       {
         "key": "prise_otage",
         "label": "Prise d'Otage (PO)",
-        "examens": "Constantes : élevées // Psy : agacé / frustré / choqué / paniqué",
-        "soins": "Repos // Programmer RDV psy"
+        "examens": [
+          {
+            "appareil": "Constantes",
+            "contenu": "Élevées"
+          },
+          {
+            "appareil": "Psy",
+            "contenu": "Agacé / frustré / choqué / paniqué"
+          }
+        ],
+        "soins": [
+          {
+            "type": "immo",
+            "contenu": "Repos"
+          },
+          {
+            "type": "meds",
+            "contenu": "RDV psy programmé"
+          }
+        ]
       },
-      {
+            {
         "key": "inhalation_fumees",
         "label": "Inhalation de Fumées",
-        "examens": "Constantes : faibles // Echo : légère dégradation des bronches",
-        "soins": "Oxygène // AI + AD"
+        "examens": [
+          {
+            "appareil": "Constantes",
+            "contenu": "Faibles"
+          },
+          {
+            "appareil": "Echo",
+            "contenu": "Légère dégradation des bronches"
+          }
+        ],
+        "soins": [
+          {
+            "type": "immo",
+            "contenu": "Oxygène + Repos"
+          },
+          {
+            "type": "meds",
+            "contenu": "AD + AI"
+          }
+        ]
       },
       {
         "key": "noyade",
         "label": "Noyade",
-        "examens": "IRM ou Echo : Présence d'eau dans les poumons",
-        "soins": "Expectorants + Sirop pour la gorge // AD + AI + AB + AF"
+        "examens": [
+          {
+            "appareil": "Echo",
+            "contenu": "Présence d'eau dans les poumons"
+          }
+        ],
+        "soins": [
+          {
+            "type": "immo",
+            "contenu": "Oxygène + Repos"
+          },
+          {
+            "type": "meds",
+            "contenu": "Expectorants + Sirop pour la gorge + AD + AI + AB + AF"
+          }
+        ]
       }
     ]
   },
@@ -42,62 +169,254 @@
       {
         "key": "commotion",
         "label": "Commotion Cérébrale",
-        "examens": "IRM : Commotion cérébrale",
-        "soins": "Repos // AD + AI (local tête)"
+        "examens": [
+          {
+            "appareil": "IRM",
+            "contenu": "Commotion cérébrale"
+          }
+        ],
+        "soins": [
+          {
+            "type": "immo",
+            "contenu": "Repos"
+          },
+          {
+            "type": "meds",
+            "contenu": "AD + AI"
+          }
+        ]
       },
       {
         "key": "traumatisme_cranien",
         "label": "Traumatisme Crânien",
-        "examens": "IRM : Traumatisme crânien // Auscultation : Plaie tête",
-        "soins": "PDS cutanés ou Agrafes tête // Pansement ou Bandage tête // Repos // AD"
+        "examens": [
+          {
+            "appareil": "IRM",
+            "contenu": "Traumatisme crânien"
+          },
+          {
+            "appareil": "Auscultation",
+            "contenu": "Plaie tête"
+          }
+        ],
+        "soins": [
+          {
+            "type": "chir",
+            "prefixe": "Chir AL ou AG",
+            "contenu": "PDS cutanés ou agrafes tête"
+          },
+          {
+            "type": "immo",
+            "contenu": "Pansement ou bandage tête + Repos"
+          },
+          {
+            "type": "meds",
+            "contenu": "AD"
+          }
+        ]
       },
       {
         "key": "hematome_sd_leger",
         "label": "Hématome Sous-Dural Léger",
-        "examens": "IRM : Hématome sous-dural léger",
-        "soins": "Repos"
+        "examens": [
+          {
+            "appareil": "IRM",
+            "contenu": "Hématome sous-dural léger"
+          }
+        ],
+        "soins": [
+          {
+            "type": "immo",
+            "contenu": "Repos"
+          }
+        ]
       },
       {
         "key": "hematome_sd_grave",
         "label": "Hématome Sous-Dural Moyen/Grave",
-        "examens": "IRM : Hématome sous-dural moyen ou grave",
-        "soins": "Chir AG : Trépanation + Pose et retrait drain + Rebouchage (composite) + PDS cutanés // Désinfection + bandages tête // AD + AI (local tête)"
+        "examens": [
+          {
+            "appareil": "IRM",
+            "contenu": "Hématome sous-dural moyen ou grave"
+          }
+        ],
+        "soins": [
+          {
+            "type": "chir",
+            "prefixe": "Chir AG",
+            "contenu": "Trépanation + pose et retrait drain + rebouchage (composite) + PDS cutanés"
+          },
+          {
+            "type": "immo",
+            "contenu": "Désinfection + bandages tête + Repos"
+          },
+          {
+            "type": "meds",
+            "contenu": "AD + AI"
+          }
+        ]
       },
       {
         "key": "brulure_1",
         "label": "Brûlure 1er degré",
-        "examens": "Auscultation : Brûlures 1er degré tête",
-        "soins": "Nettoyage plaies (sérum phy) + crème cicatrisante // Bandages tête // AD + AI + AB"
+        "examens": [
+          {
+            "appareil": "Auscultation",
+            "contenu": "Brûlures 1er degré tête"
+          }
+        ],
+        "soins": [
+          {
+            "type": "chir",
+            "prefixe": "Chir AL ou AG",
+            "contenu": "Nettoyage plaies (sérum phy) + retrait chairs mortes"
+          },
+          {
+            "type": "immo",
+            "contenu": "Bandages + tulles gras tête"
+          },
+          {
+            "type": "meds",
+            "contenu": "Glace + AD + AI + AB"
+          }
+        ]
       },
       {
         "key": "brulure_2",
         "label": "Brûlure 2e degré",
-        "examens": "Auscultation : Brûlures 2e degré tête",
-        "soins": "Chir AG ou AL : Nettoyage plaies (sérum phy) + retrait chairs mortes // Bandages + tulles gras tête // AD + AI + AB"
+        "examens": [
+          {
+            "appareil": "Auscultation",
+            "contenu": "Brûlures 2e degré tête"
+          }
+        ],
+        "soins": [
+          {
+            "type": "chir",
+            "prefixe": "Chir AL ou AG",
+            "contenu": "Nettoyage plaies (sérum phy) + retrait chairs mortes"
+          },
+          {
+            "type": "immo",
+            "contenu": "Bandages + tulles gras tête"
+          },
+          {
+            "type": "meds",
+            "contenu": "Glace + AD + AI + AB"
+          }
+        ]
       },
       {
         "key": "brulure_3",
         "label": "Brûlure 3e degré",
-        "examens": "Auscultation : Brûlures 3e degré tête",
-        "soins": "Chir AG : Nettoyage plaies (sérum phy) + retrait peaux mortes + Greffon synthétique/prélèvement de peau tête + PDS cutanés // Bandages + Tulles gras // AD + AI + AB"
+        "examens": [
+          {
+            "appareil": "Auscultation",
+            "contenu": "Brûlures 3e degré tête"
+          }
+        ],
+        "soins": [
+          {
+            "type": "chir",
+            "prefixe": "Chir AG",
+            "contenu": "Nettoyage plaies (sérum phy) + retrait peaux mortes + greffon synthétique/prélèvement de peau tête + PDS cutanés"
+          },
+          {
+            "type": "immo",
+            "contenu": "Bandages + tulles gras tête"
+          },
+          {
+            "type": "meds",
+            "contenu": "Glace + AD + AI + AB"
+          }
+        ]
       },
       {
         "key": "attaque_animale",
         "label": "Attaque Animale",
-        "examens": "Auscultation : Traces de morsures/Lacérations tête // Echo : Déchirure musculaire tête",
-        "soins": "Vaccin anti-rabique // PDS muscle + PDS cutanées // Bandages tête"
+        "examens": [
+          {
+            "appareil": "Auscultation",
+            "contenu": "Traces de morsures/lacérations tête"
+          },
+          {
+            "appareil": "Echo",
+            "contenu": "Déchirure musculaire tête"
+          }
+        ],
+        "soins": [
+          {
+            "type": "chir",
+            "prefixe": "Chir AL ou AG",
+            "contenu": "PDS muscle + PDS cutanées"
+          },
+          {
+            "type": "immo",
+            "contenu": "Bandages tête"
+          },
+          {
+            "type": "meds",
+            "contenu": "Vaccin anti-rabique + AB"
+          }
+        ]
       },
       {
         "key": "bpb_nt",
         "label": "BPB Non Traversant",
-        "examens": "Radio : BPB NT tête // Echo : Déchirure musculaire tête",
-        "soins": "Chir AL ou AG : Retrait balles + cautérisation + PDS muscle + PDS cutané // Bandage tête // AI + AD + AB + AC"
+        "examens": [
+          {
+            "appareil": "Radio",
+            "contenu": "BPB NT tête"
+          },
+          {
+            "appareil": "Echo",
+            "contenu": "Déchirure musculaire tête"
+          }
+        ],
+        "soins": [
+          {
+            "type": "chir",
+            "prefixe": "Chir AL ou AG",
+            "contenu": "Retrait balles + cautérisation + PDS muscle + PDS cutané"
+          },
+          {
+            "type": "immo",
+            "contenu": "Bandage tête"
+          },
+          {
+            "type": "meds",
+            "contenu": "AD + AI + AB + AC"
+          }
+        ]
       },
       {
         "key": "bpb_t",
         "label": "BPB Traversant",
-        "examens": "Radio : BPB T tête // Echo : Déchirure musculaire tête",
-        "soins": "Chir AL ou AG : Cautérisation + PDS muscle + PDS cutané // Bandage tête // AI + AD + AB + AC"
+        "examens": [
+          {
+            "appareil": "Radio",
+            "contenu": "BPB T tête"
+          },
+          {
+            "appareil": "Echo",
+            "contenu": "Déchirure musculaire tête"
+          }
+        ],
+        "soins": [
+          {
+            "type": "chir",
+            "prefixe": "Chir AL ou AG",
+            "contenu": "Cautérisation + PDS muscle + PDS cutané"
+          },
+          {
+            "type": "immo",
+            "contenu": "Bandage tête"
+          },
+          {
+            "type": "meds",
+            "contenu": "AD + AI + AB + AC"
+          }
+        ]
       }
     ]
   },
@@ -108,74 +427,306 @@
       {
         "key": "entorse",
         "label": "Entorse",
-        "examens": "Auscultation : Oedème Épaules // Echo : Entorse Épaules",
-        "soins": "Glace // Attelle souple Épaules // AD + AI"
+        "examens": [
+          {
+            "appareil": "Auscultation",
+            "contenu": "Oedème Épaules"
+          },
+          {
+            "appareil": "Echo",
+            "contenu": "Entorse Épaules"
+          }
+        ],
+        "soins": [
+          {
+            "type": "immo",
+            "contenu": "Attelle souple Épaules"
+          },
+          {
+            "type": "meds",
+            "contenu": "Glace + AD + AI"
+          }
+        ]
       },
       {
         "key": "luxation",
         "label": "Luxation",
-        "examens": "Auscultation : Désaxement Épaules // Radio : Luxation Épaules",
-        "soins": "Attelle rigide Épaules // AD + AI"
+        "examens": [
+          {
+            "appareil": "Auscultation",
+            "contenu": "Désaxement Épaules"
+          },
+          {
+            "appareil": "Radio",
+            "contenu": "Luxation Épaules"
+          }
+        ],
+        "soins": [
+          {
+            "type": "immo",
+            "contenu": "Attelle rigide Épaules"
+          },
+          {
+            "type": "meds",
+            "contenu": "AD + AI"
+          }
+        ]
       },
       {
         "key": "fissure",
         "label": "Fissure",
-        "examens": "Radio : Fissure Épaules",
-        "soins": "Attelle rigide Épaules // AD + AI"
+        "examens": [
+          {
+            "appareil": "Radio",
+            "contenu": "Fissure Épaules"
+          }
+        ],
+        "soins": [
+          {
+            "type": "immo",
+            "contenu": "Attelle rigide Épaules"
+          },
+          {
+            "type": "meds",
+            "contenu": "AD + AI"
+          }
+        ]
       },
       {
         "key": "fracture_nette",
         "label": "Fracture Nette",
-        "examens": "Radio : Fracture nette Épaules",
-        "soins": "Attelle rigide Épaules // AD + AI"
+        "examens": [
+          {
+            "appareil": "Radio",
+            "contenu": "Fracture nette Épaules"
+          }
+        ],
+        "soins": [
+          {
+            "type": "immo",
+            "contenu": "Attelle rigide Épaules"
+          },
+          {
+            "type": "meds",
+            "contenu": "AD + AI"
+          }
+        ]
       },
       {
         "key": "fracture_deplacee",
         "label": "Fracture Déplacée",
-        "examens": "Radio : Fracture déplacée Épaules",
-        "soins": "Chir AG ou AL : Cautérisation + Nettoyage fragments + Os réaxé + Pose plaque et vis (Mg) + PDS musculaires & cutanés // Attelle rigide Épaules // AD + AI + AB + AC"
+        "examens": [
+          {
+            "appareil": "Radio",
+            "contenu": "Fracture déplacée Épaules"
+          }
+        ],
+        "soins": [
+          {
+            "type": "chir",
+            "prefixe": "Chir AG ou AL",
+            "contenu": "Cautérisation + nettoyage fragments + os réaxé + pose plaque et vis (Mg) + PDS musculaires & cutanés"
+          },
+          {
+            "type": "immo",
+            "contenu": "Attelle rigide Épaules"
+          },
+          {
+            "type": "meds",
+            "contenu": "AD + AI + AB + AC"
+          }
+        ]
       },
       {
         "key": "fracture_ouverte",
         "label": "Fracture Ouverte",
-        "examens": "Auscultation : Saignement Épaules // Radio : Fracture ouverte déplacée Épaules",
-        "soins": "Chir AG ou AL : Cautérisation + Nettoyage fragments + Os réaxé + Pose plaque et vis (Mg) + PDS musculaires & cutanés // Attelle rigide Épaules // AD + AI + AB + AC"
+        "examens": [
+          {
+            "appareil": "Auscultation",
+            "contenu": "Saignement Épaules"
+          },
+          {
+            "appareil": "Radio",
+            "contenu": "Fracture ouverte déplacée Épaules"
+          }
+        ],
+        "soins": [
+          {
+            "type": "chir",
+            "prefixe": "Chir AG ou AL",
+            "contenu": "Cautérisation + nettoyage fragments + os réaxé + pose plaque et vis (Mg) + PDS musculaires & cutanés"
+          },
+          {
+            "type": "immo",
+            "contenu": "Attelle rigide Épaules"
+          },
+          {
+            "type": "meds",
+            "contenu": "AD + AI + AB + AC"
+          }
+        ]
       },
       {
         "key": "brulure_1",
         "label": "Brûlure 1er degré",
-        "examens": "Auscultation : Brûlures 1er degré Épaules",
-        "soins": "Nettoyage plaies (sérum phy) + crème cicatrisante // Bandages // AD + AI + AB"
+        "examens": [
+          {
+            "appareil": "Auscultation",
+            "contenu": "Brûlures 1er degré Épaules"
+          }
+        ],
+        "soins": [
+          {
+            "type": "chir",
+            "prefixe": "Chir AL ou AG",
+            "contenu": "Nettoyage plaies (sérum phy) + crème cicatrisante"
+          },
+          {
+            "type": "immo",
+            "contenu": "Bandages Épaules"
+          },
+          {
+            "type": "meds",
+            "contenu": "Glace + AD + AI + AB"
+          }
+        ]
       },
       {
         "key": "brulure_2",
         "label": "Brûlure 2e degré",
-        "examens": "Auscultation : Brûlures 2e degré Épaules",
-        "soins": "Chir AG ou AL : Nettoyage plaies (sérum phy) + retrait chairs mortes // Bandages + tulles gras // AD + AI + AB"
+        "examens": [
+          {
+            "appareil": "Auscultation",
+            "contenu": "Brûlures 2e degré Épaules"
+          }
+        ],
+        "soins": [
+          {
+            "type": "chir",
+            "prefixe": "Chir AL ou AG",
+            "contenu": "Nettoyage plaies (sérum phy) + retrait chairs mortes"
+          },
+          {
+            "type": "immo",
+            "contenu": "Bandages + tulles gras Épaules"
+          },
+          {
+            "type": "meds",
+            "contenu": "Glace + AD + AI + AB"
+          }
+        ]
       },
       {
         "key": "brulure_3",
         "label": "Brûlure 3e degré",
-        "examens": "Auscultation : Brûlures 3e degré Épaules",
-        "soins": "Chir AG : Nettoyage plaies (sérum phy) + retrait peaux mortes + Greffon synthétique/prélèvement de peau Épaules + PDS cutanés // Bandages + Tulles gras // AD + AI + AB"
+        "examens": [
+          {
+            "appareil": "Auscultation",
+            "contenu": "Brûlures 3e degré Épaules"
+          }
+        ],
+        "soins": [
+          {
+            "type": "chir",
+            "prefixe": "Chir AG",
+            "contenu": "Nettoyage plaies (sérum phy) + retrait peaux mortes + greffon synthétique/prélèvement de peau Épaules + PDS cutanés"
+          },
+          {
+            "type": "immo",
+            "contenu": "Bandages + tulles gras Épaules"
+          },
+          {
+            "type": "meds",
+            "contenu": "Glace + AD + AI + AB"
+          }
+        ]
       },
       {
         "key": "attaque_animale",
         "label": "Attaque Animale",
-        "examens": "Auscultation : Traces de morsures/Lacérations Épaules // Echo : Déchirure musculaire Épaules",
-        "soins": "Vaccin anti-rabique // PDS muscle + PDS cutanées // Bandages Épaules"
+        "examens": [
+          {
+            "appareil": "Auscultation",
+            "contenu": "Traces de morsures/lacérations Épaules"
+          },
+          {
+            "appareil": "Echo",
+            "contenu": "Déchirure musculaire Épaules"
+          }
+        ],
+        "soins": [
+          {
+            "type": "chir",
+            "prefixe": "Chir AL ou AG",
+            "contenu": "PDS muscle + PDS cutanées"
+          },
+          {
+            "type": "immo",
+            "contenu": "Bandages Épaules"
+          },
+          {
+            "type": "meds",
+            "contenu": "Vaccin anti-rabique + AB"
+          }
+        ]
       },
       {
         "key": "bpb_nt",
         "label": "BPB Non Traversant",
-        "examens": "Radio : BPB NT Épaules + Fracture ou Fissure Épaules // Echo : Déchirure musculaire Épaules",
-        "soins": "Chir AL ou AG : Retrait balles + cautérisation + PDS muscle + PDS cutané // Bandage & attelle rigide Épaules // AI + AD + AB + AC"
+        "examens": [
+          {
+            "appareil": "Radio",
+            "contenu": "BPB NT Épaules + Fracture ou Fissure Épaules"
+          },
+          {
+            "appareil": "Echo",
+            "contenu": "Déchirure musculaire Épaules"
+          }
+        ],
+        "soins": [
+          {
+            "type": "chir",
+            "prefixe": "Chir AL ou AG",
+            "contenu": "Retrait balles + cautérisation + PDS muscle + PDS cutané"
+          },
+          {
+            "type": "immo",
+            "contenu": "Bandage & attelle rigide Épaules"
+          },
+          {
+            "type": "meds",
+            "contenu": "AD + AI + AB + AC"
+          }
+        ]
       },
       {
         "key": "bpb_t",
         "label": "BPB Traversant",
-        "examens": "Radio : BPB T Épaules + Fracture ou Fissure Épaules // Echo : Déchirure musculaire Épaules",
-        "soins": "Chir AL ou AG : Cautérisation + PDS muscle + PDS cutané // Bandage & attelle rigide Épaules // AI + AD + AB + AC"
+        "examens": [
+          {
+            "appareil": "Radio",
+            "contenu": "BPB T Épaules + Fracture ou Fissure Épaules"
+          },
+          {
+            "appareil": "Echo",
+            "contenu": "Déchirure musculaire Épaules"
+          }
+        ],
+        "soins": [
+          {
+            "type": "chir",
+            "prefixe": "Chir AL ou AG",
+            "contenu": "Cautérisation + PDS muscle + PDS cutané"
+          },
+          {
+            "type": "immo",
+            "contenu": "Bandage & attelle rigide Épaules"
+          },
+          {
+            "type": "meds",
+            "contenu": "AD + AI + AB + AC"
+          }
+        ]
       }
     ]
   },
@@ -186,74 +737,306 @@
       {
         "key": "entorse",
         "label": "Entorse",
-        "examens": "Auscultation : Oedème Bras Gauche // Echo : Entorse Bras Gauche",
-        "soins": "Glace // Attelle souple Bras Gauche // AD + AI"
+        "examens": [
+          {
+            "appareil": "Auscultation",
+            "contenu": "Oedème Bras Gauche"
+          },
+          {
+            "appareil": "Echo",
+            "contenu": "Entorse Bras Gauche"
+          }
+        ],
+        "soins": [
+          {
+            "type": "immo",
+            "contenu": "Attelle souple Bras Gauche"
+          },
+          {
+            "type": "meds",
+            "contenu": "Glace + AD + AI"
+          }
+        ]
       },
       {
         "key": "luxation",
         "label": "Luxation",
-        "examens": "Auscultation : Désaxement Bras Gauche // Radio : Luxation Bras Gauche",
-        "soins": "Attelle rigide Bras Gauche // AD + AI"
+        "examens": [
+          {
+            "appareil": "Auscultation",
+            "contenu": "Désaxement Bras Gauche"
+          },
+          {
+            "appareil": "Radio",
+            "contenu": "Luxation Bras Gauche"
+          }
+        ],
+        "soins": [
+          {
+            "type": "immo",
+            "contenu": "Attelle rigide Bras Gauche"
+          },
+          {
+            "type": "meds",
+            "contenu": "AD + AI"
+          }
+        ]
       },
       {
         "key": "fissure",
         "label": "Fissure",
-        "examens": "Radio : Fissure Bras Gauche",
-        "soins": "Attelle rigide Bras Gauche // AD + AI"
+        "examens": [
+          {
+            "appareil": "Radio",
+            "contenu": "Fissure Bras Gauche"
+          }
+        ],
+        "soins": [
+          {
+            "type": "immo",
+            "contenu": "Attelle rigide Bras Gauche"
+          },
+          {
+            "type": "meds",
+            "contenu": "AD + AI"
+          }
+        ]
       },
       {
         "key": "fracture_nette",
         "label": "Fracture Nette",
-        "examens": "Radio : Fracture nette Bras Gauche",
-        "soins": "Attelle rigide Bras Gauche // AD + AI"
+        "examens": [
+          {
+            "appareil": "Radio",
+            "contenu": "Fracture nette Bras Gauche"
+          }
+        ],
+        "soins": [
+          {
+            "type": "immo",
+            "contenu": "Attelle rigide Bras Gauche"
+          },
+          {
+            "type": "meds",
+            "contenu": "AD + AI"
+          }
+        ]
       },
       {
         "key": "fracture_deplacee",
         "label": "Fracture Déplacée",
-        "examens": "Radio : Fracture déplacée Bras Gauche",
-        "soins": "Chir AG ou AL : Cautérisation + Nettoyage fragments + Os réaxé + Pose plaque et vis (Mg) + PDS musculaires & cutanés // Attelle rigide Bras Gauche // AD + AI + AB + AC"
+        "examens": [
+          {
+            "appareil": "Radio",
+            "contenu": "Fracture déplacée Bras Gauche"
+          }
+        ],
+        "soins": [
+          {
+            "type": "chir",
+            "prefixe": "Chir AG ou AL",
+            "contenu": "Cautérisation + nettoyage fragments + os réaxé + pose plaque et vis (Mg) + PDS musculaires & cutanés"
+          },
+          {
+            "type": "immo",
+            "contenu": "Attelle rigide Bras Gauche"
+          },
+          {
+            "type": "meds",
+            "contenu": "AD + AI + AB + AC"
+          }
+        ]
       },
       {
         "key": "fracture_ouverte",
         "label": "Fracture Ouverte",
-        "examens": "Auscultation : Saignement Bras Gauche // Radio : Fracture ouverte déplacée Bras Gauche",
-        "soins": "Chir AG ou AL : Cautérisation + Nettoyage fragments + Os réaxé + Pose plaque et vis (Mg) + PDS musculaires & cutanés // Attelle rigide Bras Gauche // AD + AI + AB + AC"
+        "examens": [
+          {
+            "appareil": "Auscultation",
+            "contenu": "Saignement Bras Gauche"
+          },
+          {
+            "appareil": "Radio",
+            "contenu": "Fracture ouverte déplacée Bras Gauche"
+          }
+        ],
+        "soins": [
+          {
+            "type": "chir",
+            "prefixe": "Chir AG ou AL",
+            "contenu": "Cautérisation + nettoyage fragments + os réaxé + pose plaque et vis (Mg) + PDS musculaires & cutanés"
+          },
+          {
+            "type": "immo",
+            "contenu": "Attelle rigide Bras Gauche"
+          },
+          {
+            "type": "meds",
+            "contenu": "AD + AI + AB + AC"
+          }
+        ]
       },
       {
         "key": "brulure_1",
         "label": "Brûlure 1er degré",
-        "examens": "Auscultation : Brûlures 1er degré Bras Gauche",
-        "soins": "Nettoyage plaies (sérum phy) + crème cicatrisante // Bandages // AD + AI + AB"
+        "examens": [
+          {
+            "appareil": "Auscultation",
+            "contenu": "Brûlures 1er degré Bras Gauche"
+          }
+        ],
+        "soins": [
+          {
+            "type": "chir",
+            "prefixe": "Chir AL ou AG",
+            "contenu": "Nettoyage plaies (sérum phy) + crème cicatrisante"
+          },
+          {
+            "type": "immo",
+            "contenu": "Bandages Bras Gauche"
+          },
+          {
+            "type": "meds",
+            "contenu": "Glace + AD + AI + AB"
+          }
+        ]
       },
       {
         "key": "brulure_2",
         "label": "Brûlure 2e degré",
-        "examens": "Auscultation : Brûlures 2e degré Bras Gauche",
-        "soins": "Chir AG ou AL : Nettoyage plaies (sérum phy) + retrait chairs mortes // Bandages + tulles gras // AD + AI + AB"
+        "examens": [
+          {
+            "appareil": "Auscultation",
+            "contenu": "Brûlures 2e degré Bras Gauche"
+          }
+        ],
+        "soins": [
+          {
+            "type": "chir",
+            "prefixe": "Chir AL ou AG",
+            "contenu": "Nettoyage plaies (sérum phy) + retrait chairs mortes"
+          },
+          {
+            "type": "immo",
+            "contenu": "Bandages + tulles gras Bras Gauche"
+          },
+          {
+            "type": "meds",
+            "contenu": "Glace + AD + AI + AB"
+          }
+        ]
       },
       {
         "key": "brulure_3",
         "label": "Brûlure 3e degré",
-        "examens": "Auscultation : Brûlures 3e degré Bras Gauche",
-        "soins": "Chir AG : Nettoyage plaies (sérum phy) + retrait peaux mortes + Greffon synthétique/prélèvement de peau Bras Gauche + PDS cutanés // Bandages + Tulles gras // AD + AI + AB"
+        "examens": [
+          {
+            "appareil": "Auscultation",
+            "contenu": "Brûlures 3e degré Bras Gauche"
+          }
+        ],
+        "soins": [
+          {
+            "type": "chir",
+            "prefixe": "Chir AG",
+            "contenu": "Nettoyage plaies (sérum phy) + retrait peaux mortes + greffon synthétique/prélèvement de peau Bras Gauche + PDS cutanés"
+          },
+          {
+            "type": "immo",
+            "contenu": "Bandages + tulles gras Bras Gauche"
+          },
+          {
+            "type": "meds",
+            "contenu": "Glace + AD + AI + AB"
+          }
+        ]
       },
       {
         "key": "attaque_animale",
         "label": "Attaque Animale",
-        "examens": "Auscultation : Traces de morsures/Lacérations Bras Gauche // Echo : Déchirure musculaire Bras Gauche",
-        "soins": "Vaccin anti-rabique // PDS muscle + PDS cutanées // Bandages Bras Gauche"
+        "examens": [
+          {
+            "appareil": "Auscultation",
+            "contenu": "Traces de morsures/lacérations Bras Gauche"
+          },
+          {
+            "appareil": "Echo",
+            "contenu": "Déchirure musculaire Bras Gauche"
+          }
+        ],
+        "soins": [
+          {
+            "type": "chir",
+            "prefixe": "Chir AL ou AG",
+            "contenu": "PDS muscle + PDS cutanées"
+          },
+          {
+            "type": "immo",
+            "contenu": "Bandages Bras Gauche"
+          },
+          {
+            "type": "meds",
+            "contenu": "Vaccin anti-rabique + AB"
+          }
+        ]
       },
       {
         "key": "bpb_nt",
         "label": "BPB Non Traversant",
-        "examens": "Radio : BPB NT Bras Gauche + Fracture ou Fissure Bras Gauche // Echo : Déchirure musculaire Bras Gauche",
-        "soins": "Chir AL ou AG : Retrait balles + cautérisation + PDS muscle + PDS cutané // Bandage & attelle rigide Bras Gauche // AI + AD + AB + AC"
+        "examens": [
+          {
+            "appareil": "Radio",
+            "contenu": "BPB NT Bras Gauche + Fracture ou Fissure Bras Gauche"
+          },
+          {
+            "appareil": "Echo",
+            "contenu": "Déchirure musculaire Bras Gauche"
+          }
+        ],
+        "soins": [
+          {
+            "type": "chir",
+            "prefixe": "Chir AL ou AG",
+            "contenu": "Retrait balles + cautérisation + PDS muscle + PDS cutané"
+          },
+          {
+            "type": "immo",
+            "contenu": "Bandage & attelle rigide Bras Gauche"
+          },
+          {
+            "type": "meds",
+            "contenu": "AD + AI + AB + AC"
+          }
+        ]
       },
       {
         "key": "bpb_t",
         "label": "BPB Traversant",
-        "examens": "Radio : BPB T Bras Gauche + Fracture ou Fissure Bras Gauche // Echo : Déchirure musculaire Bras Gauche",
-        "soins": "Chir AL ou AG : Cautérisation + PDS muscle + PDS cutané // Bandage & attelle rigide Bras Gauche // AI + AD + AB + AC"
+        "examens": [
+          {
+            "appareil": "Radio",
+            "contenu": "BPB T Bras Gauche + Fracture ou Fissure Bras Gauche"
+          },
+          {
+            "appareil": "Echo",
+            "contenu": "Déchirure musculaire Bras Gauche"
+          }
+        ],
+        "soins": [
+          {
+            "type": "chir",
+            "prefixe": "Chir AL ou AG",
+            "contenu": "Cautérisation + PDS muscle + PDS cutané"
+          },
+          {
+            "type": "immo",
+            "contenu": "Bandage & attelle rigide Bras Gauche"
+          },
+          {
+            "type": "meds",
+            "contenu": "AD + AI + AB + AC"
+          }
+        ]
       }
     ]
   },
@@ -264,74 +1047,306 @@
       {
         "key": "entorse",
         "label": "Entorse",
-        "examens": "Auscultation : Oedème Bras Droit // Echo : Entorse Bras Droit",
-        "soins": "Glace // Attelle souple Bras Droit // AD + AI"
+        "examens": [
+          {
+            "appareil": "Auscultation",
+            "contenu": "Oedème Bras Droit"
+          },
+          {
+            "appareil": "Echo",
+            "contenu": "Entorse Bras Droit"
+          }
+        ],
+        "soins": [
+          {
+            "type": "immo",
+            "contenu": "Attelle souple Bras Droit"
+          },
+          {
+            "type": "meds",
+            "contenu": "Glace + AD + AI"
+          }
+        ]
       },
       {
         "key": "luxation",
         "label": "Luxation",
-        "examens": "Auscultation : Désaxement Bras Droit // Radio : Luxation Bras Droit",
-        "soins": "Attelle rigide Bras Droit // AD + AI"
+        "examens": [
+          {
+            "appareil": "Auscultation",
+            "contenu": "Désaxement Bras Droit"
+          },
+          {
+            "appareil": "Radio",
+            "contenu": "Luxation Bras Droit"
+          }
+        ],
+        "soins": [
+          {
+            "type": "immo",
+            "contenu": "Attelle rigide Bras Droit"
+          },
+          {
+            "type": "meds",
+            "contenu": "AD + AI"
+          }
+        ]
       },
       {
         "key": "fissure",
         "label": "Fissure",
-        "examens": "Radio : Fissure Bras Droit",
-        "soins": "Attelle rigide Bras Droit // AD + AI"
+        "examens": [
+          {
+            "appareil": "Radio",
+            "contenu": "Fissure Bras Droit"
+          }
+        ],
+        "soins": [
+          {
+            "type": "immo",
+            "contenu": "Attelle rigide Bras Droit"
+          },
+          {
+            "type": "meds",
+            "contenu": "AD + AI"
+          }
+        ]
       },
       {
         "key": "fracture_nette",
         "label": "Fracture Nette",
-        "examens": "Radio : Fracture nette Bras Droit",
-        "soins": "Attelle rigide Bras Droit // AD + AI"
+        "examens": [
+          {
+            "appareil": "Radio",
+            "contenu": "Fracture nette Bras Droit"
+          }
+        ],
+        "soins": [
+          {
+            "type": "immo",
+            "contenu": "Attelle rigide Bras Droit"
+          },
+          {
+            "type": "meds",
+            "contenu": "AD + AI"
+          }
+        ]
       },
       {
         "key": "fracture_deplacee",
         "label": "Fracture Déplacée",
-        "examens": "Radio : Fracture déplacée Bras Droit",
-        "soins": "Chir AG ou AL : Cautérisation + Nettoyage fragments + Os réaxé + Pose plaque et vis (Mg) + PDS musculaires & cutanés // Attelle rigide Bras Droit // AD + AI + AB + AC"
+        "examens": [
+          {
+            "appareil": "Radio",
+            "contenu": "Fracture déplacée Bras Droit"
+          }
+        ],
+        "soins": [
+          {
+            "type": "chir",
+            "prefixe": "Chir AG ou AL",
+            "contenu": "Cautérisation + nettoyage fragments + os réaxé + pose plaque et vis (Mg) + PDS musculaires & cutanés"
+          },
+          {
+            "type": "immo",
+            "contenu": "Attelle rigide Bras Droit"
+          },
+          {
+            "type": "meds",
+            "contenu": "AD + AI + AB + AC"
+          }
+        ]
       },
       {
         "key": "fracture_ouverte",
         "label": "Fracture Ouverte",
-        "examens": "Auscultation : Saignement Bras Droit // Radio : Fracture ouverte déplacée Bras Droit",
-        "soins": "Chir AG ou AL : Cautérisation + Nettoyage fragments + Os réaxé + Pose plaque et vis (Mg) + PDS musculaires & cutanés // Attelle rigide Bras Droit // AD + AI + AB + AC"
+        "examens": [
+          {
+            "appareil": "Auscultation",
+            "contenu": "Saignement Bras Droit"
+          },
+          {
+            "appareil": "Radio",
+            "contenu": "Fracture ouverte déplacée Bras Droit"
+          }
+        ],
+        "soins": [
+          {
+            "type": "chir",
+            "prefixe": "Chir AG ou AL",
+            "contenu": "Cautérisation + nettoyage fragments + os réaxé + pose plaque et vis (Mg) + PDS musculaires & cutanés"
+          },
+          {
+            "type": "immo",
+            "contenu": "Attelle rigide Bras Droit"
+          },
+          {
+            "type": "meds",
+            "contenu": "AD + AI + AB + AC"
+          }
+        ]
       },
       {
         "key": "brulure_1",
         "label": "Brûlure 1er degré",
-        "examens": "Auscultation : Brûlures 1er degré Bras Droit",
-        "soins": "Nettoyage plaies (sérum phy) + crème cicatrisante // Bandages // AD + AI + AB"
+        "examens": [
+          {
+            "appareil": "Auscultation",
+            "contenu": "Brûlures 1er degré Bras Droit"
+          }
+        ],
+        "soins": [
+          {
+            "type": "chir",
+            "prefixe": "Chir AL ou AG",
+            "contenu": "Nettoyage plaies (sérum phy) + crème cicatrisante"
+          },
+          {
+            "type": "immo",
+            "contenu": "Bandages Bras Droit"
+          },
+          {
+            "type": "meds",
+            "contenu": "Glace + AD + AI + AB"
+          }
+        ]
       },
       {
         "key": "brulure_2",
         "label": "Brûlure 2e degré",
-        "examens": "Auscultation : Brûlures 2e degré Bras Droit",
-        "soins": "Chir AG ou AL : Nettoyage plaies (sérum phy) + retrait chairs mortes // Bandages + tulles gras // AD + AI + AB"
+        "examens": [
+          {
+            "appareil": "Auscultation",
+            "contenu": "Brûlures 2e degré Bras Droit"
+          }
+        ],
+        "soins": [
+          {
+            "type": "chir",
+            "prefixe": "Chir AL ou AG",
+            "contenu": "Nettoyage plaies (sérum phy) + retrait chairs mortes"
+          },
+          {
+            "type": "immo",
+            "contenu": "Bandages + tulles gras Bras Droit"
+          },
+          {
+            "type": "meds",
+            "contenu": "Glace + AD + AI + AB"
+          }
+        ]
       },
       {
         "key": "brulure_3",
         "label": "Brûlure 3e degré",
-        "examens": "Auscultation : Brûlures 3e degré Bras Droit",
-        "soins": "Chir AG : Nettoyage plaies (sérum phy) + retrait peaux mortes + Greffon synthétique/prélèvement de peau Bras Droit + PDS cutanés // Bandages + Tulles gras // AD + AI + AB"
+        "examens": [
+          {
+            "appareil": "Auscultation",
+            "contenu": "Brûlures 3e degré Bras Droit"
+          }
+        ],
+        "soins": [
+          {
+            "type": "chir",
+            "prefixe": "Chir AG",
+            "contenu": "Nettoyage plaies (sérum phy) + retrait peaux mortes + greffon synthétique/prélèvement de peau Bras Droit + PDS cutanés"
+          },
+          {
+            "type": "immo",
+            "contenu": "Bandages + tulles gras Bras Droit"
+          },
+          {
+            "type": "meds",
+            "contenu": "Glace + AD + AI + AB"
+          }
+        ]
       },
       {
         "key": "attaque_animale",
         "label": "Attaque Animale",
-        "examens": "Auscultation : Traces de morsures/Lacérations Bras Droit // Echo : Déchirure musculaire Bras Droit",
-        "soins": "Vaccin anti-rabique // PDS muscle + PDS cutanées // Bandages Bras Droit"
+        "examens": [
+          {
+            "appareil": "Auscultation",
+            "contenu": "Traces de morsures/lacérations Bras Droit"
+          },
+          {
+            "appareil": "Echo",
+            "contenu": "Déchirure musculaire Bras Droit"
+          }
+        ],
+        "soins": [
+          {
+            "type": "chir",
+            "prefixe": "Chir AL ou AG",
+            "contenu": "PDS muscle + PDS cutanées"
+          },
+          {
+            "type": "immo",
+            "contenu": "Bandages Bras Droit"
+          },
+          {
+            "type": "meds",
+            "contenu": "Vaccin anti-rabique + AB"
+          }
+        ]
       },
       {
         "key": "bpb_nt",
         "label": "BPB Non Traversant",
-        "examens": "Radio : BPB NT Bras Droit + Fracture ou Fissure Bras Droit // Echo : Déchirure musculaire Bras Droit",
-        "soins": "Chir AL ou AG : Retrait balles + cautérisation + PDS muscle + PDS cutané // Bandage & attelle rigide Bras Droit // AI + AD + AB + AC"
+        "examens": [
+          {
+            "appareil": "Radio",
+            "contenu": "BPB NT Bras Droit + Fracture ou Fissure Bras Droit"
+          },
+          {
+            "appareil": "Echo",
+            "contenu": "Déchirure musculaire Bras Droit"
+          }
+        ],
+        "soins": [
+          {
+            "type": "chir",
+            "prefixe": "Chir AL ou AG",
+            "contenu": "Retrait balles + cautérisation + PDS muscle + PDS cutané"
+          },
+          {
+            "type": "immo",
+            "contenu": "Bandage & attelle rigide Bras Droit"
+          },
+          {
+            "type": "meds",
+            "contenu": "AD + AI + AB + AC"
+          }
+        ]
       },
       {
         "key": "bpb_t",
         "label": "BPB Traversant",
-        "examens": "Radio : BPB T Bras Droit + Fracture ou Fissure Bras Droit // Echo : Déchirure musculaire Bras Droit",
-        "soins": "Chir AL ou AG : Cautérisation + PDS muscle + PDS cutané // Bandage & attelle rigide Bras Droit // AI + AD + AB + AC"
+        "examens": [
+          {
+            "appareil": "Radio",
+            "contenu": "BPB T Bras Droit + Fracture ou Fissure Bras Droit"
+          },
+          {
+            "appareil": "Echo",
+            "contenu": "Déchirure musculaire Bras Droit"
+          }
+        ],
+        "soins": [
+          {
+            "type": "chir",
+            "prefixe": "Chir AL ou AG",
+            "contenu": "Cautérisation + PDS muscle + PDS cutané"
+          },
+          {
+            "type": "immo",
+            "contenu": "Bandage & attelle rigide Bras Droit"
+          },
+          {
+            "type": "meds",
+            "contenu": "AD + AI + AB + AC"
+          }
+        ]
       }
     ]
   },
@@ -342,74 +1357,306 @@
       {
         "key": "entorse",
         "label": "Entorse",
-        "examens": "Auscultation : Oedème Main Gauche // Echo : Entorse Main Gauche",
-        "soins": "Glace // Attelle souple Main Gauche // AD + AI"
+        "examens": [
+          {
+            "appareil": "Auscultation",
+            "contenu": "Oedème Main Gauche"
+          },
+          {
+            "appareil": "Echo",
+            "contenu": "Entorse Main Gauche"
+          }
+        ],
+        "soins": [
+          {
+            "type": "immo",
+            "contenu": "Attelle souple Main Gauche"
+          },
+          {
+            "type": "meds",
+            "contenu": "Glace + AD + AI"
+          }
+        ]
       },
       {
         "key": "luxation",
         "label": "Luxation",
-        "examens": "Auscultation : Désaxement Main Gauche // Radio : Luxation Main Gauche",
-        "soins": "Attelle rigide Main Gauche // AD + AI"
+        "examens": [
+          {
+            "appareil": "Auscultation",
+            "contenu": "Désaxement Main Gauche"
+          },
+          {
+            "appareil": "Radio",
+            "contenu": "Luxation Main Gauche"
+          }
+        ],
+        "soins": [
+          {
+            "type": "immo",
+            "contenu": "Attelle rigide Main Gauche"
+          },
+          {
+            "type": "meds",
+            "contenu": "AD + AI"
+          }
+        ]
       },
       {
         "key": "fissure",
         "label": "Fissure",
-        "examens": "Radio : Fissure Main Gauche",
-        "soins": "Attelle rigide Main Gauche // AD + AI"
+        "examens": [
+          {
+            "appareil": "Radio",
+            "contenu": "Fissure Main Gauche"
+          }
+        ],
+        "soins": [
+          {
+            "type": "immo",
+            "contenu": "Attelle rigide Main Gauche"
+          },
+          {
+            "type": "meds",
+            "contenu": "AD + AI"
+          }
+        ]
       },
       {
         "key": "fracture_nette",
         "label": "Fracture Nette",
-        "examens": "Radio : Fracture nette Main Gauche",
-        "soins": "Attelle rigide Main Gauche // AD + AI"
+        "examens": [
+          {
+            "appareil": "Radio",
+            "contenu": "Fracture nette Main Gauche"
+          }
+        ],
+        "soins": [
+          {
+            "type": "immo",
+            "contenu": "Attelle rigide Main Gauche"
+          },
+          {
+            "type": "meds",
+            "contenu": "AD + AI"
+          }
+        ]
       },
       {
         "key": "fracture_deplacee",
         "label": "Fracture Déplacée",
-        "examens": "Radio : Fracture déplacée Main Gauche",
-        "soins": "Chir AG ou AL : Cautérisation + Nettoyage fragments + Os réaxé + Pose plaque et vis (Mg) + PDS musculaires & cutanés // Attelle rigide Main Gauche // AD + AI + AB + AC"
+        "examens": [
+          {
+            "appareil": "Radio",
+            "contenu": "Fracture déplacée Main Gauche"
+          }
+        ],
+        "soins": [
+          {
+            "type": "chir",
+            "prefixe": "Chir AG ou AL",
+            "contenu": "Cautérisation + nettoyage fragments + os réaxé + pose plaque et vis (Mg) + PDS musculaires & cutanés"
+          },
+          {
+            "type": "immo",
+            "contenu": "Attelle rigide Main Gauche"
+          },
+          {
+            "type": "meds",
+            "contenu": "AD + AI + AB + AC"
+          }
+        ]
       },
       {
         "key": "fracture_ouverte",
         "label": "Fracture Ouverte",
-        "examens": "Auscultation : Saignement Main Gauche // Radio : Fracture ouverte déplacée Main Gauche",
-        "soins": "Chir AG ou AL : Cautérisation + Nettoyage fragments + Os réaxé + Pose plaque et vis (Mg) + PDS musculaires & cutanés // Attelle rigide Main Gauche // AD + AI + AB + AC"
+        "examens": [
+          {
+            "appareil": "Auscultation",
+            "contenu": "Saignement Main Gauche"
+          },
+          {
+            "appareil": "Radio",
+            "contenu": "Fracture ouverte déplacée Main Gauche"
+          }
+        ],
+        "soins": [
+          {
+            "type": "chir",
+            "prefixe": "Chir AG ou AL",
+            "contenu": "Cautérisation + nettoyage fragments + os réaxé + pose plaque et vis (Mg) + PDS musculaires & cutanés"
+          },
+          {
+            "type": "immo",
+            "contenu": "Attelle rigide Main Gauche"
+          },
+          {
+            "type": "meds",
+            "contenu": "AD + AI + AB + AC"
+          }
+        ]
       },
       {
         "key": "brulure_1",
         "label": "Brûlure 1er degré",
-        "examens": "Auscultation : Brûlures 1er degré Main Gauche",
-        "soins": "Nettoyage plaies (sérum phy) + crème cicatrisante // Bandages // AD + AI + AB"
+        "examens": [
+          {
+            "appareil": "Auscultation",
+            "contenu": "Brûlures 1er degré Main Gauche"
+          }
+        ],
+        "soins": [
+          {
+            "type": "chir",
+            "prefixe": "Chir AL ou AG",
+            "contenu": "Nettoyage plaies (sérum phy) + crème cicatrisante"
+          },
+          {
+            "type": "immo",
+            "contenu": "Bandages Main Gauche"
+          },
+          {
+            "type": "meds",
+            "contenu": "Glace + AD + AI + AB"
+          }
+        ]
       },
       {
         "key": "brulure_2",
         "label": "Brûlure 2e degré",
-        "examens": "Auscultation : Brûlures 2e degré Main Gauche",
-        "soins": "Chir AG ou AL : Nettoyage plaies (sérum phy) + retrait chairs mortes // Bandages + tulles gras // AD + AI + AB"
+        "examens": [
+          {
+            "appareil": "Auscultation",
+            "contenu": "Brûlures 2e degré Main Gauche"
+          }
+        ],
+        "soins": [
+          {
+            "type": "chir",
+            "prefixe": "Chir AL ou AG",
+            "contenu": "Nettoyage plaies (sérum phy) + retrait chairs mortes"
+          },
+          {
+            "type": "immo",
+            "contenu": "Bandages + tulles gras Main Gauche"
+          },
+          {
+            "type": "meds",
+            "contenu": "Glace + AD + AI + AB"
+          }
+        ]
       },
       {
         "key": "brulure_3",
         "label": "Brûlure 3e degré",
-        "examens": "Auscultation : Brûlures 3e degré Main Gauche",
-        "soins": "Chir AG : Nettoyage plaies (sérum phy) + retrait peaux mortes + Greffon synthétique/prélèvement de peau Main Gauche + PDS cutanés // Bandages + Tulles gras // AD + AI + AB"
+        "examens": [
+          {
+            "appareil": "Auscultation",
+            "contenu": "Brûlures 3e degré Main Gauche"
+          }
+        ],
+        "soins": [
+          {
+            "type": "chir",
+            "prefixe": "Chir AG",
+            "contenu": "Nettoyage plaies (sérum phy) + retrait peaux mortes + greffon synthétique/prélèvement de peau Main Gauche + PDS cutanés"
+          },
+          {
+            "type": "immo",
+            "contenu": "Bandages + tulles gras Main Gauche"
+          },
+          {
+            "type": "meds",
+            "contenu": "Glace + AD + AI + AB"
+          }
+        ]
       },
       {
         "key": "attaque_animale",
         "label": "Attaque Animale",
-        "examens": "Auscultation : Traces de morsures/Lacérations Main Gauche // Echo : Déchirure musculaire Main Gauche",
-        "soins": "Vaccin anti-rabique // PDS muscle + PDS cutanées // Bandages Main Gauche"
+        "examens": [
+          {
+            "appareil": "Auscultation",
+            "contenu": "Traces de morsures/lacérations Main Gauche"
+          },
+          {
+            "appareil": "Echo",
+            "contenu": "Déchirure musculaire Main Gauche"
+          }
+        ],
+        "soins": [
+          {
+            "type": "chir",
+            "prefixe": "Chir AL ou AG",
+            "contenu": "PDS muscle + PDS cutanées"
+          },
+          {
+            "type": "immo",
+            "contenu": "Bandages Main Gauche"
+          },
+          {
+            "type": "meds",
+            "contenu": "Vaccin anti-rabique + AB"
+          }
+        ]
       },
       {
         "key": "bpb_nt",
         "label": "BPB Non Traversant",
-        "examens": "Radio : BPB NT Main Gauche + Fracture ou Fissure Main Gauche // Echo : Déchirure musculaire Main Gauche",
-        "soins": "Chir AL ou AG : Retrait balles + cautérisation + PDS muscle + PDS cutané // Bandage & attelle rigide Main Gauche // AI + AD + AB + AC"
+        "examens": [
+          {
+            "appareil": "Radio",
+            "contenu": "BPB NT Main Gauche + Fracture ou Fissure Main Gauche"
+          },
+          {
+            "appareil": "Echo",
+            "contenu": "Déchirure musculaire Main Gauche"
+          }
+        ],
+        "soins": [
+          {
+            "type": "chir",
+            "prefixe": "Chir AL ou AG",
+            "contenu": "Retrait balles + cautérisation + PDS muscle + PDS cutané"
+          },
+          {
+            "type": "immo",
+            "contenu": "Bandage & attelle rigide Main Gauche"
+          },
+          {
+            "type": "meds",
+            "contenu": "AD + AI + AB + AC"
+          }
+        ]
       },
       {
         "key": "bpb_t",
         "label": "BPB Traversant",
-        "examens": "Radio : BPB T Main Gauche + Fracture ou Fissure Main Gauche // Echo : Déchirure musculaire Main Gauche",
-        "soins": "Chir AL ou AG : Cautérisation + PDS muscle + PDS cutané // Bandage & attelle rigide Main Gauche // AI + AD + AB + AC"
+        "examens": [
+          {
+            "appareil": "Radio",
+            "contenu": "BPB T Main Gauche + Fracture ou Fissure Main Gauche"
+          },
+          {
+            "appareil": "Echo",
+            "contenu": "Déchirure musculaire Main Gauche"
+          }
+        ],
+        "soins": [
+          {
+            "type": "chir",
+            "prefixe": "Chir AL ou AG",
+            "contenu": "Cautérisation + PDS muscle + PDS cutané"
+          },
+          {
+            "type": "immo",
+            "contenu": "Bandage & attelle rigide Main Gauche"
+          },
+          {
+            "type": "meds",
+            "contenu": "AD + AI + AB + AC"
+          }
+        ]
       }
     ]
   },
@@ -420,74 +1667,306 @@
       {
         "key": "entorse",
         "label": "Entorse",
-        "examens": "Auscultation : Oedème Main Droite // Echo : Entorse Main Droite",
-        "soins": "Glace // Attelle souple Main Droite // AD + AI"
+        "examens": [
+          {
+            "appareil": "Auscultation",
+            "contenu": "Oedème Main Droite"
+          },
+          {
+            "appareil": "Echo",
+            "contenu": "Entorse Main Droite"
+          }
+        ],
+        "soins": [
+          {
+            "type": "immo",
+            "contenu": "Attelle souple Main Droite"
+          },
+          {
+            "type": "meds",
+            "contenu": "Glace + AD + AI"
+          }
+        ]
       },
       {
         "key": "luxation",
         "label": "Luxation",
-        "examens": "Auscultation : Désaxement Main Droite // Radio : Luxation Main Droite",
-        "soins": "Attelle rigide Main Droite // AD + AI"
+        "examens": [
+          {
+            "appareil": "Auscultation",
+            "contenu": "Désaxement Main Droite"
+          },
+          {
+            "appareil": "Radio",
+            "contenu": "Luxation Main Droite"
+          }
+        ],
+        "soins": [
+          {
+            "type": "immo",
+            "contenu": "Attelle rigide Main Droite"
+          },
+          {
+            "type": "meds",
+            "contenu": "AD + AI"
+          }
+        ]
       },
       {
         "key": "fissure",
         "label": "Fissure",
-        "examens": "Radio : Fissure Main Droite",
-        "soins": "Attelle rigide Main Droite // AD + AI"
+        "examens": [
+          {
+            "appareil": "Radio",
+            "contenu": "Fissure Main Droite"
+          }
+        ],
+        "soins": [
+          {
+            "type": "immo",
+            "contenu": "Attelle rigide Main Droite"
+          },
+          {
+            "type": "meds",
+            "contenu": "AD + AI"
+          }
+        ]
       },
       {
         "key": "fracture_nette",
         "label": "Fracture Nette",
-        "examens": "Radio : Fracture nette Main Droite",
-        "soins": "Attelle rigide Main Droite // AD + AI"
+        "examens": [
+          {
+            "appareil": "Radio",
+            "contenu": "Fracture nette Main Droite"
+          }
+        ],
+        "soins": [
+          {
+            "type": "immo",
+            "contenu": "Attelle rigide Main Droite"
+          },
+          {
+            "type": "meds",
+            "contenu": "AD + AI"
+          }
+        ]
       },
       {
         "key": "fracture_deplacee",
         "label": "Fracture Déplacée",
-        "examens": "Radio : Fracture déplacée Main Droite",
-        "soins": "Chir AG ou AL : Cautérisation + Nettoyage fragments + Os réaxé + Pose plaque et vis (Mg) + PDS musculaires & cutanés // Attelle rigide Main Droite // AD + AI + AB + AC"
+        "examens": [
+          {
+            "appareil": "Radio",
+            "contenu": "Fracture déplacée Main Droite"
+          }
+        ],
+        "soins": [
+          {
+            "type": "chir",
+            "prefixe": "Chir AG ou AL",
+            "contenu": "Cautérisation + nettoyage fragments + os réaxé + pose plaque et vis (Mg) + PDS musculaires & cutanés"
+          },
+          {
+            "type": "immo",
+            "contenu": "Attelle rigide Main Droite"
+          },
+          {
+            "type": "meds",
+            "contenu": "AD + AI + AB + AC"
+          }
+        ]
       },
       {
         "key": "fracture_ouverte",
         "label": "Fracture Ouverte",
-        "examens": "Auscultation : Saignement Main Droite // Radio : Fracture ouverte déplacée Main Droite",
-        "soins": "Chir AG ou AL : Cautérisation + Nettoyage fragments + Os réaxé + Pose plaque et vis (Mg) + PDS musculaires & cutanés // Attelle rigide Main Droite // AD + AI + AB + AC"
+        "examens": [
+          {
+            "appareil": "Auscultation",
+            "contenu": "Saignement Main Droite"
+          },
+          {
+            "appareil": "Radio",
+            "contenu": "Fracture ouverte déplacée Main Droite"
+          }
+        ],
+        "soins": [
+          {
+            "type": "chir",
+            "prefixe": "Chir AG ou AL",
+            "contenu": "Cautérisation + nettoyage fragments + os réaxé + pose plaque et vis (Mg) + PDS musculaires & cutanés"
+          },
+          {
+            "type": "immo",
+            "contenu": "Attelle rigide Main Droite"
+          },
+          {
+            "type": "meds",
+            "contenu": "AD + AI + AB + AC"
+          }
+        ]
       },
       {
         "key": "brulure_1",
         "label": "Brûlure 1er degré",
-        "examens": "Auscultation : Brûlures 1er degré Main Droite",
-        "soins": "Nettoyage plaies (sérum phy) + crème cicatrisante // Bandages // AD + AI + AB"
+        "examens": [
+          {
+            "appareil": "Auscultation",
+            "contenu": "Brûlures 1er degré Main Droite"
+          }
+        ],
+        "soins": [
+          {
+            "type": "chir",
+            "prefixe": "Chir AL ou AG",
+            "contenu": "Nettoyage plaies (sérum phy) + crème cicatrisante"
+          },
+          {
+            "type": "immo",
+            "contenu": "Bandages Main Droite"
+          },
+          {
+            "type": "meds",
+            "contenu": "Glace + AD + AI + AB"
+          }
+        ]
       },
       {
         "key": "brulure_2",
         "label": "Brûlure 2e degré",
-        "examens": "Auscultation : Brûlures 2e degré Main Droite",
-        "soins": "Chir AG ou AL : Nettoyage plaies (sérum phy) + retrait chairs mortes // Bandages + tulles gras // AD + AI + AB"
+        "examens": [
+          {
+            "appareil": "Auscultation",
+            "contenu": "Brûlures 2e degré Main Droite"
+          }
+        ],
+        "soins": [
+          {
+            "type": "chir",
+            "prefixe": "Chir AL ou AG",
+            "contenu": "Nettoyage plaies (sérum phy) + retrait chairs mortes"
+          },
+          {
+            "type": "immo",
+            "contenu": "Bandages + tulles gras Main Droite"
+          },
+          {
+            "type": "meds",
+            "contenu": "Glace + AD + AI + AB"
+          }
+        ]
       },
       {
         "key": "brulure_3",
         "label": "Brûlure 3e degré",
-        "examens": "Auscultation : Brûlures 3e degré Main Droite",
-        "soins": "Chir AG : Nettoyage plaies (sérum phy) + retrait peaux mortes + Greffon synthétique/prélèvement de peau Main Droite + PDS cutanés // Bandages + Tulles gras // AD + AI + AB"
+        "examens": [
+          {
+            "appareil": "Auscultation",
+            "contenu": "Brûlures 3e degré Main Droite"
+          }
+        ],
+        "soins": [
+          {
+            "type": "chir",
+            "prefixe": "Chir AG",
+            "contenu": "Nettoyage plaies (sérum phy) + retrait peaux mortes + greffon synthétique/prélèvement de peau Main Droite + PDS cutanés"
+          },
+          {
+            "type": "immo",
+            "contenu": "Bandages + tulles gras Main Droite"
+          },
+          {
+            "type": "meds",
+            "contenu": "Glace + AD + AI + AB"
+          }
+        ]
       },
       {
         "key": "attaque_animale",
         "label": "Attaque Animale",
-        "examens": "Auscultation : Traces de morsures/Lacérations Main Droite // Echo : Déchirure musculaire Main Droite",
-        "soins": "Vaccin anti-rabique // PDS muscle + PDS cutanées // Bandages Main Droite"
+        "examens": [
+          {
+            "appareil": "Auscultation",
+            "contenu": "Traces de morsures/lacérations Main Droite"
+          },
+          {
+            "appareil": "Echo",
+            "contenu": "Déchirure musculaire Main Droite"
+          }
+        ],
+        "soins": [
+          {
+            "type": "chir",
+            "prefixe": "Chir AL ou AG",
+            "contenu": "PDS muscle + PDS cutanées"
+          },
+          {
+            "type": "immo",
+            "contenu": "Bandages Main Droite"
+          },
+          {
+            "type": "meds",
+            "contenu": "Vaccin anti-rabique + AB"
+          }
+        ]
       },
       {
         "key": "bpb_nt",
         "label": "BPB Non Traversant",
-        "examens": "Radio : BPB NT Main Droite + Fracture ou Fissure Main Droite // Echo : Déchirure musculaire Main Droite",
-        "soins": "Chir AL ou AG : Retrait balles + cautérisation + PDS muscle + PDS cutané // Bandage & attelle rigide Main Droite // AI + AD + AB + AC"
+        "examens": [
+          {
+            "appareil": "Radio",
+            "contenu": "BPB NT Main Droite + Fracture ou Fissure Main Droite"
+          },
+          {
+            "appareil": "Echo",
+            "contenu": "Déchirure musculaire Main Droite"
+          }
+        ],
+        "soins": [
+          {
+            "type": "chir",
+            "prefixe": "Chir AL ou AG",
+            "contenu": "Retrait balles + cautérisation + PDS muscle + PDS cutané"
+          },
+          {
+            "type": "immo",
+            "contenu": "Bandage & attelle rigide Main Droite"
+          },
+          {
+            "type": "meds",
+            "contenu": "AD + AI + AB + AC"
+          }
+        ]
       },
       {
         "key": "bpb_t",
         "label": "BPB Traversant",
-        "examens": "Radio : BPB T Main Droite + Fracture ou Fissure Main Droite // Echo : Déchirure musculaire Main Droite",
-        "soins": "Chir AL ou AG : Cautérisation + PDS muscle + PDS cutané // Bandage & attelle rigide Main Droite // AI + AD + AB + AC"
+        "examens": [
+          {
+            "appareil": "Radio",
+            "contenu": "BPB T Main Droite + Fracture ou Fissure Main Droite"
+          },
+          {
+            "appareil": "Echo",
+            "contenu": "Déchirure musculaire Main Droite"
+          }
+        ],
+        "soins": [
+          {
+            "type": "chir",
+            "prefixe": "Chir AL ou AG",
+            "contenu": "Cautérisation + PDS muscle + PDS cutané"
+          },
+          {
+            "type": "immo",
+            "contenu": "Bandage & attelle rigide Main Droite"
+          },
+          {
+            "type": "meds",
+            "contenu": "AD + AI + AB + AC"
+          }
+        ]
       }
     ]
   },
@@ -498,116 +1977,229 @@
       {
         "key": "fissure_cote",
         "label": "Fissure Côte(s)",
-        "examens": "Radio : Fissure côte(s) torse",
-        "soins": "Bandage de maintien torse // AD + AI"
+        "examens": [
+          {
+            "appareil": "Radio",
+            "contenu": "Fissure côte(s) torse"
+          }
+        ],
+        "soins": [
+          {
+            "type": "immo",
+            "contenu": "Attelle rigide torse"
+          },
+          {
+            "type": "meds",
+            "contenu": "AD + AI"
+          }
+        ]
       },
       {
         "key": "fracture_nette_cote",
         "label": "Fracture Nette Côte(s)",
-        "examens": "Radio : Fracture nette côte(s) torse",
-        "soins": "Bandage de maintien torse // AD + AI"
+        "examens": [
+          {
+            "appareil": "Radio",
+            "contenu": "Fracture nette côte(s) torse"
+          }
+        ],
+        "soins": [
+          {
+            "type": "immo",
+            "contenu": "Attelle rigide torse"
+          },
+          {
+            "type": "meds",
+            "contenu": "AD + AI"
+          }
+        ]
       },
       {
         "key": "fracture_deplacee_cote",
         "label": "Fracture Déplacée Côte(s)",
-        "examens": "Radio : Fracture déplacée côte(s) torse",
-        "soins": "Chir AG ou AL : Cautérisation + Nettoyage fragments + Os réaxé + Pose plaque et vis (Mg) + PDS musculaires & cutanés // Bandage de maintien torse // AD + AI + AB + AC"
+        "examens": [
+          {
+            "appareil": "Radio",
+            "contenu": "Fracture déplacée côte(s) torse"
+          }
+        ],
+        "soins": [
+          {
+            "type": "chir",
+            "prefixe": "Chir AG ou AL",
+            "contenu": "Cautérisation + nettoyage fragments + os réaxé + pose plaque et vis (Mg) + PDS musculaires & cutanés"
+          },
+          {
+            "type": "immo",
+            "contenu": "Attelle rigide torse"
+          },
+          {
+            "type": "meds",
+            "contenu": "AD + AI + AB + AC"
+          }
+        ]
       },
       {
         "key": "brulure_1",
         "label": "Brûlure 1er degré",
-        "examens": "Auscultation : Brûlures 1er degré torse",
-        "soins": "Nettoyage plaies (sérum phy) + crème cicatrisante // Bandages torse // AD + AI + AB"
+        "examens": [
+          {
+            "appareil": "Auscultation",
+            "contenu": "Brûlures 1er degré torse"
+          }
+        ],
+        "soins": [
+          {
+            "type": "chir",
+            "prefixe": "Chir AL ou AG",
+            "contenu": "Nettoyage plaies (sérum phy) + crème cicatrisante"
+          },
+          {
+            "type": "immo",
+            "contenu": "Bandages torse"
+          },
+          {
+            "type": "meds",
+            "contenu": "Glace + AD + AI + AB"
+          }
+        ]
       },
       {
         "key": "brulure_2",
         "label": "Brûlure 2e degré",
-        "examens": "Auscultation : Brûlures 2e degré torse",
-        "soins": "Chir AG ou AL : Nettoyage plaies (sérum phy) + retrait chairs mortes // Bandages + tulles gras torse // AD + AI + AB"
+        "examens": [
+          {
+            "appareil": "Auscultation",
+            "contenu": "Brûlures 2e degré torse"
+          }
+        ],
+        "soins": [
+          {
+            "type": "chir",
+            "prefixe": "Chir AL ou AG",
+            "contenu": "Nettoyage plaies (sérum phy) + retrait chairs mortes"
+          },
+          {
+            "type": "immo",
+            "contenu": "Bandages + tulles gras torse"
+          },
+          {
+            "type": "meds",
+            "contenu": "Glace + AD + AI + AB"
+          }
+        ]
       },
       {
         "key": "brulure_3",
         "label": "Brûlure 3e degré",
-        "examens": "Auscultation : Brûlures 3e degré torse",
-        "soins": "Chir AG : Nettoyage plaies (sérum phy) + retrait peaux mortes + Greffon synthétique/prélèvement de peau torse + PDS cutanés // Bandages + Tulles gras // AD + AI + AB"
+        "examens": [
+          {
+            "appareil": "Auscultation",
+            "contenu": "Brûlures 3e degré torse"
+          }
+        ],
+        "soins": [
+          {
+            "type": "chir",
+            "prefixe": "Chir AG",
+            "contenu": "Nettoyage plaies (sérum phy) + retrait peaux mortes + greffon synthétique/prélèvement de peau torse + PDS cutanés"
+          },
+          {
+            "type": "immo",
+            "contenu": "Bandages + tulles gras torse"
+          },
+          {
+            "type": "meds",
+            "contenu": "Glace + AD + AI + AB"
+          }
+        ]
       },
       {
         "key": "attaque_animale",
         "label": "Attaque Animale",
-        "examens": "Auscultation : Traces de morsures/Lacérations torse // Echo : Déchirure musculaire torse",
-        "soins": "Vaccin anti-rabique // PDS muscle + PDS cutanées // Bandages torse"
+        "examens": [
+          {
+            "appareil": "Auscultation",
+            "contenu": "Traces de morsures/lacérations torse"
+          },
+          {
+            "appareil": "Echo",
+            "contenu": "Déchirure musculaire torse"
+          }
+        ],
+        "soins": [
+          {
+            "type": "chir",
+            "prefixe": "Chir AL ou AG",
+            "contenu": "PDS muscle + PDS cutanées"
+          },
+          {
+            "type": "immo",
+            "contenu": "Bandages torse"
+          },
+          {
+            "type": "meds",
+            "contenu": "Vaccin anti-rabique + AB"
+          }
+        ]
       },
       {
         "key": "bpb_nt",
         "label": "BPB Non Traversant",
-        "examens": "Radio : BPB NT torse + Fracture ou Fissure côte(s) // Echo : Déchirure musculaire torse",
-        "soins": "Chir AL ou AG : Retrait balles + cautérisation + PDS muscle + PDS cutané // Bandage torse // AI + AD + AB + AC"
+        "examens": [
+          {
+            "appareil": "Radio",
+            "contenu": "BPB NT torse + Fracture ou Fissure côte(s)"
+          },
+          {
+            "appareil": "Echo",
+            "contenu": "Déchirure musculaire torse"
+          }
+        ],
+        "soins": [
+          {
+            "type": "chir",
+            "prefixe": "Chir AL ou AG",
+            "contenu": "Retrait balles + cautérisation + PDS muscle + PDS cutané"
+          },
+          {
+            "type": "immo",
+            "contenu": "Bandage & attelle rigide torse"
+          },
+          {
+            "type": "meds",
+            "contenu": "AD + AI + AB + AC"
+          }
+        ]
       },
       {
         "key": "bpb_t",
         "label": "BPB Traversant",
-        "examens": "Radio : BPB T torse + Fracture ou Fissure côte(s) // Echo : Déchirure musculaire torse",
-        "soins": "Chir AL ou AG : Cautérisation + PDS muscle + PDS cutané // Bandage torse // AI + AD + AB + AC"
-      }
-    ]
-  },
-  {
-    "key": "dos",
-    "label": "Dos",
-    "pathologies": [
-      {
-        "key": "fissure_vert",
-        "label": "Fissure Vertèbre(s)",
-        "examens": "Radio : Fissure vertèbre(s) dos",
-        "soins": "Bandage de maintien dos // AD + AI"
-      },
-      {
-        "key": "fracture_nette_vert",
-        "label": "Fracture Nette Vertèbre(s)",
-        "examens": "Radio : Fracture nette vertèbre(s) dos",
-        "soins": "Bandage de maintien dos // AD + AI"
-      },
-      {
-        "key": "fracture_deplacee_vert",
-        "label": "Fracture Déplacée Vertèbre(s)",
-        "examens": "Radio : Fracture déplacée vertèbre(s) dos",
-        "soins": "Chir AG ou AL : Cautérisation + Nettoyage fragments + Os réaxé + Pose plaque et vis (Mg) + PDS musculaires & cutanés // Bandage de maintien dos // AD + AI + AB + AC"
-      },
-      {
-        "key": "brulure_1",
-        "label": "Brûlure 1er degré",
-        "examens": "Auscultation : Brûlures 1er degré dos",
-        "soins": "Nettoyage plaies (sérum phy) + crème cicatrisante // Bandages dos // AD + AI + AB"
-      },
-      {
-        "key": "brulure_2",
-        "label": "Brûlure 2e degré",
-        "examens": "Auscultation : Brûlures 2e degré dos",
-        "soins": "Chir AG ou AL : Nettoyage plaies (sérum phy) + retrait chairs mortes // Bandages + tulles gras dos // AD + AI + AB"
-      },
-      {
-        "key": "brulure_3",
-        "label": "Brûlure 3e degré",
-        "examens": "Auscultation : Brûlures 3e degré dos",
-        "soins": "Chir AG : Nettoyage plaies (sérum phy) + retrait peaux mortes + Greffon synthétique/prélèvement de peau dos + PDS cutanés // Bandages + Tulles gras // AD + AI + AB"
-      },
-      {
-        "key": "attaque_animale",
-        "label": "Attaque Animale",
-        "examens": "Auscultation : Traces de morsures/Lacérations dos // Echo : Déchirure musculaire dos",
-        "soins": "Vaccin anti-rabique // PDS muscle + PDS cutanées // Bandages dos"
-      },
-      {
-        "key": "bpb_nt",
-        "label": "BPB Non Traversant",
-        "examens": "Radio : BPB NT dos + Fracture ou Fissure vertèbre(s) // Echo : Déchirure musculaire dos",
-        "soins": "Chir AL ou AG : Retrait balles + cautérisation + PDS muscle + PDS cutané // Bandage dos // AI + AD + AB + AC"
-      },
-      {
-        "key": "bpb_t",
-        "label": "BPB Traversant",
-        "examens": "Radio : BPB T dos + Fracture ou Fissure vertèbre(s) // Echo : Déchirure musculaire dos",
-        "soins": "Chir AL ou AG : Cautérisation + PDS muscle + PDS cutané // Bandage dos // AI + AD + AB + AC"
+        "examens": [
+          {
+            "appareil": "Radio",
+            "contenu": "BPB T torse + Fracture ou Fissure côte(s)"
+          },
+          {
+            "appareil": "Echo",
+            "contenu": "Déchirure musculaire torse"
+          }
+        ],
+        "soins": [
+          {
+            "type": "chir",
+            "prefixe": "Chir AL ou AG",
+            "contenu": "Cautérisation + PDS muscle + PDS cutané"
+          },
+          {
+            "type": "immo",
+            "contenu": "Bandage & attelle rigide torse"
+          },
+          {
+            "type": "meds",
+            "contenu": "AD + AI + AB + AC"
+          }
+        ]
       }
     ]
   },
@@ -616,58 +2208,260 @@
     "label": "Bassin",
     "pathologies": [
       {
+        "key": "fissure",
+        "label": "Fissure",
+        "examens": [
+          {
+            "appareil": "Radio",
+            "contenu": "Fissure bassin"
+          }
+        ],
+        "soins": [
+          {
+            "type": "immo",
+            "contenu": "Attelle rigide bassin"
+          },
+          {
+            "type": "meds",
+            "contenu": "AD + AI"
+          }
+        ]
+      },
+      {
         "key": "fracture_nette",
         "label": "Fracture Nette",
-        "examens": "Radio : Fracture nette bassin",
-        "soins": "Attelle rigide bassin // AD + AI"
+        "examens": [
+          {
+            "appareil": "Radio",
+            "contenu": "Fracture nette bassin"
+          }
+        ],
+        "soins": [
+          {
+            "type": "immo",
+            "contenu": "Attelle rigide bassin"
+          },
+          {
+            "type": "meds",
+            "contenu": "AD + AI"
+          }
+        ]
       },
       {
         "key": "fracture_deplacee",
         "label": "Fracture Déplacée",
-        "examens": "Radio : Fracture déplacée bassin",
-        "soins": "Chir AG ou AL : Cautérisation + Nettoyage fragments + Os réaxé + Pose plaque et vis (Mg) + PDS musculaires & cutanés // Attelle rigide bassin // AD + AI + AB + AC"
+        "examens": [
+          {
+            "appareil": "Radio",
+            "contenu": "Fracture déplacée bassin"
+          }
+        ],
+        "soins": [
+          {
+            "type": "chir",
+            "prefixe": "Chir AG ou AL",
+            "contenu": "Cautérisation + nettoyage fragments + os réaxé + pose plaque et vis (Mg) + PDS musculaires & cutanés"
+          },
+          {
+            "type": "immo",
+            "contenu": "Attelle rigide bassin"
+          },
+          {
+            "type": "meds",
+            "contenu": "AD + AI + AB + AC"
+          }
+        ]
       },
       {
         "key": "fracture_ouverte",
         "label": "Fracture Ouverte",
-        "examens": "Auscultation : Saignement bassin // Radio : Fracture ouverte déplacée bassin",
-        "soins": "Chir AG ou AL : Cautérisation + Nettoyage fragments + Os réaxé + Pose plaque et vis (Mg) + PDS musculaires & cutanés // Attelle rigide bassin // AD + AI + AB + AC"
+        "examens": [
+          {
+            "appareil": "Auscultation",
+            "contenu": "Saignement bassin"
+          },
+          {
+            "appareil": "Radio",
+            "contenu": "Fracture ouverte déplacée bassin"
+          }
+        ],
+        "soins": [
+          {
+            "type": "chir",
+            "prefixe": "Chir AG ou AL",
+            "contenu": "Cautérisation + nettoyage fragments + os réaxé + pose plaque et vis (Mg) + PDS musculaires & cutanés"
+          },
+          {
+            "type": "immo",
+            "contenu": "Attelle rigide bassin"
+          },
+          {
+            "type": "meds",
+            "contenu": "AD + AI + AB + AC"
+          }
+        ]
       },
       {
         "key": "brulure_1",
         "label": "Brûlure 1er degré",
-        "examens": "Auscultation : Brûlures 1er degré bassin",
-        "soins": "Nettoyage plaies (sérum phy) + crème cicatrisante // Bandages bassin // AD + AI + AB"
+        "examens": [
+          {
+            "appareil": "Auscultation",
+            "contenu": "Brûlures 1er degré bassin"
+          }
+        ],
+        "soins": [
+          {
+            "type": "chir",
+            "prefixe": "Chir AL ou AG",
+            "contenu": "Nettoyage plaies (sérum phy) + crème cicatrisante"
+          },
+          {
+            "type": "immo",
+            "contenu": "Bandages bassin"
+          },
+          {
+            "type": "meds",
+            "contenu": "Glace + AD + AI + AB"
+          }
+        ]
       },
       {
         "key": "brulure_2",
         "label": "Brûlure 2e degré",
-        "examens": "Auscultation : Brûlures 2e degré bassin",
-        "soins": "Chir AG ou AL : Nettoyage plaies (sérum phy) + retrait chairs mortes // Bandages + tulles gras bassin // AD + AI + AB"
+        "examens": [
+          {
+            "appareil": "Auscultation",
+            "contenu": "Brûlures 2e degré bassin"
+          }
+        ],
+        "soins": [
+          {
+            "type": "chir",
+            "prefixe": "Chir AL ou AG",
+            "contenu": "Nettoyage plaies (sérum phy) + retrait chairs mortes"
+          },
+          {
+            "type": "immo",
+            "contenu": "Bandages + tulles gras bassin"
+          },
+          {
+            "type": "meds",
+            "contenu": "Glace + AD + AI + AB"
+          }
+        ]
       },
       {
         "key": "brulure_3",
         "label": "Brûlure 3e degré",
-        "examens": "Auscultation : Brûlures 3e degré bassin",
-        "soins": "Chir AG : Nettoyage plaies (sérum phy) + retrait peaux mortes + Greffon synthétique/prélèvement de peau bassin + PDS cutanés // Bandages + Tulles gras // AD + AI + AB"
+        "examens": [
+          {
+            "appareil": "Auscultation",
+            "contenu": "Brûlures 3e degré bassin"
+          }
+        ],
+        "soins": [
+          {
+            "type": "chir",
+            "prefixe": "Chir AG",
+            "contenu": "Nettoyage plaies (sérum phy) + retrait peaux mortes + greffon synthétique/prélèvement de peau bassin + PDS cutanés"
+          },
+          {
+            "type": "immo",
+            "contenu": "Bandages + tulles gras bassin"
+          },
+          {
+            "type": "meds",
+            "contenu": "Glace + AD + AI + AB"
+          }
+        ]
       },
       {
         "key": "attaque_animale",
         "label": "Attaque Animale",
-        "examens": "Auscultation : Traces de morsures/Lacérations bassin // Echo : Déchirure musculaire bassin",
-        "soins": "Vaccin anti-rabique // PDS muscle + PDS cutanées // Bandages bassin"
+        "examens": [
+          {
+            "appareil": "Auscultation",
+            "contenu": "Traces de morsures/lacérations bassin"
+          },
+          {
+            "appareil": "Echo",
+            "contenu": "Déchirure musculaire bassin"
+          }
+        ],
+        "soins": [
+          {
+            "type": "chir",
+            "prefixe": "Chir AL ou AG",
+            "contenu": "PDS muscle + PDS cutanées"
+          },
+          {
+            "type": "immo",
+            "contenu": "Bandages bassin"
+          },
+          {
+            "type": "meds",
+            "contenu": "Vaccin anti-rabique + AB"
+          }
+        ]
       },
       {
         "key": "bpb_nt",
         "label": "BPB Non Traversant",
-        "examens": "Radio : BPB NT bassin + Fracture ou Fissure bassin // Echo : Déchirure musculaire bassin",
-        "soins": "Chir AL ou AG : Retrait balles + cautérisation + PDS muscle + PDS cutané // Bandage & attelle rigide bassin // AI + AD + AB + AC"
+        "examens": [
+          {
+            "appareil": "Radio",
+            "contenu": "BPB NT bassin + Fracture ou Fissure bassin"
+          },
+          {
+            "appareil": "Echo",
+            "contenu": "Déchirure musculaire bassin"
+          }
+        ],
+        "soins": [
+          {
+            "type": "chir",
+            "prefixe": "Chir AL ou AG",
+            "contenu": "Retrait balles + cautérisation + PDS muscle + PDS cutané"
+          },
+          {
+            "type": "immo",
+            "contenu": "Bandage & attelle rigide bassin"
+          },
+          {
+            "type": "meds",
+            "contenu": "AD + AI + AB + AC"
+          }
+        ]
       },
       {
         "key": "bpb_t",
         "label": "BPB Traversant",
-        "examens": "Radio : BPB T bassin + Fracture ou Fissure bassin // Echo : Déchirure musculaire bassin",
-        "soins": "Chir AL ou AG : Cautérisation + PDS muscle + PDS cutané // Bandage & attelle rigide bassin // AI + AD + AB + AC"
+        "examens": [
+          {
+            "appareil": "Radio",
+            "contenu": "BPB T bassin + Fracture ou Fissure bassin"
+          },
+          {
+            "appareil": "Echo",
+            "contenu": "Déchirure musculaire bassin"
+          }
+        ],
+        "soins": [
+          {
+            "type": "chir",
+            "prefixe": "Chir AL ou AG",
+            "contenu": "Cautérisation + PDS muscle + PDS cutané"
+          },
+          {
+            "type": "immo",
+            "contenu": "Bandage & attelle rigide bassin"
+          },
+          {
+            "type": "meds",
+            "contenu": "AD + AI + AB + AC"
+          }
+        ]
       }
     ]
   },
@@ -678,74 +2472,306 @@
       {
         "key": "entorse",
         "label": "Entorse",
-        "examens": "Auscultation : Oedème Jambe Gauche // Echo : Entorse Jambe Gauche",
-        "soins": "Glace // Attelle souple Jambe Gauche // AD + AI"
+        "examens": [
+          {
+            "appareil": "Auscultation",
+            "contenu": "Oedème Jambe Gauche"
+          },
+          {
+            "appareil": "Echo",
+            "contenu": "Entorse Jambe Gauche"
+          }
+        ],
+        "soins": [
+          {
+            "type": "immo",
+            "contenu": "Attelle souple Jambe Gauche"
+          },
+          {
+            "type": "meds",
+            "contenu": "Glace + AD + AI"
+          }
+        ]
       },
       {
         "key": "luxation",
         "label": "Luxation",
-        "examens": "Auscultation : Désaxement Jambe Gauche // Radio : Luxation Jambe Gauche",
-        "soins": "Attelle rigide Jambe Gauche // AD + AI"
+        "examens": [
+          {
+            "appareil": "Auscultation",
+            "contenu": "Désaxement Jambe Gauche"
+          },
+          {
+            "appareil": "Radio",
+            "contenu": "Luxation Jambe Gauche"
+          }
+        ],
+        "soins": [
+          {
+            "type": "immo",
+            "contenu": "Attelle rigide Jambe Gauche"
+          },
+          {
+            "type": "meds",
+            "contenu": "AD + AI"
+          }
+        ]
       },
       {
         "key": "fissure",
         "label": "Fissure",
-        "examens": "Radio : Fissure Jambe Gauche",
-        "soins": "Attelle rigide Jambe Gauche // AD + AI"
+        "examens": [
+          {
+            "appareil": "Radio",
+            "contenu": "Fissure Jambe Gauche"
+          }
+        ],
+        "soins": [
+          {
+            "type": "immo",
+            "contenu": "Attelle rigide Jambe Gauche"
+          },
+          {
+            "type": "meds",
+            "contenu": "AD + AI"
+          }
+        ]
       },
       {
         "key": "fracture_nette",
         "label": "Fracture Nette",
-        "examens": "Radio : Fracture nette Jambe Gauche",
-        "soins": "Attelle rigide Jambe Gauche // AD + AI"
+        "examens": [
+          {
+            "appareil": "Radio",
+            "contenu": "Fracture nette Jambe Gauche"
+          }
+        ],
+        "soins": [
+          {
+            "type": "immo",
+            "contenu": "Attelle rigide Jambe Gauche"
+          },
+          {
+            "type": "meds",
+            "contenu": "AD + AI"
+          }
+        ]
       },
       {
         "key": "fracture_deplacee",
         "label": "Fracture Déplacée",
-        "examens": "Radio : Fracture déplacée Jambe Gauche",
-        "soins": "Chir AG ou AL : Cautérisation + Nettoyage fragments + Os réaxé + Pose plaque et vis (Mg) + PDS musculaires & cutanés // Attelle rigide Jambe Gauche // AD + AI + AB + AC"
+        "examens": [
+          {
+            "appareil": "Radio",
+            "contenu": "Fracture déplacée Jambe Gauche"
+          }
+        ],
+        "soins": [
+          {
+            "type": "chir",
+            "prefixe": "Chir AG ou AL",
+            "contenu": "Cautérisation + nettoyage fragments + os réaxé + pose plaque et vis (Mg) + PDS musculaires & cutanés"
+          },
+          {
+            "type": "immo",
+            "contenu": "Attelle rigide Jambe Gauche"
+          },
+          {
+            "type": "meds",
+            "contenu": "AD + AI + AB + AC"
+          }
+        ]
       },
       {
         "key": "fracture_ouverte",
         "label": "Fracture Ouverte",
-        "examens": "Auscultation : Saignement Jambe Gauche // Radio : Fracture ouverte déplacée Jambe Gauche",
-        "soins": "Chir AG ou AL : Cautérisation + Nettoyage fragments + Os réaxé + Pose plaque et vis (Mg) + PDS musculaires & cutanés // Attelle rigide Jambe Gauche // AD + AI + AB + AC"
+        "examens": [
+          {
+            "appareil": "Auscultation",
+            "contenu": "Saignement Jambe Gauche"
+          },
+          {
+            "appareil": "Radio",
+            "contenu": "Fracture ouverte déplacée Jambe Gauche"
+          }
+        ],
+        "soins": [
+          {
+            "type": "chir",
+            "prefixe": "Chir AG ou AL",
+            "contenu": "Cautérisation + nettoyage fragments + os réaxé + pose plaque et vis (Mg) + PDS musculaires & cutanés"
+          },
+          {
+            "type": "immo",
+            "contenu": "Attelle rigide Jambe Gauche"
+          },
+          {
+            "type": "meds",
+            "contenu": "AD + AI + AB + AC"
+          }
+        ]
       },
       {
         "key": "brulure_1",
         "label": "Brûlure 1er degré",
-        "examens": "Auscultation : Brûlures 1er degré Jambe Gauche",
-        "soins": "Nettoyage plaies (sérum phy) + crème cicatrisante // Bandages // AD + AI + AB"
+        "examens": [
+          {
+            "appareil": "Auscultation",
+            "contenu": "Brûlures 1er degré Jambe Gauche"
+          }
+        ],
+        "soins": [
+          {
+            "type": "chir",
+            "prefixe": "Chir AL ou AG",
+            "contenu": "Nettoyage plaies (sérum phy) + crème cicatrisante"
+          },
+          {
+            "type": "immo",
+            "contenu": "Bandages Jambe Gauche"
+          },
+          {
+            "type": "meds",
+            "contenu": "Glace + AD + AI + AB"
+          }
+        ]
       },
       {
         "key": "brulure_2",
         "label": "Brûlure 2e degré",
-        "examens": "Auscultation : Brûlures 2e degré Jambe Gauche",
-        "soins": "Chir AG ou AL : Nettoyage plaies (sérum phy) + retrait chairs mortes // Bandages + tulles gras // AD + AI + AB"
+        "examens": [
+          {
+            "appareil": "Auscultation",
+            "contenu": "Brûlures 2e degré Jambe Gauche"
+          }
+        ],
+        "soins": [
+          {
+            "type": "chir",
+            "prefixe": "Chir AL ou AG",
+            "contenu": "Nettoyage plaies (sérum phy) + retrait chairs mortes"
+          },
+          {
+            "type": "immo",
+            "contenu": "Bandages + tulles gras Jambe Gauche"
+          },
+          {
+            "type": "meds",
+            "contenu": "Glace + AD + AI + AB"
+          }
+        ]
       },
       {
         "key": "brulure_3",
         "label": "Brûlure 3e degré",
-        "examens": "Auscultation : Brûlures 3e degré Jambe Gauche",
-        "soins": "Chir AG : Nettoyage plaies (sérum phy) + retrait peaux mortes + Greffon synthétique/prélèvement de peau Jambe Gauche + PDS cutanés // Bandages + Tulles gras // AD + AI + AB"
+        "examens": [
+          {
+            "appareil": "Auscultation",
+            "contenu": "Brûlures 3e degré Jambe Gauche"
+          }
+        ],
+        "soins": [
+          {
+            "type": "chir",
+            "prefixe": "Chir AG",
+            "contenu": "Nettoyage plaies (sérum phy) + retrait peaux mortes + greffon synthétique/prélèvement de peau Jambe Gauche + PDS cutanés"
+          },
+          {
+            "type": "immo",
+            "contenu": "Bandages + tulles gras Jambe Gauche"
+          },
+          {
+            "type": "meds",
+            "contenu": "Glace + AD + AI + AB"
+          }
+        ]
       },
       {
         "key": "attaque_animale",
         "label": "Attaque Animale",
-        "examens": "Auscultation : Traces de morsures/Lacérations Jambe Gauche // Echo : Déchirure musculaire Jambe Gauche",
-        "soins": "Vaccin anti-rabique // PDS muscle + PDS cutanées // Bandages Jambe Gauche"
+        "examens": [
+          {
+            "appareil": "Auscultation",
+            "contenu": "Traces de morsures/lacérations Jambe Gauche"
+          },
+          {
+            "appareil": "Echo",
+            "contenu": "Déchirure musculaire Jambe Gauche"
+          }
+        ],
+        "soins": [
+          {
+            "type": "chir",
+            "prefixe": "Chir AL ou AG",
+            "contenu": "PDS muscle + PDS cutanées"
+          },
+          {
+            "type": "immo",
+            "contenu": "Bandages Jambe Gauche"
+          },
+          {
+            "type": "meds",
+            "contenu": "Vaccin anti-rabique + AB"
+          }
+        ]
       },
       {
         "key": "bpb_nt",
         "label": "BPB Non Traversant",
-        "examens": "Radio : BPB NT Jambe Gauche + Fracture ou Fissure Jambe Gauche // Echo : Déchirure musculaire Jambe Gauche",
-        "soins": "Chir AL ou AG : Retrait balles + cautérisation + PDS muscle + PDS cutané // Bandage & attelle rigide Jambe Gauche // AI + AD + AB + AC"
+        "examens": [
+          {
+            "appareil": "Radio",
+            "contenu": "BPB NT Jambe Gauche + Fracture ou Fissure Jambe Gauche"
+          },
+          {
+            "appareil": "Echo",
+            "contenu": "Déchirure musculaire Jambe Gauche"
+          }
+        ],
+        "soins": [
+          {
+            "type": "chir",
+            "prefixe": "Chir AL ou AG",
+            "contenu": "Retrait balles + cautérisation + PDS muscle + PDS cutané"
+          },
+          {
+            "type": "immo",
+            "contenu": "Bandage & attelle rigide Jambe Gauche"
+          },
+          {
+            "type": "meds",
+            "contenu": "AD + AI + AB + AC"
+          }
+        ]
       },
       {
         "key": "bpb_t",
         "label": "BPB Traversant",
-        "examens": "Radio : BPB T Jambe Gauche + Fracture ou Fissure Jambe Gauche // Echo : Déchirure musculaire Jambe Gauche",
-        "soins": "Chir AL ou AG : Cautérisation + PDS muscle + PDS cutané // Bandage & attelle rigide Jambe Gauche // AI + AD + AB + AC"
+        "examens": [
+          {
+            "appareil": "Radio",
+            "contenu": "BPB T Jambe Gauche + Fracture ou Fissure Jambe Gauche"
+          },
+          {
+            "appareil": "Echo",
+            "contenu": "Déchirure musculaire Jambe Gauche"
+          }
+        ],
+        "soins": [
+          {
+            "type": "chir",
+            "prefixe": "Chir AL ou AG",
+            "contenu": "Cautérisation + PDS muscle + PDS cutané"
+          },
+          {
+            "type": "immo",
+            "contenu": "Bandage & attelle rigide Jambe Gauche"
+          },
+          {
+            "type": "meds",
+            "contenu": "AD + AI + AB + AC"
+          }
+        ]
       }
     ]
   },
@@ -756,74 +2782,306 @@
       {
         "key": "entorse",
         "label": "Entorse",
-        "examens": "Auscultation : Oedème Jambe Droite // Echo : Entorse Jambe Droite",
-        "soins": "Glace // Attelle souple Jambe Droite // AD + AI"
+        "examens": [
+          {
+            "appareil": "Auscultation",
+            "contenu": "Oedème Jambe Droite"
+          },
+          {
+            "appareil": "Echo",
+            "contenu": "Entorse Jambe Droite"
+          }
+        ],
+        "soins": [
+          {
+            "type": "immo",
+            "contenu": "Attelle souple Jambe Droite"
+          },
+          {
+            "type": "meds",
+            "contenu": "Glace + AD + AI"
+          }
+        ]
       },
       {
         "key": "luxation",
         "label": "Luxation",
-        "examens": "Auscultation : Désaxement Jambe Droite // Radio : Luxation Jambe Droite",
-        "soins": "Attelle rigide Jambe Droite // AD + AI"
+        "examens": [
+          {
+            "appareil": "Auscultation",
+            "contenu": "Désaxement Jambe Droite"
+          },
+          {
+            "appareil": "Radio",
+            "contenu": "Luxation Jambe Droite"
+          }
+        ],
+        "soins": [
+          {
+            "type": "immo",
+            "contenu": "Attelle rigide Jambe Droite"
+          },
+          {
+            "type": "meds",
+            "contenu": "AD + AI"
+          }
+        ]
       },
       {
         "key": "fissure",
         "label": "Fissure",
-        "examens": "Radio : Fissure Jambe Droite",
-        "soins": "Attelle rigide Jambe Droite // AD + AI"
+        "examens": [
+          {
+            "appareil": "Radio",
+            "contenu": "Fissure Jambe Droite"
+          }
+        ],
+        "soins": [
+          {
+            "type": "immo",
+            "contenu": "Attelle rigide Jambe Droite"
+          },
+          {
+            "type": "meds",
+            "contenu": "AD + AI"
+          }
+        ]
       },
       {
         "key": "fracture_nette",
         "label": "Fracture Nette",
-        "examens": "Radio : Fracture nette Jambe Droite",
-        "soins": "Attelle rigide Jambe Droite // AD + AI"
+        "examens": [
+          {
+            "appareil": "Radio",
+            "contenu": "Fracture nette Jambe Droite"
+          }
+        ],
+        "soins": [
+          {
+            "type": "immo",
+            "contenu": "Attelle rigide Jambe Droite"
+          },
+          {
+            "type": "meds",
+            "contenu": "AD + AI"
+          }
+        ]
       },
       {
         "key": "fracture_deplacee",
         "label": "Fracture Déplacée",
-        "examens": "Radio : Fracture déplacée Jambe Droite",
-        "soins": "Chir AG ou AL : Cautérisation + Nettoyage fragments + Os réaxé + Pose plaque et vis (Mg) + PDS musculaires & cutanés // Attelle rigide Jambe Droite // AD + AI + AB + AC"
+        "examens": [
+          {
+            "appareil": "Radio",
+            "contenu": "Fracture déplacée Jambe Droite"
+          }
+        ],
+        "soins": [
+          {
+            "type": "chir",
+            "prefixe": "Chir AG ou AL",
+            "contenu": "Cautérisation + nettoyage fragments + os réaxé + pose plaque et vis (Mg) + PDS musculaires & cutanés"
+          },
+          {
+            "type": "immo",
+            "contenu": "Attelle rigide Jambe Droite"
+          },
+          {
+            "type": "meds",
+            "contenu": "AD + AI + AB + AC"
+          }
+        ]
       },
       {
         "key": "fracture_ouverte",
         "label": "Fracture Ouverte",
-        "examens": "Auscultation : Saignement Jambe Droite // Radio : Fracture ouverte déplacée Jambe Droite",
-        "soins": "Chir AG ou AL : Cautérisation + Nettoyage fragments + Os réaxé + Pose plaque et vis (Mg) + PDS musculaires & cutanés // Attelle rigide Jambe Droite // AD + AI + AB + AC"
+        "examens": [
+          {
+            "appareil": "Auscultation",
+            "contenu": "Saignement Jambe Droite"
+          },
+          {
+            "appareil": "Radio",
+            "contenu": "Fracture ouverte déplacée Jambe Droite"
+          }
+        ],
+        "soins": [
+          {
+            "type": "chir",
+            "prefixe": "Chir AG ou AL",
+            "contenu": "Cautérisation + nettoyage fragments + os réaxé + pose plaque et vis (Mg) + PDS musculaires & cutanés"
+          },
+          {
+            "type": "immo",
+            "contenu": "Attelle rigide Jambe Droite"
+          },
+          {
+            "type": "meds",
+            "contenu": "AD + AI + AB + AC"
+          }
+        ]
       },
       {
         "key": "brulure_1",
         "label": "Brûlure 1er degré",
-        "examens": "Auscultation : Brûlures 1er degré Jambe Droite",
-        "soins": "Nettoyage plaies (sérum phy) + crème cicatrisante // Bandages // AD + AI + AB"
+        "examens": [
+          {
+            "appareil": "Auscultation",
+            "contenu": "Brûlures 1er degré Jambe Droite"
+          }
+        ],
+        "soins": [
+          {
+            "type": "chir",
+            "prefixe": "Chir AL ou AG",
+            "contenu": "Nettoyage plaies (sérum phy) + crème cicatrisante"
+          },
+          {
+            "type": "immo",
+            "contenu": "Bandages Jambe Droite"
+          },
+          {
+            "type": "meds",
+            "contenu": "Glace + AD + AI + AB"
+          }
+        ]
       },
       {
         "key": "brulure_2",
         "label": "Brûlure 2e degré",
-        "examens": "Auscultation : Brûlures 2e degré Jambe Droite",
-        "soins": "Chir AG ou AL : Nettoyage plaies (sérum phy) + retrait chairs mortes // Bandages + tulles gras // AD + AI + AB"
+        "examens": [
+          {
+            "appareil": "Auscultation",
+            "contenu": "Brûlures 2e degré Jambe Droite"
+          }
+        ],
+        "soins": [
+          {
+            "type": "chir",
+            "prefixe": "Chir AL ou AG",
+            "contenu": "Nettoyage plaies (sérum phy) + retrait chairs mortes"
+          },
+          {
+            "type": "immo",
+            "contenu": "Bandages + tulles gras Jambe Droite"
+          },
+          {
+            "type": "meds",
+            "contenu": "Glace + AD + AI + AB"
+          }
+        ]
       },
       {
         "key": "brulure_3",
         "label": "Brûlure 3e degré",
-        "examens": "Auscultation : Brûlures 3e degré Jambe Droite",
-        "soins": "Chir AG : Nettoyage plaies (sérum phy) + retrait peaux mortes + Greffon synthétique/prélèvement de peau Jambe Droite + PDS cutanés // Bandages + Tulles gras // AD + AI + AB"
+        "examens": [
+          {
+            "appareil": "Auscultation",
+            "contenu": "Brûlures 3e degré Jambe Droite"
+          }
+        ],
+        "soins": [
+          {
+            "type": "chir",
+            "prefixe": "Chir AG",
+            "contenu": "Nettoyage plaies (sérum phy) + retrait peaux mortes + greffon synthétique/prélèvement de peau Jambe Droite + PDS cutanés"
+          },
+          {
+            "type": "immo",
+            "contenu": "Bandages + tulles gras Jambe Droite"
+          },
+          {
+            "type": "meds",
+            "contenu": "Glace + AD + AI + AB"
+          }
+        ]
       },
       {
         "key": "attaque_animale",
         "label": "Attaque Animale",
-        "examens": "Auscultation : Traces de morsures/Lacérations Jambe Droite // Echo : Déchirure musculaire Jambe Droite",
-        "soins": "Vaccin anti-rabique // PDS muscle + PDS cutanées // Bandages Jambe Droite"
+        "examens": [
+          {
+            "appareil": "Auscultation",
+            "contenu": "Traces de morsures/lacérations Jambe Droite"
+          },
+          {
+            "appareil": "Echo",
+            "contenu": "Déchirure musculaire Jambe Droite"
+          }
+        ],
+        "soins": [
+          {
+            "type": "chir",
+            "prefixe": "Chir AL ou AG",
+            "contenu": "PDS muscle + PDS cutanées"
+          },
+          {
+            "type": "immo",
+            "contenu": "Bandages Jambe Droite"
+          },
+          {
+            "type": "meds",
+            "contenu": "Vaccin anti-rabique + AB"
+          }
+        ]
       },
       {
         "key": "bpb_nt",
         "label": "BPB Non Traversant",
-        "examens": "Radio : BPB NT Jambe Droite + Fracture ou Fissure Jambe Droite // Echo : Déchirure musculaire Jambe Droite",
-        "soins": "Chir AL ou AG : Retrait balles + cautérisation + PDS muscle + PDS cutané // Bandage & attelle rigide Jambe Droite // AI + AD + AB + AC"
+        "examens": [
+          {
+            "appareil": "Radio",
+            "contenu": "BPB NT Jambe Droite + Fracture ou Fissure Jambe Droite"
+          },
+          {
+            "appareil": "Echo",
+            "contenu": "Déchirure musculaire Jambe Droite"
+          }
+        ],
+        "soins": [
+          {
+            "type": "chir",
+            "prefixe": "Chir AL ou AG",
+            "contenu": "Retrait balles + cautérisation + PDS muscle + PDS cutané"
+          },
+          {
+            "type": "immo",
+            "contenu": "Bandage & attelle rigide Jambe Droite"
+          },
+          {
+            "type": "meds",
+            "contenu": "AD + AI + AB + AC"
+          }
+        ]
       },
       {
         "key": "bpb_t",
         "label": "BPB Traversant",
-        "examens": "Radio : BPB T Jambe Droite + Fracture ou Fissure Jambe Droite // Echo : Déchirure musculaire Jambe Droite",
-        "soins": "Chir AL ou AG : Cautérisation + PDS muscle + PDS cutané // Bandage & attelle rigide Jambe Droite // AI + AD + AB + AC"
+        "examens": [
+          {
+            "appareil": "Radio",
+            "contenu": "BPB T Jambe Droite + Fracture ou Fissure Jambe Droite"
+          },
+          {
+            "appareil": "Echo",
+            "contenu": "Déchirure musculaire Jambe Droite"
+          }
+        ],
+        "soins": [
+          {
+            "type": "chir",
+            "prefixe": "Chir AL ou AG",
+            "contenu": "Cautérisation + PDS muscle + PDS cutané"
+          },
+          {
+            "type": "immo",
+            "contenu": "Bandage & attelle rigide Jambe Droite"
+          },
+          {
+            "type": "meds",
+            "contenu": "AD + AI + AB + AC"
+          }
+        ]
       }
     ]
   },
@@ -834,74 +3092,306 @@
       {
         "key": "entorse",
         "label": "Entorse",
-        "examens": "Auscultation : Oedème Pied Gauche // Echo : Entorse Pied Gauche",
-        "soins": "Glace // Attelle souple Pied Gauche // AD + AI"
+        "examens": [
+          {
+            "appareil": "Auscultation",
+            "contenu": "Oedème Pied Gauche"
+          },
+          {
+            "appareil": "Echo",
+            "contenu": "Entorse Pied Gauche"
+          }
+        ],
+        "soins": [
+          {
+            "type": "immo",
+            "contenu": "Attelle souple Pied Gauche"
+          },
+          {
+            "type": "meds",
+            "contenu": "Glace + AD + AI"
+          }
+        ]
       },
       {
         "key": "luxation",
         "label": "Luxation",
-        "examens": "Auscultation : Désaxement Pied Gauche // Radio : Luxation Pied Gauche",
-        "soins": "Attelle rigide Pied Gauche // AD + AI"
+        "examens": [
+          {
+            "appareil": "Auscultation",
+            "contenu": "Désaxement Pied Gauche"
+          },
+          {
+            "appareil": "Radio",
+            "contenu": "Luxation Pied Gauche"
+          }
+        ],
+        "soins": [
+          {
+            "type": "immo",
+            "contenu": "Attelle rigide Pied Gauche"
+          },
+          {
+            "type": "meds",
+            "contenu": "AD + AI"
+          }
+        ]
       },
       {
         "key": "fissure",
         "label": "Fissure",
-        "examens": "Radio : Fissure Pied Gauche",
-        "soins": "Attelle rigide Pied Gauche // AD + AI"
+        "examens": [
+          {
+            "appareil": "Radio",
+            "contenu": "Fissure Pied Gauche"
+          }
+        ],
+        "soins": [
+          {
+            "type": "immo",
+            "contenu": "Attelle rigide Pied Gauche"
+          },
+          {
+            "type": "meds",
+            "contenu": "AD + AI"
+          }
+        ]
       },
       {
         "key": "fracture_nette",
         "label": "Fracture Nette",
-        "examens": "Radio : Fracture nette Pied Gauche",
-        "soins": "Attelle rigide Pied Gauche // AD + AI"
+        "examens": [
+          {
+            "appareil": "Radio",
+            "contenu": "Fracture nette Pied Gauche"
+          }
+        ],
+        "soins": [
+          {
+            "type": "immo",
+            "contenu": "Attelle rigide Pied Gauche"
+          },
+          {
+            "type": "meds",
+            "contenu": "AD + AI"
+          }
+        ]
       },
       {
         "key": "fracture_deplacee",
         "label": "Fracture Déplacée",
-        "examens": "Radio : Fracture déplacée Pied Gauche",
-        "soins": "Chir AG ou AL : Cautérisation + Nettoyage fragments + Os réaxé + Pose plaque et vis (Mg) + PDS musculaires & cutanés // Attelle rigide Pied Gauche // AD + AI + AB + AC"
+        "examens": [
+          {
+            "appareil": "Radio",
+            "contenu": "Fracture déplacée Pied Gauche"
+          }
+        ],
+        "soins": [
+          {
+            "type": "chir",
+            "prefixe": "Chir AG ou AL",
+            "contenu": "Cautérisation + nettoyage fragments + os réaxé + pose plaque et vis (Mg) + PDS musculaires & cutanés"
+          },
+          {
+            "type": "immo",
+            "contenu": "Attelle rigide Pied Gauche"
+          },
+          {
+            "type": "meds",
+            "contenu": "AD + AI + AB + AC"
+          }
+        ]
       },
       {
         "key": "fracture_ouverte",
         "label": "Fracture Ouverte",
-        "examens": "Auscultation : Saignement Pied Gauche // Radio : Fracture ouverte déplacée Pied Gauche",
-        "soins": "Chir AG ou AL : Cautérisation + Nettoyage fragments + Os réaxé + Pose plaque et vis (Mg) + PDS musculaires & cutanés // Attelle rigide Pied Gauche // AD + AI + AB + AC"
+        "examens": [
+          {
+            "appareil": "Auscultation",
+            "contenu": "Saignement Pied Gauche"
+          },
+          {
+            "appareil": "Radio",
+            "contenu": "Fracture ouverte déplacée Pied Gauche"
+          }
+        ],
+        "soins": [
+          {
+            "type": "chir",
+            "prefixe": "Chir AG ou AL",
+            "contenu": "Cautérisation + nettoyage fragments + os réaxé + pose plaque et vis (Mg) + PDS musculaires & cutanés"
+          },
+          {
+            "type": "immo",
+            "contenu": "Attelle rigide Pied Gauche"
+          },
+          {
+            "type": "meds",
+            "contenu": "AD + AI + AB + AC"
+          }
+        ]
       },
       {
         "key": "brulure_1",
         "label": "Brûlure 1er degré",
-        "examens": "Auscultation : Brûlures 1er degré Pied Gauche",
-        "soins": "Nettoyage plaies (sérum phy) + crème cicatrisante // Bandages // AD + AI + AB"
+        "examens": [
+          {
+            "appareil": "Auscultation",
+            "contenu": "Brûlures 1er degré Pied Gauche"
+          }
+        ],
+        "soins": [
+          {
+            "type": "chir",
+            "prefixe": "Chir AL ou AG",
+            "contenu": "Nettoyage plaies (sérum phy) + crème cicatrisante"
+          },
+          {
+            "type": "immo",
+            "contenu": "Bandages Pied Gauche"
+          },
+          {
+            "type": "meds",
+            "contenu": "Glace + AD + AI + AB"
+          }
+        ]
       },
       {
         "key": "brulure_2",
         "label": "Brûlure 2e degré",
-        "examens": "Auscultation : Brûlures 2e degré Pied Gauche",
-        "soins": "Chir AG ou AL : Nettoyage plaies (sérum phy) + retrait chairs mortes // Bandages + tulles gras // AD + AI + AB"
+        "examens": [
+          {
+            "appareil": "Auscultation",
+            "contenu": "Brûlures 2e degré Pied Gauche"
+          }
+        ],
+        "soins": [
+          {
+            "type": "chir",
+            "prefixe": "Chir AL ou AG",
+            "contenu": "Nettoyage plaies (sérum phy) + retrait chairs mortes"
+          },
+          {
+            "type": "immo",
+            "contenu": "Bandages + tulles gras Pied Gauche"
+          },
+          {
+            "type": "meds",
+            "contenu": "Glace + AD + AI + AB"
+          }
+        ]
       },
       {
         "key": "brulure_3",
         "label": "Brûlure 3e degré",
-        "examens": "Auscultation : Brûlures 3e degré Pied Gauche",
-        "soins": "Chir AG : Nettoyage plaies (sérum phy) + retrait peaux mortes + Greffon synthétique/prélèvement de peau Pied Gauche + PDS cutanés // Bandages + Tulles gras // AD + AI + AB"
+        "examens": [
+          {
+            "appareil": "Auscultation",
+            "contenu": "Brûlures 3e degré Pied Gauche"
+          }
+        ],
+        "soins": [
+          {
+            "type": "chir",
+            "prefixe": "Chir AG",
+            "contenu": "Nettoyage plaies (sérum phy) + retrait peaux mortes + greffon synthétique/prélèvement de peau Pied Gauche + PDS cutanés"
+          },
+          {
+            "type": "immo",
+            "contenu": "Bandages + tulles gras Pied Gauche"
+          },
+          {
+            "type": "meds",
+            "contenu": "Glace + AD + AI + AB"
+          }
+        ]
       },
       {
         "key": "attaque_animale",
         "label": "Attaque Animale",
-        "examens": "Auscultation : Traces de morsures/Lacérations Pied Gauche // Echo : Déchirure musculaire Pied Gauche",
-        "soins": "Vaccin anti-rabique // PDS muscle + PDS cutanées // Bandages Pied Gauche"
+        "examens": [
+          {
+            "appareil": "Auscultation",
+            "contenu": "Traces de morsures/lacérations Pied Gauche"
+          },
+          {
+            "appareil": "Echo",
+            "contenu": "Déchirure musculaire Pied Gauche"
+          }
+        ],
+        "soins": [
+          {
+            "type": "chir",
+            "prefixe": "Chir AL ou AG",
+            "contenu": "PDS muscle + PDS cutanées"
+          },
+          {
+            "type": "immo",
+            "contenu": "Bandages Pied Gauche"
+          },
+          {
+            "type": "meds",
+            "contenu": "Vaccin anti-rabique + AB"
+          }
+        ]
       },
       {
         "key": "bpb_nt",
         "label": "BPB Non Traversant",
-        "examens": "Radio : BPB NT Pied Gauche + Fracture ou Fissure Pied Gauche // Echo : Déchirure musculaire Pied Gauche",
-        "soins": "Chir AL ou AG : Retrait balles + cautérisation + PDS muscle + PDS cutané // Bandage & attelle rigide Pied Gauche // AI + AD + AB + AC"
+        "examens": [
+          {
+            "appareil": "Radio",
+            "contenu": "BPB NT Pied Gauche + Fracture ou Fissure Pied Gauche"
+          },
+          {
+            "appareil": "Echo",
+            "contenu": "Déchirure musculaire Pied Gauche"
+          }
+        ],
+        "soins": [
+          {
+            "type": "chir",
+            "prefixe": "Chir AL ou AG",
+            "contenu": "Retrait balles + cautérisation + PDS muscle + PDS cutané"
+          },
+          {
+            "type": "immo",
+            "contenu": "Bandage & attelle rigide Pied Gauche"
+          },
+          {
+            "type": "meds",
+            "contenu": "AD + AI + AB + AC"
+          }
+        ]
       },
       {
         "key": "bpb_t",
         "label": "BPB Traversant",
-        "examens": "Radio : BPB T Pied Gauche + Fracture ou Fissure Pied Gauche // Echo : Déchirure musculaire Pied Gauche",
-        "soins": "Chir AL ou AG : Cautérisation + PDS muscle + PDS cutané // Bandage & attelle rigide Pied Gauche // AI + AD + AB + AC"
+        "examens": [
+          {
+            "appareil": "Radio",
+            "contenu": "BPB T Pied Gauche + Fracture ou Fissure Pied Gauche"
+          },
+          {
+            "appareil": "Echo",
+            "contenu": "Déchirure musculaire Pied Gauche"
+          }
+        ],
+        "soins": [
+          {
+            "type": "chir",
+            "prefixe": "Chir AL ou AG",
+            "contenu": "Cautérisation + PDS muscle + PDS cutané"
+          },
+          {
+            "type": "immo",
+            "contenu": "Bandage & attelle rigide Pied Gauche"
+          },
+          {
+            "type": "meds",
+            "contenu": "AD + AI + AB + AC"
+          }
+        ]
       }
     ]
   },
@@ -912,74 +3402,306 @@
       {
         "key": "entorse",
         "label": "Entorse",
-        "examens": "Auscultation : Oedème Pied Droit // Echo : Entorse Pied Droit",
-        "soins": "Glace // Attelle souple Pied Droit // AD + AI"
+        "examens": [
+          {
+            "appareil": "Auscultation",
+            "contenu": "Oedème Pied Droit"
+          },
+          {
+            "appareil": "Echo",
+            "contenu": "Entorse Pied Droit"
+          }
+        ],
+        "soins": [
+          {
+            "type": "immo",
+            "contenu": "Attelle souple Pied Droit"
+          },
+          {
+            "type": "meds",
+            "contenu": "Glace + AD + AI"
+          }
+        ]
       },
       {
         "key": "luxation",
         "label": "Luxation",
-        "examens": "Auscultation : Désaxement Pied Droit // Radio : Luxation Pied Droit",
-        "soins": "Attelle rigide Pied Droit // AD + AI"
+        "examens": [
+          {
+            "appareil": "Auscultation",
+            "contenu": "Désaxement Pied Droit"
+          },
+          {
+            "appareil": "Radio",
+            "contenu": "Luxation Pied Droit"
+          }
+        ],
+        "soins": [
+          {
+            "type": "immo",
+            "contenu": "Attelle rigide Pied Droit"
+          },
+          {
+            "type": "meds",
+            "contenu": "AD + AI"
+          }
+        ]
       },
       {
         "key": "fissure",
         "label": "Fissure",
-        "examens": "Radio : Fissure Pied Droit",
-        "soins": "Attelle rigide Pied Droit // AD + AI"
+        "examens": [
+          {
+            "appareil": "Radio",
+            "contenu": "Fissure Pied Droit"
+          }
+        ],
+        "soins": [
+          {
+            "type": "immo",
+            "contenu": "Attelle rigide Pied Droit"
+          },
+          {
+            "type": "meds",
+            "contenu": "AD + AI"
+          }
+        ]
       },
       {
         "key": "fracture_nette",
         "label": "Fracture Nette",
-        "examens": "Radio : Fracture nette Pied Droit",
-        "soins": "Attelle rigide Pied Droit // AD + AI"
+        "examens": [
+          {
+            "appareil": "Radio",
+            "contenu": "Fracture nette Pied Droit"
+          }
+        ],
+        "soins": [
+          {
+            "type": "immo",
+            "contenu": "Attelle rigide Pied Droit"
+          },
+          {
+            "type": "meds",
+            "contenu": "AD + AI"
+          }
+        ]
       },
       {
         "key": "fracture_deplacee",
         "label": "Fracture Déplacée",
-        "examens": "Radio : Fracture déplacée Pied Droit",
-        "soins": "Chir AG ou AL : Cautérisation + Nettoyage fragments + Os réaxé + Pose plaque et vis (Mg) + PDS musculaires & cutanés // Attelle rigide Pied Droit // AD + AI + AB + AC"
+        "examens": [
+          {
+            "appareil": "Radio",
+            "contenu": "Fracture déplacée Pied Droit"
+          }
+        ],
+        "soins": [
+          {
+            "type": "chir",
+            "prefixe": "Chir AG ou AL",
+            "contenu": "Cautérisation + nettoyage fragments + os réaxé + pose plaque et vis (Mg) + PDS musculaires & cutanés"
+          },
+          {
+            "type": "immo",
+            "contenu": "Attelle rigide Pied Droit"
+          },
+          {
+            "type": "meds",
+            "contenu": "AD + AI + AB + AC"
+          }
+        ]
       },
       {
         "key": "fracture_ouverte",
         "label": "Fracture Ouverte",
-        "examens": "Auscultation : Saignement Pied Droit // Radio : Fracture ouverte déplacée Pied Droit",
-        "soins": "Chir AG ou AL : Cautérisation + Nettoyage fragments + Os réaxé + Pose plaque et vis (Mg) + PDS musculaires & cutanés // Attelle rigide Pied Droit // AD + AI + AB + AC"
+        "examens": [
+          {
+            "appareil": "Auscultation",
+            "contenu": "Saignement Pied Droit"
+          },
+          {
+            "appareil": "Radio",
+            "contenu": "Fracture ouverte déplacée Pied Droit"
+          }
+        ],
+        "soins": [
+          {
+            "type": "chir",
+            "prefixe": "Chir AG ou AL",
+            "contenu": "Cautérisation + nettoyage fragments + os réaxé + pose plaque et vis (Mg) + PDS musculaires & cutanés"
+          },
+          {
+            "type": "immo",
+            "contenu": "Attelle rigide Pied Droit"
+          },
+          {
+            "type": "meds",
+            "contenu": "AD + AI + AB + AC"
+          }
+        ]
       },
       {
         "key": "brulure_1",
         "label": "Brûlure 1er degré",
-        "examens": "Auscultation : Brûlures 1er degré Pied Droit",
-        "soins": "Nettoyage plaies (sérum phy) + crème cicatrisante // Bandages // AD + AI + AB"
+        "examens": [
+          {
+            "appareil": "Auscultation",
+            "contenu": "Brûlures 1er degré Pied Droit"
+          }
+        ],
+        "soins": [
+          {
+            "type": "chir",
+            "prefixe": "Chir AL ou AG",
+            "contenu": "Nettoyage plaies (sérum phy) + crème cicatrisante"
+          },
+          {
+            "type": "immo",
+            "contenu": "Bandages Pied Droit"
+          },
+          {
+            "type": "meds",
+            "contenu": "Glace + AD + AI + AB"
+          }
+        ]
       },
       {
         "key": "brulure_2",
         "label": "Brûlure 2e degré",
-        "examens": "Auscultation : Brûlures 2e degré Pied Droit",
-        "soins": "Chir AG ou AL : Nettoyage plaies (sérum phy) + retrait chairs mortes // Bandages + tulles gras // AD + AI + AB"
+        "examens": [
+          {
+            "appareil": "Auscultation",
+            "contenu": "Brûlures 2e degré Pied Droit"
+          }
+        ],
+        "soins": [
+          {
+            "type": "chir",
+            "prefixe": "Chir AL ou AG",
+            "contenu": "Nettoyage plaies (sérum phy) + retrait chairs mortes"
+          },
+          {
+            "type": "immo",
+            "contenu": "Bandages + tulles gras Pied Droit"
+          },
+          {
+            "type": "meds",
+            "contenu": "Glace + AD + AI + AB"
+          }
+        ]
       },
       {
         "key": "brulure_3",
         "label": "Brûlure 3e degré",
-        "examens": "Auscultation : Brûlures 3e degré Pied Droit",
-        "soins": "Chir AG : Nettoyage plaies (sérum phy) + retrait peaux mortes + Greffon synthétique/prélèvement de peau Pied Droit + PDS cutanés // Bandages + Tulles gras // AD + AI + AB"
+        "examens": [
+          {
+            "appareil": "Auscultation",
+            "contenu": "Brûlures 3e degré Pied Droit"
+          }
+        ],
+        "soins": [
+          {
+            "type": "chir",
+            "prefixe": "Chir AG",
+            "contenu": "Nettoyage plaies (sérum phy) + retrait peaux mortes + greffon synthétique/prélèvement de peau Pied Droit + PDS cutanés"
+          },
+          {
+            "type": "immo",
+            "contenu": "Bandages + tulles gras Pied Droit"
+          },
+          {
+            "type": "meds",
+            "contenu": "Glace + AD + AI + AB"
+          }
+        ]
       },
       {
         "key": "attaque_animale",
         "label": "Attaque Animale",
-        "examens": "Auscultation : Traces de morsures/Lacérations Pied Droit // Echo : Déchirure musculaire Pied Droit",
-        "soins": "Vaccin anti-rabique // PDS muscle + PDS cutanées // Bandages Pied Droit"
+        "examens": [
+          {
+            "appareil": "Auscultation",
+            "contenu": "Traces de morsures/lacérations Pied Droit"
+          },
+          {
+            "appareil": "Echo",
+            "contenu": "Déchirure musculaire Pied Droit"
+          }
+        ],
+        "soins": [
+          {
+            "type": "chir",
+            "prefixe": "Chir AL ou AG",
+            "contenu": "PDS muscle + PDS cutanées"
+          },
+          {
+            "type": "immo",
+            "contenu": "Bandages Pied Droit"
+          },
+          {
+            "type": "meds",
+            "contenu": "Vaccin anti-rabique + AB"
+          }
+        ]
       },
       {
         "key": "bpb_nt",
         "label": "BPB Non Traversant",
-        "examens": "Radio : BPB NT Pied Droit + Fracture ou Fissure Pied Droit // Echo : Déchirure musculaire Pied Droit",
-        "soins": "Chir AL ou AG : Retrait balles + cautérisation + PDS muscle + PDS cutané // Bandage & attelle rigide Pied Droit // AI + AD + AB + AC"
+        "examens": [
+          {
+            "appareil": "Radio",
+            "contenu": "BPB NT Pied Droit + Fracture ou Fissure Pied Droit"
+          },
+          {
+            "appareil": "Echo",
+            "contenu": "Déchirure musculaire Pied Droit"
+          }
+        ],
+        "soins": [
+          {
+            "type": "chir",
+            "prefixe": "Chir AL ou AG",
+            "contenu": "Retrait balles + cautérisation + PDS muscle + PDS cutané"
+          },
+          {
+            "type": "immo",
+            "contenu": "Bandage & attelle rigide Pied Droit"
+          },
+          {
+            "type": "meds",
+            "contenu": "AD + AI + AB + AC"
+          }
+        ]
       },
       {
         "key": "bpb_t",
         "label": "BPB Traversant",
-        "examens": "Radio : BPB T Pied Droit + Fracture ou Fissure Pied Droit // Echo : Déchirure musculaire Pied Droit",
-        "soins": "Chir AL ou AG : Cautérisation + PDS muscle + PDS cutané // Bandage & attelle rigide Pied Droit // AI + AD + AB + AC"
+        "examens": [
+          {
+            "appareil": "Radio",
+            "contenu": "BPB T Pied Droit + Fracture ou Fissure Pied Droit"
+          },
+          {
+            "appareil": "Echo",
+            "contenu": "Déchirure musculaire Pied Droit"
+          }
+        ],
+        "soins": [
+          {
+            "type": "chir",
+            "prefixe": "Chir AL ou AG",
+            "contenu": "Cautérisation + PDS muscle + PDS cutané"
+          },
+          {
+            "type": "immo",
+            "contenu": "Bandage & attelle rigide Pied Droit"
+          },
+          {
+            "type": "meds",
+            "contenu": "AD + AI + AB + AC"
+          }
+        ]
       }
     ]
   }
