@@ -42,6 +42,7 @@ Extension navigateur (Chrome & Firefox) qui automatise la redaction des dossiers
 │   ├── welcome.html / welcome.js      # Page de bienvenue
 │   └── icons/                         # Icones (16, 32, 48, 128 px)
 ├── .github/ISSUE_TEMPLATE/            # Templates d'issues
+├── CHANGELOG.md                       # Historique des versions
 ├── package.json
 └── vite.config.js                     # Build Vite multi-cible
 ```
