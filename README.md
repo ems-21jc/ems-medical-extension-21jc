@@ -80,6 +80,12 @@ Zips generes dans `dist/` sous la forme `ems-medical-extension-21jc-v<version>-<
 
 ---
 
+## Changelog
+
+Voir [CHANGELOG.md](./CHANGELOG.md).
+
+---
+
 ## Dependances
 
 | Dependance | Usage |
