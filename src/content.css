@@ -299,6 +299,26 @@
   cursor: default;
 }
 
+.med-completion-text-input {
+  flex: 1;
+  min-width: 80px;
+  background: rgba(255,255,255,0.07);
+  border: 1px solid #444;
+  border-radius: 4px;
+  color: #ddd;
+  font-size: 12px;
+  padding: 2px 6px;
+}
+
+.med-completion-text-input:disabled {
+  opacity: 0.3;
+  cursor: default;
+}
+
+.med-completion-text-input::placeholder {
+  color: #666;
+}
+
 .med-completion-slider-value {
   color: #78b0ca;
   font-size: 12px;
