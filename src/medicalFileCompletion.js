@@ -53,6 +53,9 @@ const COMPLETION_CONFIG = [
       { key: "cat3", label: "Cat3", parent: "bpb", level: 1 },
       { key: "desydratation", label: "Désydratation" },
       { key: "hypoglycemie", label: "Hypoglycémie" },
+      { key: "coma_ethylique", label: "Coma éthylique" },
+      { key: "overdose", label: "Overdose" },
+      { key: "overdose_drogue", label: "Type Drogue", parent: "overdose", level: 1, type: "text" },
       { key: "noyade", label: "Noyade" },
       { key: "depo", label: "Dépôt", parent: "noyade", level: 1 },
       { key: "intox_fumee", label: "Intox Fumée" },
@@ -346,6 +349,19 @@ async function applyCompletion(sel) {
     if (cbSaut && !cbSaut.checked) cbSaut.click();
     if (cbCourse && !cbCourse.checked) cbCourse.click();
   }
+  if (sel.coma_ethylique) {
+    blessures.push("Coma éthylique");
+    if (cbComa && !cbComa.checked) cbComa.click();
+    if (cbSaut && !cbSaut.checked) cbSaut.click();
+    if (cbCourse && !cbCourse.checked) cbCourse.click();
+  }
+  if (sel.overdose) {
+    const drogue = sel.overdose_drogue || "???";
+    blessures.push(`Overdose de ${drogue}`);
+    if (cbComa && !cbComa.checked) cbComa.click();
+    if (cbSaut && !cbSaut.checked) cbSaut.click();
+    if (cbCourse && !cbCourse.checked) cbCourse.click();
+  }
   if (sel.noyade) {
     blessures.push("Noyade");
     if (cbSaut && !cbSaut.checked) cbSaut.click();
@@ -378,9 +394,13 @@ async function applyCompletion(sel) {
     else appendToField("Examens", "Echo: RAS");
   }
   if (sel.intox_fumee) appendToField("Examens", "Echo: Brulure Bronches");
+  if (sel.coma_ethylique) appendToField("Examens", "Éthylotest : []g");
+  if (sel.overdose) appendToField("Examens", "Test Salivaire: Positif");
 
   // ── Traitements ───────────────────────────────────────────────────────────
   if (sel.intox_fumee) appendToField("Traitements", "Bouteille d'O² // AI + AD");
+  if (sel.coma_ethylique) appendToField("Traitements", "Lavage d'estomac // Baclofène");
+  if (sel.overdose) appendToField("Traitements", "Lavage d'estomac");
   if (sel.noyade) {
     appendToField("Traitements", "AI + AD + AB + AF + Expectorant");
   } else {
@@ -397,7 +417,7 @@ async function applyCompletion(sel) {
 
   // ── Durée d'invalidité & Date de contrôle — prend la valeur la plus élevée ─
   const durations = [];
-  if (sel.desydratation || sel.hypoglycemie) durations.push("00:30:00");
+  if (sel.desydratation || sel.hypoglycemie || sel.coma_ethylique || sel.overdose) durations.push("00:30:00");
   if (sel.noyade) durations.push(sel.coma ? "00:45:00" : "00:30:00");
   if (sel.intox_fumee) durations.push(sel.coma ? "00:45:00" : "00:30:00");
   if (sel.attaque_animal) durations.push(sel.coma ? "00:45:00" : "00:30:00");
@@ -479,6 +499,8 @@ function updateAllStates(panel) {
       if (item.type === "slider") {
         el.value = 0;
         updateSliderDisplay(el);
+      } else if (item.type === "text") {
+        el.value = "";
       } else if (!el.disabled) el.checked = false;
     }
     el.disabled = newDisabled;
@@ -520,7 +542,18 @@ function buildPanel() {
       lbl.textContent = item.label;
       lbl.htmlFor = `med-compl-${item.key}`;
 
-      if (item.type === "slider") {
+      if (item.type === "text") {
+        const inp = document.createElement("input");
+        inp.type = "text";
+        inp.id = `med-compl-${item.key}`;
+        inp.className = "med-completion-text-input";
+        inp.dataset.key = item.key;
+        inp.placeholder = item.label;
+        inp.disabled = startsDisabled;
+        if (startsDisabled) row.classList.add("med-completion-row--disabled");
+        row.appendChild(lbl);
+        row.appendChild(inp);
+      } else if (item.type === "slider") {
         const slider = document.createElement("input");
         slider.type = "range";
         slider.id = `med-compl-${item.key}`;
@@ -643,6 +676,9 @@ function injectCompletionButton(titleEl) {
       });
       panel.querySelectorAll('input[type="range"]').forEach((slider) => {
         selections[slider.dataset.key] = parseInt(slider.value, 10);
+      });
+      panel.querySelectorAll('input[type="text"]').forEach((inp) => {
+        selections[inp.dataset.key] = inp.value.trim();
       });
       applyCompletion(selections);
       closePanel();
