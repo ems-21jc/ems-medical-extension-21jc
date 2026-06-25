@@ -1,4 +1,4 @@
-# EMS Medical Extension — 21 Jump Click
+# EMS Medical Extension • 21 Jump Click
 
 Extension navigateur (Chrome & Firefox) qui automatise la redaction des dossiers medicaux pour les EMS du serveur **21 Jump Click**.
 
@@ -8,16 +8,16 @@ Extension navigateur (Chrome & Firefox) qui automatise la redaction des dossiers
 
 ## Fonctionnalites
 
-- **Completion automatique** — Panneau de cases a cocher pour pre-remplir les champs du rapport medical (Blessures, Examens, Traitements, Remarques, Duree, Code Postal). Groupes : Notes Internes, Accident, Medicaments, Autre.
-- **Bilan Anatomique** — Sidebar laterale pour construire un bilan lesionnel multi-zones (pathologies avec examens/soins predefinis depuis `pathologies.json`), injection groupee dans Examens et Traitements.
-- **Dates** — Boutons pour inserer automatiquement VM, DDS et VC. Date d'admission pre-remplie a l'ouverture du formulaire.
-- **Chips Infos ok / pas ok** — Boutons mutex dans le champ *En cas d'urgence* avec colorisation des chips MUI.
-- **Bouton VC** — Sur la popup detail d'un rapport, convertit le rapport en visite de controle (examens en RAS, traitements en Retrait).
-- **Groupe Sanguin** — Randomizer aleatoire parmi les 8 groupes.
-- **Popup de configuration** — Hopital actif (BCES/LSES), code postal, liens dispatches.
-- **Guide d'epinglage** — Page de bienvenue a la premiere installation (4 etapes).
-- **Overdose** — Gestion des overdoses d'alcool et de drogue.
-- **Variante Lite** — Build allege sans Completion, Bilan Anatomique ni bouton VC.
+- **Completion automatique** • Panneau de cases a cocher pour pre-remplir les champs du rapport medical (Blessures, Examens, Traitements, Remarques, Duree, Code Postal). Groupes : Notes Internes, Accident, Medicaments, Autre.
+- **Bilan Anatomique** • Sidebar laterale pour construire un bilan lesionnel multi-zones (pathologies avec examens/soins predefinis depuis `pathologies.json`), injection groupee dans Examens et Traitements.
+- **Dates** • Boutons pour inserer automatiquement VM, DDS et VC. Date d'admission pre-remplie a l'ouverture du formulaire.
+- **Chips Infos ok / pas ok** • Boutons mutex dans le champ *En cas d'urgence* avec colorisation des chips MUI.
+- **Bouton VC** • Sur la popup detail d'un rapport, convertit le rapport en visite de controle (examens en RAS, traitements en Retrait).
+- **Groupe Sanguin** • Randomizer aleatoire parmi les 8 groupes.
+- **Popup de configuration** • Hopital actif (BCES/LSES), code postal, liens dispatches.
+- **Guide d'epinglage** • Page de bienvenue a la premiere installation (4 etapes).
+- **Overdose** • Gestion des overdoses d'alcool et de drogue.
+- **Variante Lite** • Build allege sans Completion, Bilan Anatomique ni bouton VC.
 
 ---
 
