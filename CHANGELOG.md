@@ -8,6 +8,11 @@ Le format est basé sur [Keep a Changelog](https://keepachangelog.com/en/1.1.0/)
 
 ## [Unreleased]
 
+## [0.13.1] - 2026-06-26
+
+### Fixed
+- Les cases Coma et Incapacités n'étaient plus cochées après réouverture du formulaire (les références DOM en cache n'étaient plus valides)
+
 ## [0.13.0] - 2026-06-26
 
 ### Added
