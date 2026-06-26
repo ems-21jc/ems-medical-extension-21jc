@@ -684,6 +684,8 @@ function injectCompletionButton(titleEl) {
       document.removeEventListener("click", clickOutsideHandler);
       clickOutsideHandler = null;
     }
+    const dialogRoot = container.closest(".MuiDialog-root");
+    if (dialogRoot) dialogRoot.style.zIndex = "";
     setTimeout(() => {
       if (panel && panel.parentNode) {
         panel.remove();
@@ -733,6 +735,9 @@ function injectCompletionButton(titleEl) {
 
     panel.appendChild(actions);
     wrapper.appendChild(panel);
+
+    const dialogRoot = container.closest(".MuiDialog-root");
+    if (dialogRoot) dialogRoot.style.zIndex = "100001";
 
     const containerRect = container.getBoundingClientRect();
     panel.style.position = "fixed";
