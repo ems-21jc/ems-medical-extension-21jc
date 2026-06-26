@@ -8,6 +8,11 @@ Le format est base sur [Keep a Changelog](https://keepachangelog.com/en/1.1.0/),
 
 ## [Unreleased]
 
+## [0.12.2] - 2026-06-26
+
+### Fixed
+- Accents retablis dans tous les labels et textes injectes par le panneau Completion (Valide, Velo, Pieton, Deshydratation, Hypoglycemie, Coma ethylique, Depot, Intox Fumee, Brulure, Presence, Ethylotest, Baclofene, Pret, Creme, anesthesiante, etc.)
+
 ## [0.12.1] - 2026-06-26
 
 ### Fixed
@@ -46,12 +51,12 @@ Le format est base sur [Keep a Changelog](https://keepachangelog.com/en/1.1.0/),
 - Variantes de build Lite (Chrome Lite et Firefox Lite) sans Completion, Bilan Anatomique ni bouton VC ([#8](https://github.com/ems-21jc/ems-medical-extension-21jc/pull/8))
 - Suffixe " - Lite" dans le nom du manifest pour les builds Lite
 
-### Fixed
-- Reparation du bouton Coma dans la completion
-
 ### Changed
 - Refonte complete de `pathologies.json` et adaptation du `bodyZoneCompletion`
 - Modification du selecteur de completion
+
+### Fixed
+- Reparation du bouton Coma dans la completion
 
 ## [0.9.1] - 2026-06-07
 
@@ -62,16 +67,16 @@ Le format est base sur [Keep a Changelog](https://keepachangelog.com/en/1.1.0/),
 - Templates d'issues GitHub en francais (bug report et suggestion) ([#5](https://github.com/ems-21jc/ems-medical-extension-21jc/pull/5))
 - Generation de zips de distribution avec `archiver`
 
+### Changed
+- Renommage du projet de `ems-medical-tools` en `ems-medical-extension`
+- Suppression du raccourci clavier du guide d'epinglage (etape 4)
+- Preparation du `package.json` pour publication publique
+
 ### Fixed
 - Manifest Firefox : remplacement du `service_worker` par des `background.scripts` ([#6](https://github.com/ems-21jc/ems-medical-extension-21jc/pull/6))
 - Bouton VC pour OperaGX
 - Gestion des accents pour "echo" dans les VC
 - Label "chute" corrige de "15m" a "+15m"
-
-### Changed
-- Renommage du projet de `ems-medical-tools` en `ems-medical-extension`
-- Suppression du raccourci clavier du guide d'epinglage (etape 4)
-- Preparation du `package.json` pour publication publique
 
 ## [0.8.2] - 2026-06-06
 
@@ -79,14 +84,14 @@ Le format est base sur [Keep a Changelog](https://keepachangelog.com/en/1.1.0/),
 - Option "Velo" dans les accidents AVP du panneau de completion
 - Bouton randomizer de groupe sanguin (8 groupes) avec icone SVG et feedback visuel
 
-### Fixed
-- Correction de la coche Inconscient dans la completion
-- Utilisation de l'heure locale au lieu de l'heure de Paris pour toutes les operations de date ([#4](https://github.com/ems-21jc/ems-medical-extension-21jc/pull/4))
-
 ### Changed
 - Refonte du design des boutons de date avec icones SVG
 - Rafraichissement de l'UI de la popup (icones Tabler, theme vert, nom + version en pied de page)
 - Mise a jour de `pathologies.json`
+
+### Fixed
+- Correction de la coche Inconscient dans la completion
+- Utilisation de l'heure locale au lieu de l'heure de Paris pour toutes les operations de date ([#4](https://github.com/ems-21jc/ems-medical-extension-21jc/pull/4))
 
 ## [0.8.0] - 2026-06-05
 
@@ -96,13 +101,13 @@ Le format est base sur [Keep a Changelog](https://keepachangelog.com/en/1.1.0/),
 - Calcul de la date de controle base sur la date d'admission + duree d'invalidite
 - Gestion des chips "Infos ok" / "Infos pas ok" avec colorisation MUI et comportement mutex
 
-### Fixed
-- Amelioration du toggle des chips Infos avec matching base sur le concept
-- Utilisation du fuseau horaire local pour les champs de date
-
 ### Changed
 - Mise a jour de `pathologies.json` et `bodyZoneCompletion.js`
 - Selection multiple possible pour une meme pathologie dans le Bilan Anatomique
+
+### Fixed
+- Amelioration du toggle des chips Infos avec matching base sur le concept
+- Utilisation du fuseau horaire local pour les champs de date
 
 ## [0.7.1] - 2026-06-05
 
