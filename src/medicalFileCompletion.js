@@ -63,6 +63,7 @@ const COMPLETION_CONFIG = [
       { key: "overdose_drogue", label: "Type Drogue", parent: "overdose", level: 1, type: "text" },
       { key: "noyade", label: "Noyade" },
       { key: "depo", label: "Dépôt", parent: "noyade", level: 1 },
+      { key: "decompression", label: "Décompression" },
       { key: "intox_fumee", label: "Intox Fumée" },
       { key: "chute", label: "Chute" },
       { key: "chute_15m", label: "+15m", parent: "chute", level: 1 },
@@ -384,6 +385,11 @@ async function applyCompletion(sel) {
     if (cbSaut && !cbSaut.checked) cbSaut.click();
     if (cbCourse && !cbCourse.checked) cbCourse.click();
   }
+  if (sel.decompression) {
+    blessures.push("Accident de Décompression");
+    if (cbSaut && !cbSaut.checked) cbSaut.click();
+    if (cbCourse && !cbCourse.checked) cbCourse.click();
+  }
 
   if (sel.intox_fumee) {
     blessures.push("Intoxication Fumée");
@@ -408,8 +414,9 @@ async function applyCompletion(sel) {
 
   if (sel.noyade) {
     if (sel.depo) appendToField("Examens", "Echo: Présence Dépôt Poumon");
-    else appendToField("Examens", "Echo: RAS");
+    else if (!sel.decompression) appendToField("Examens", "Echo: RAS");
   }
+  if (sel.decompression) appendToField("Examens", "Constantes: Faibles // Echo: Décompression Pulmonaire");
   if (sel.intox_fumee) appendToField("Examens", "Echo: Brûlure Bronches");
   if (sel.coma_ethylique) {
     const taux = sel.coma_ethylique_g || "[NOMBRE]";
@@ -417,7 +424,7 @@ async function applyCompletion(sel) {
   }
   if (sel.overdose) appendToField("Examens", "Test Salivaire: Positif");
 
-  if (sel.intox_fumee) appendToField("Traitements", "Bouteille d'O2 // AI + AD");
+  if (sel.decompression || sel.intox_fumee) appendToField("Traitements", "Bouteille d'O² // AI + AD");
   if (sel.coma_ethylique) appendToField("Traitements", "Lavage d'estomac // Baclofène");
   if (sel.overdose) appendToField("Traitements", "Lavage d'estomac");
   if (sel.noyade) {
@@ -437,6 +444,7 @@ async function applyCompletion(sel) {
   const durations = [];
   if (sel.desydratation || sel.hypoglycemie || sel.coma_ethylique || sel.overdose) durations.push("00:30:00");
   if (sel.noyade) durations.push(sel.coma ? "00:45:00" : "00:30:00");
+  if (sel.decompression) durations.push(sel.coma ? "00:45:00" : "00:30:00");
   if (sel.intox_fumee) durations.push(sel.coma ? "00:45:00" : "00:30:00");
   if (sel.attaque_animal) durations.push(sel.coma ? "00:45:00" : "00:30:00");
   if (sel.brulure && !sel.explosion)
