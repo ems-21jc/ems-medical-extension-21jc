@@ -1,15 +1,19 @@
 const storage = (typeof browser !== "undefined" ? browser : chrome).storage
   .local;
 
-// Structure hiérarchique du formulaire de complétion
+// Structure hierarchique du formulaire de completion
 const COMPLETION_CONFIG = [
   {
     group: "Notes Internes",
     items: [
       { key: "vm", label: "VM" },
       { key: "sp", label: "SP", parent: "vm", level: 1 },
-      { key: "valide", label: "Validé", parent: "vm", level: 1 },
+      { key: "valide", label: "Valide", parent: "vm", level: 1 },
       { key: "cu", label: "CU" },
+      { key: "detatouage", label: "Detatouage" },
+      { key: "detatouage_nombre", label: "Nombre", parent: "detatouage", level: 1, type: "text" },
+      { key: "detatouage_zone", label: "Zone", parent: "detatouage", level: 1, type: "text" },
+      { key: "detatouage_facture", label: "Facture $", parent: "detatouage", level: 1, type: "text" },
     ],
   },
   {
@@ -26,7 +30,7 @@ const COMPLETION_CONFIG = [
       { key: "casque", label: "Casque", parent: "moto", level: 2 },
       {
         key: "velo",
-        label: "Vélo",
+        label: "Velo",
         parent: "avp",
         level: 1,
         disabledBy: ["moto", "pieton", "parebrise"],
@@ -40,7 +44,7 @@ const COMPLETION_CONFIG = [
       },
       {
         key: "pieton",
-        label: "Piéton",
+        label: "Pieton",
         parent: "avp",
         level: 1,
         disabledBy: ["moto", "parebrise", "velo"],
@@ -51,14 +55,15 @@ const COMPLETION_CONFIG = [
       { key: "bpb", label: "BPB" },
       { key: "gpb", label: "GPB", parent: "bpb", level: 1 },
       { key: "cat3", label: "Cat3", parent: "bpb", level: 1 },
-      { key: "desydratation", label: "Désydratation" },
-      { key: "hypoglycemie", label: "Hypoglycémie" },
-      { key: "coma_ethylique", label: "Coma éthylique" },
+      { key: "desydratation", label: "Desydratation" },
+      { key: "hypoglycemie", label: "Hypoglycemie" },
+      { key: "coma_ethylique", label: "Coma ethylique" },
+      { key: "coma_ethylique_g", label: "Taux mg/L", parent: "coma_ethylique", level: 1, type: "text" },
       { key: "overdose", label: "Overdose" },
       { key: "overdose_drogue", label: "Type Drogue", parent: "overdose", level: 1, type: "text" },
       { key: "noyade", label: "Noyade" },
-      { key: "depo", label: "Dépôt", parent: "noyade", level: 1 },
-      { key: "intox_fumee", label: "Intox Fumée" },
+      { key: "depo", label: "Depot", parent: "noyade", level: 1 },
+      { key: "intox_fumee", label: "Intox Fumee" },
       { key: "chute", label: "Chute" },
       { key: "chute_15m", label: "+15m", parent: "chute", level: 1 },
       { key: "explosion", label: "Explosion" },
@@ -67,7 +72,7 @@ const COMPLETION_CONFIG = [
     ],
   },
   {
-    group: "Médicaments",
+    group: "Medicaments",
     items: [
       {
         key: "antidouleur",
@@ -109,7 +114,6 @@ const COMPLETION_CONFIG = [
 
 const COMPLETION_ITEMS = COMPLETION_CONFIG.flatMap((g) => g.items);
 
-// Checkboxes d'incapacité — initialisées une seule fois au premier appel
 let cbComa = null;
 let cbSaut = null;
 let cbCourse = null;
@@ -129,6 +133,7 @@ function initIncapaciteCbs() {
 function findCheckboxByLabel(labelText) {
   for (const el of document.querySelectorAll("label, span")) {
     if (el.closest(".med-completion-btn")) continue;
+    if (el.closest(".med-completion-wrapper")) continue;
     if (el.textContent.trim() === labelText) {
       if (el.htmlFor) {
         const cb = document.getElementById(el.htmlFor);
@@ -140,20 +145,20 @@ function findCheckboxByLabel(labelText) {
         if (cb) return cb;
       }
       const prev = el.previousElementSibling;
-      if (prev?.type === "checkbox") return prev;
+      if (prev && prev.type === "checkbox") return prev;
       const next = el.nextElementSibling;
-      if (next?.type === "checkbox") return next;
+      if (next && next.type === "checkbox") return next;
     }
   }
   return null;
 }
 
-// Cherche un input ou textarea associé à un label
 function findFieldByLabel(labelText) {
   for (const el of document.querySelectorAll(
     'label, .label, [class*="label"]',
   )) {
     if (el.closest(".med-completion-btn")) continue;
+    if (el.closest(".med-completion-wrapper")) continue;
     if (el.textContent.trim().includes(labelText)) {
       if (el.htmlFor) {
         const field = document.getElementById(el.htmlFor);
@@ -176,7 +181,6 @@ function findFieldByLabel(labelText) {
   return null;
 }
 
-// Ajoute du texte à la fin d'un champ (compatible React via execCommand)
 function appendToField(labelText, text, separator = " // ") {
   const field = findFieldByLabel(labelText);
   if (!field) return;
@@ -186,7 +190,6 @@ function appendToField(labelText, text, separator = " // ") {
   document.execCommand("insertText", false, prefix + text);
 }
 
-// Sélectionne une option dans un Select MUI : ouvre le dropdown puis clique l'option
 function setSelectOption(labelText, optionText) {
   const openAndSelect = (trigger) => {
     trigger.dispatchEvent(
@@ -202,11 +205,10 @@ function setSelectOption(labelText, optionText) {
     }, 100);
   };
 
-  // Trouve le <label> dont le texte commence par labelText,
-  // puis cherche un combobox dans son parent (FormControl commun)
   for (const label of document.querySelectorAll("label")) {
-    const text = (label.firstChild?.textContent || label.textContent).trim();
-    if (text === labelText || text.startsWith(labelText)) {
+    const text = (label.firstChild && label.firstChild.textContent) || label.textContent;
+    const trimmed = text.trim();
+    if (trimmed === labelText || trimmed.startsWith(labelText)) {
       const parent = label.parentElement;
       if (!parent) continue;
       const combobox = parent.querySelector('[role="combobox"]');
@@ -218,7 +220,6 @@ function setSelectOption(labelText, optionText) {
   }
 }
 
-// Remplace le contenu d'un champ (compatible React via execCommand)
 function setFieldValue(labelText, value) {
   const field = findFieldByLabel(labelText);
   if (!field) return;
@@ -227,7 +228,6 @@ function setFieldValue(labelText, value) {
   document.execCommand("insertText", false, value);
 }
 
-// Remplit Durée d'invalidité ET recalcule Date de visite de contrôle
 function setDuration(durationStr) {
   setFieldValue("Durée d'invalidité", durationStr);
   setFieldValue(
@@ -248,7 +248,6 @@ function localDateParts(date) {
   return Object.fromEntries(parts.map((p) => [p.type, p.value]));
 }
 
-// Calcule date actuelle + durée HH:MM:SS → format DD/MM/YYYY HH:MM (heure locale)
 function calcDateFromDuration(durationStr) {
   const parts = durationStr.split(":");
   const totalSeconds =
@@ -262,13 +261,10 @@ function calcDateFromDuration(durationStr) {
 async function applyCompletion(sel) {
   initIncapaciteCbs();
 
-  // ── Notes Internes ────────────────────────────────────────────────────────
-  if (sel.vm || sel.cu) {
+  if (sel.vm || sel.cu || sel.detatouage) {
     try {
-      // Récupère le ZIP configuré dans la popup, met 1057 si introuvable
       const data = await storage.get({ defaultHospitalZip: "1057" });
       const zipToApply = data.defaultHospitalZip || "1057";
-
       setFieldValue("Code Postal", zipToApply);
     } catch (error) {
       console.error("Erreur de lecture du stockage :", error);
@@ -277,13 +273,13 @@ async function applyCompletion(sel) {
   }
 
   if (sel.vm) {
-    let remarque = "VISITE MÉDICALE // ";
+    let remarque = "VISITE MEDICALE // ";
     if (sel.sp)
       remarque +=
         (sel.valide ? "TEST EFFORT OK" : "TEST EFFORT ECHEC") + " // ";
     remarque += sel.valide
-      ? "[APPROUVÉ AU SERVICE]"
-      : "[NON APPROUVÉ AU SERVICE]";
+      ? "[APPROUVE AU SERVICE]"
+      : "[NON APPROUVE AU SERVICE]";
     appendToField("Remarque(s)", remarque);
   }
 
@@ -291,16 +287,34 @@ async function applyCompletion(sel) {
     appendToField("Remarque(s)", "Changement Contactes d'Urgence", " + ");
   }
 
-  // ── Coma ──────────────────────────────────────────────────────────────────
+  if (sel.detatouage) {
+    const nb = sel.detatouage_nombre || "[Nombre]";
+    const zone = sel.detatouage_zone || "[Zone]";
+    const facture = sel.detatouage_facture || "[Prix]";
+    appendToField("Examens", `Detatouage ${nb} ${zone}`);
+    appendToField("Traitements", "Creme anesthesiante + detatouage laser + creme cicatrisante // Bandages");
+    appendToField("Remarque(s)", `Facture réalisée de ${facture}$ // VC a faire dans 24H`);
+    const admissionField = findFieldByLabel("Date d'admission");
+    if (admissionField && admissionField.value) {
+      const parts = admissionField.value.split(" ");
+      const dateParts = parts[0].split("/");
+      const timeParts = (parts[1] || "00:00").split(":");
+      const d = new Date(dateParts[2], dateParts[1] - 1, dateParts[0], timeParts[0] || 0, timeParts[1] || 0);
+      d.setHours(d.getHours() + 24);
+      const p = localDateParts(d);
+      setFieldValue("Date de visite de contrôle", `${p.day}/${p.month}/${p.year} ${p.hour}:${p.minute}`);
+    }
+  }
+
   if (sel.coma) {
     if (cbComa && !cbComa.checked) cbComa.click();
   }
 
-  // ── Blessures ─────────────────────────────────────────────────────────────
   const blessures = [];
 
   if (sel.vm) blessures.push("VM");
   if (sel.cu) blessures.push("CU");
+  if (sel.detatouage) blessures.push("Detatouage");
 
   if (sel.avp) {
     let s = "AVP";
@@ -308,9 +322,9 @@ async function applyCompletion(sel) {
       s += " Moto";
       s += sel.casque ? " Casque" : " sans Casque";
     }
-    if (sel.velo) s += " Vélo";
+    if (sel.velo) s += " Velo";
     if (sel.parebrise) s += " Pare Brise";
-    if (sel.pieton) s += " Piéton";
+    if (sel.pieton) s += " Pieton";
     blessures.push(s);
   }
 
@@ -333,7 +347,7 @@ async function applyCompletion(sel) {
   }
 
   if (sel.desydratation) {
-    blessures.push("Déshydratation");
+    blessures.push("Deshydratation");
     if (cbComa && !cbComa.checked) cbComa.click();
     appendToField("Examens", "Constantes: Faibles");
     appendToField("Traitements", "Poche de Solution Hydratante", " + ");
@@ -342,33 +356,37 @@ async function applyCompletion(sel) {
   }
 
   if (sel.hypoglycemie) {
-    blessures.push("Hypoglycémie");
+    blessures.push("Hypoglycemie");
     if (cbComa && !cbComa.checked) cbComa.click();
     appendToField("Examens", "Constantes: Faibles");
     appendToField("Traitements", "Poche de Glucose", " + ");
     if (cbSaut && !cbSaut.checked) cbSaut.click();
     if (cbCourse && !cbCourse.checked) cbCourse.click();
   }
+
   if (sel.coma_ethylique) {
-    blessures.push("Coma éthylique");
+    blessures.push("Coma ethylique");
     if (cbComa && !cbComa.checked) cbComa.click();
     if (cbSaut && !cbSaut.checked) cbSaut.click();
     if (cbCourse && !cbCourse.checked) cbCourse.click();
   }
+
   if (sel.overdose) {
-    const drogue = sel.overdose_drogue || "???";
+    const drogue = sel.overdose_drogue || "[Type]";
     blessures.push(`Overdose de ${drogue}`);
     if (cbComa && !cbComa.checked) cbComa.click();
     if (cbSaut && !cbSaut.checked) cbSaut.click();
     if (cbCourse && !cbCourse.checked) cbCourse.click();
   }
+
   if (sel.noyade) {
     blessures.push("Noyade");
     if (cbSaut && !cbSaut.checked) cbSaut.click();
     if (cbCourse && !cbCourse.checked) cbCourse.click();
   }
+
   if (sel.intox_fumee) {
-    blessures.push("Intoxication Fumée");
+    blessures.push("Intoxication Fumee");
     if (cbSaut && !cbSaut.checked) cbSaut.click();
     if (cbCourse && !cbCourse.checked) cbCourse.click();
   }
@@ -388,18 +406,19 @@ async function applyCompletion(sel) {
     appendToField("Blessures", `// Douleur: ${sel.douleur}`, " ");
   if (sel.inconscient) appendToField("Blessures", "// Inconscient", " ");
 
-  // ── Examens ───────────────────────────────────────────────────────────────
   if (sel.noyade) {
-    if (sel.depo) appendToField("Examens", "Echo: Présence Dépot Poumon");
+    if (sel.depo) appendToField("Examens", "Echo: Presence Depot Poumon");
     else appendToField("Examens", "Echo: RAS");
   }
   if (sel.intox_fumee) appendToField("Examens", "Echo: Brulure Bronches");
-  if (sel.coma_ethylique) appendToField("Examens", "Éthylotest : []g");
+  if (sel.coma_ethylique) {
+    const taux = sel.coma_ethylique_g || "[NOMBRE]";
+    appendToField("Examens", `Ethylotest : ${taux}mg/L`);
+  }
   if (sel.overdose) appendToField("Examens", "Test Salivaire: Positif");
 
-  // ── Traitements ───────────────────────────────────────────────────────────
-  if (sel.intox_fumee) appendToField("Traitements", "Bouteille d'O² // AI + AD");
-  if (sel.coma_ethylique) appendToField("Traitements", "Lavage d'estomac // Baclofène");
+  if (sel.intox_fumee) appendToField("Traitements", "Bouteille d'O2 // AI + AD");
+  if (sel.coma_ethylique) appendToField("Traitements", "Lavage d'estomac // Baclofene");
   if (sel.overdose) appendToField("Traitements", "Lavage d'estomac");
   if (sel.noyade) {
     appendToField("Traitements", "AI + AD + AB + AF + Expectorant");
@@ -415,7 +434,6 @@ async function applyCompletion(sel) {
   if (sel.attaque_animal)
     appendToField("Traitements", "Vaccin Antirabique", " + ");
 
-  // ── Durée d'invalidité & Date de contrôle — prend la valeur la plus élevée ─
   const durations = [];
   if (sel.desydratation || sel.hypoglycemie || sel.coma_ethylique || sel.overdose) durations.push("00:30:00");
   if (sel.noyade) durations.push(sel.coma ? "00:45:00" : "00:30:00");
@@ -436,16 +454,13 @@ async function applyCompletion(sel) {
     setDuration(best);
   }
 
-  // ── Remarque(s) ───────────────────────────────────────────────────────────
-  if (sel.canne) appendToField("Remarque(s)", "Prêt de canne", " + ");
-  if (sel.fauteuil) appendToField("Remarque(s)", "Prêt de fauteuil", " + ");
+  if (sel.canne) appendToField("Remarque(s)", "Pret de canne", " + ");
+  if (sel.fauteuil) appendToField("Remarque(s)", "Pret de fauteuil", " + ");
 
-  // ── Type (select) — appelé en dernier après tous les focus() ─────────────
-  if (sel.vm || sel.cu)
+  if (sel.vm || sel.cu || sel.detatouage)
     setTimeout(() => setSelectOption("Type", "Note interne"), 50);
 }
 
-// Calcule si un item doit être désactivé en tenant compte de TOUTES ses contraintes
 function computeDisabled(item, panel) {
   if (item.parent) {
     const parentCb = panel.querySelector(`#med-compl-${item.parent}`);
@@ -465,8 +480,9 @@ function computeDisabled(item, panel) {
     return true;
   if (item.requiresGroup) {
     const groupItems =
-      COMPLETION_CONFIG.find((g) => g.group === item.requiresGroup)?.items ||
-      [];
+      COMPLETION_CONFIG.find((g) => g.group === item.requiresGroup) &&
+      COMPLETION_CONFIG.find((g) => g.group === item.requiresGroup).items
+      || [];
     const anyChecked = groupItems.some((gi) => {
       const cb = panel.querySelector(`#med-compl-${gi.key}`);
       return cb && cb.checked && !cb.disabled;
@@ -488,11 +504,10 @@ function computeDisabled(item, panel) {
   return false;
 }
 
-// Recalcule l'état de tous les items — plus simple et fiable qu'une propagation récursive
 function updateAllStates(panel) {
   COMPLETION_ITEMS.forEach((item) => {
     const el = panel.querySelector(`#med-compl-${item.key}`);
-    const row = el?.closest(".med-completion-row");
+    const row = el && el.closest(".med-completion-row");
     if (!el) return;
     const newDisabled = computeDisabled(item, panel);
     if (newDisabled) {
@@ -509,7 +524,7 @@ function updateAllStates(panel) {
 }
 
 function updateSliderDisplay(sliderEl) {
-  const display = sliderEl.parentElement?.querySelector(
+  const display = sliderEl.parentElement && sliderEl.parentElement.querySelector(
     ".med-completion-slider-value",
   );
   if (display) display.textContent = sliderEl.value;
@@ -518,7 +533,9 @@ function updateSliderDisplay(sliderEl) {
 function buildPanel() {
   const panel = document.createElement("div");
   panel.className = "med-completion-panel";
-  panel.addEventListener("click", (e) => e.stopPropagation());
+
+  const scrollArea = document.createElement("div");
+  scrollArea.className = "med-completion-scroll";
 
   for (const { group, items } of COMPLETION_CONFIG) {
     const groupEl = document.createElement("div");
@@ -526,13 +543,13 @@ function buildPanel() {
 
     const groupTitle = document.createElement("div");
     groupTitle.className = "med-completion-group-title";
-    groupTitle.textContent = group + " :";
+    groupTitle.textContent = group;
     groupEl.appendChild(groupTitle);
 
     for (const item of items) {
       const row = document.createElement("div");
       row.className = "med-completion-row";
-      if (item.level) row.style.paddingLeft = item.level * 14 + "px";
+      if (item.level) row.style.paddingLeft = item.level * 16 + "px";
 
       const startsDisabled =
         !!item.parent || !!item.requiresGroup || !!item.disabledWhenNonZero;
@@ -551,6 +568,7 @@ function buildPanel() {
         inp.placeholder = item.label;
         inp.disabled = startsDisabled;
         if (startsDisabled) row.classList.add("med-completion-row--disabled");
+        inp.addEventListener("input", () => updateAllStates(panel));
         row.appendChild(lbl);
         row.appendChild(inp);
       } else if (item.type === "slider") {
@@ -559,8 +577,8 @@ function buildPanel() {
         slider.id = `med-compl-${item.key}`;
         slider.className = "med-completion-slider";
         slider.dataset.key = item.key;
-        slider.min = item.min ?? 0;
-        slider.max = item.max ?? 10;
+        slider.min = item.min != null ? item.min : 0;
+        slider.max = item.max != null ? item.max : 10;
         slider.value = 0;
         slider.disabled = startsDisabled;
         if (startsDisabled) row.classList.add("med-completion-row--disabled");
@@ -597,8 +615,10 @@ function buildPanel() {
       groupEl.appendChild(row);
     }
 
-    panel.appendChild(groupEl);
-  }
+      scrollArea.appendChild(groupEl);
+    }
+
+    panel.appendChild(scrollArea);
 
   updateAllStates(panel);
   return panel;
@@ -633,42 +653,58 @@ function findModalContainer(titleEl) {
 
 function injectCompletionButton(titleEl) {
   const container = findModalContainer(titleEl);
-  if (container.querySelector(".med-completion-btn")) return;
+  if (container.querySelector(".med-completion-wrapper")) return;
 
   if (window.getComputedStyle(container).position === "static") {
     container.style.position = "relative";
   }
 
+  const wrapper = document.createElement("div");
+  wrapper.className = "med-completion-wrapper";
+
   const btn = document.createElement("button");
   btn.type = "button";
   btn.className = "med-completion-btn";
-  btn.textContent = "Complétion";
+  btn.textContent = "Completion";
+  wrapper.appendChild(btn);
 
   let panel = null;
+  let escHandler = null;
+  let clickOutsideHandler = null;
+
+  function closePanel() {
+    if (!panel) return;
+    panel.classList.remove("med-completion-panel--open");
+    btn.classList.remove("med-completion-btn--open");
+    if (escHandler) {
+      document.removeEventListener("keydown", escHandler);
+      escHandler = null;
+    }
+    if (clickOutsideHandler) {
+      document.removeEventListener("click", clickOutsideHandler);
+      clickOutsideHandler = null;
+    }
+    setTimeout(() => {
+      if (panel && panel.parentNode) {
+        panel.remove();
+        panel = null;
+      }
+    }, 200);
+  }
 
   btn.addEventListener("click", () => {
     if (panel && panel.isConnected) {
-      panel.remove();
-      panel = null;
-      btn.classList.remove("med-completion-btn--active");
+      closePanel();
       return;
     }
 
     panel = buildPanel();
 
-    const closePanel = () => {
-      panel.remove();
-      panel = null;
-      btn.classList.remove("med-completion-btn--active");
-    };
-
-    // Bouton Valider
     const validateBtn = document.createElement("button");
     validateBtn.type = "button";
     validateBtn.className = "med-completion-validate";
     validateBtn.textContent = "Valider";
 
-    // C'est ici qu'on récupère correctement les cases cochées avant d'appeler applyCompletion
     validateBtn.addEventListener("click", async () => {
       const selections = {};
       panel.querySelectorAll('input[type="checkbox"]').forEach((cb) => {
@@ -696,13 +732,37 @@ function injectCompletionButton(titleEl) {
     actions.appendChild(validateBtn);
 
     panel.appendChild(actions);
-    btn.classList.add("med-completion-btn--active");
-    btn.appendChild(panel);
+    wrapper.appendChild(panel);
+
+    const containerRect = container.getBoundingClientRect();
+    panel.style.position = "fixed";
+    panel.style.top = containerRect.top + "px";
+    panel.style.left = (containerRect.right + 12) + "px";
+    panel.style.maxHeight = containerRect.height + "px";
+
+    btn.classList.add("med-completion-btn--open");
+
+    escHandler = (e) => {
+      if (e.key === "Escape") closePanel();
+    };
+    document.addEventListener("keydown", escHandler);
+
+    const openedAt = Date.now();
+    clickOutsideHandler = (e) => {
+      if (Date.now() - openedAt < 300) return;
+      if (panel && !panel.contains(e.target) && e.target !== btn) {
+        closePanel();
+      }
+    };
+    document.addEventListener("click", clickOutsideHandler);
+
+    requestAnimationFrame(() => {
+      panel.classList.add("med-completion-panel--open");
+    });
   });
 
-  container.appendChild(btn);
+  container.appendChild(wrapper);
 
-  // Aligne le bord droit du bouton avec celui du bouton Enregistrer
   setTimeout(() => {
     const enregistrerBtn = [...document.querySelectorAll("button")].find(
       (b) => b.textContent.trim().toLowerCase() === "enregistrer",
@@ -710,7 +770,7 @@ function injectCompletionButton(titleEl) {
     if (enregistrerBtn) {
       const containerRect = container.getBoundingClientRect();
       const enregistrerRect = enregistrerBtn.getBoundingClientRect();
-      btn.style.right = containerRect.right - enregistrerRect.right + "px";
+      wrapper.style.right = containerRect.right - enregistrerRect.right + "px";
     }
   }, 0);
 }
@@ -726,7 +786,6 @@ function tryInjectCompletion() {
   }
 }
 
-// Observe les mutations DOM pour les pages chargées dynamiquement (SPA/React)
 const completionObserver = new MutationObserver(() => {
   tryInjectCompletion();
 });

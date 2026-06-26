@@ -1,5 +1,5 @@
 // src/background.js
-// Service worker de l'extension — gère l'installation et le message d'épinglage
+// Service worker de l'extension - gère l'installation et le message d'épinglage
 // Compatible Chrome MV3 (service_worker) et Firefox MV3 (event page)
 
 const api = typeof browser !== "undefined" ? browser : chrome;
