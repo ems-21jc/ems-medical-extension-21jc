@@ -8,6 +8,11 @@ Le format est basé sur [Keep a Changelog](https://keepachangelog.com/en/1.1.0/)
 
 ## [Unreleased]
 
+## [0.13.0] - 2026-06-26
+
+### Added
+- Option Décompression dans le groupe Accident (Accident de Décompression) : Examens Echo Décompression Pulmonaire + Constantes Faibles, Traitements Bouteille d'O², Incapacités saut et course, Durée 30 min (45 min si Coma)
+
 ## [0.12.4] - 2026-06-26
 
 ### Fixed
