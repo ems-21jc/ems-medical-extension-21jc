@@ -122,13 +122,11 @@ let cbConduire = null;
 let cbArme = null;
 
 function initIncapaciteCbs() {
-  if (!cbComa) cbComa = findCheckboxByLabel("Coma");
-  if (!cbSaut) cbSaut = findCheckboxByLabel("Incapacité de saut(1)");
-  if (!cbCourse) cbCourse = findCheckboxByLabel("Incapacité de course(2)");
-  if (!cbConduire)
-    cbConduire = findCheckboxByLabel("Incapacité de conduire(3)");
-  if (!cbArme)
-    cbArme = findCheckboxByLabel("Incapacité d'utiliser une arme(4)");
+  if (!cbComa?.isConnected) cbComa = findCheckboxByLabel("Coma");
+  if (!cbSaut?.isConnected) cbSaut = findCheckboxByLabel("Incapacité de saut(1)");
+  if (!cbCourse?.isConnected) cbCourse = findCheckboxByLabel("Incapacité de course(2)");
+  if (!cbConduire?.isConnected) cbConduire = findCheckboxByLabel("Incapacité de conduire(3)");
+  if (!cbArme?.isConnected) cbArme = findCheckboxByLabel("Incapacité d'utiliser une arme(4)");
 }
 
 function findCheckboxByLabel(labelText) {
