@@ -56,7 +56,7 @@ function formatControlDate() {
   }
   const parts = dureeInput.value.trim().split(":");
   if (parts.length < 2) {
-    return { value: null, error: "Format invalide — attendu HH:MM:SS" };
+    return { value: null, error: "Format invalide - attendu HH:MM:SS" };
   }
   const totalSeconds =
     (parseInt(parts[0], 10) || 0) * 3600 +
@@ -356,7 +356,7 @@ function tryInjectDates() {
 }
 
 // ════════════════════════════════════════════════════════════════════════════
-// Chips "Infos ok" / "Infos pas ok" — coloration + boutons d'ajout
+// Chips "Infos ok" / "Infos pas ok" - coloration + boutons d'ajout
 // ════════════════════════════════════════════════════════════════════════════
 
 function normalizeChipText(text) {

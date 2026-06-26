@@ -1,6 +1,6 @@
 ﻿// ══════════════════════════════════════════════════════════════════════════════
 // bodyZoneCompletion.js
-// Sidebar anatomique — lit pathologies.json (structure v2 avec soins typés),
+// Sidebar anatomique - lit pathologies.json (structure v2 avec soins typés),
 // permet de stacker plusieurs pathologies et injecte tout en une fois.
 //
 // Structure d'une pathologie dans le JSON :
@@ -253,7 +253,7 @@ function buildSidebar() {
   //   Contenus identiques dédupliqués.
   //   → "Radio : X + Y + Z // Echo : A + B"
   //
-  // SOINS — ordre fixe : chir → immo → meds
+  // SOINS - ordre fixe : chir → immo → meds
   //   chir : regroupés par préfixe exact, contenus dédupliqués par préfixe
   //          → "Chir AL ou AG : Retrait balles + cautérisation + PDS muscle + PDS cutané"
   //   immo : tous les contenus dédupliqués, joints sur une seule ligne par " + "
@@ -297,7 +297,7 @@ function buildSidebar() {
     // Meds : chaque sigle/produit collecté individuellement, dédupliqué
     const medsSet = new Set();
 
-    // Ordre d'affichage des meds courants — les sigles médicaux passent en dernier
+    // Ordre d'affichage des meds courants - les sigles médicaux passent en dernier
     const MEDS_SIGLES = ["AD", "AI", "AB", "AC", "AF"];
 
     for (const { patho } of stack) {
@@ -379,7 +379,7 @@ function buildSidebar() {
       pBtn.textContent = "✓ Déjà ajoutée";
     } else {
       pBtn.dataset.origLabel = patho.label;
-      pBtn.textContent = `+ Ajouter — ${patho.label}`;
+      pBtn.textContent = `+ Ajouter - ${patho.label}`;
       // Un second clic = ajout au stack
       pBtn.addEventListener("click", function addToStack() {
         if (stack.some((e) => e.zone.key === zone.key && e.patho.key === patho.key)) return;
@@ -451,13 +451,24 @@ function openSidebar() {
   if (document.getElementById("bz-sidebar")) return;
   const sidebar = buildSidebar();
   document.body.appendChild(sidebar);
-  // Lance l'animation slide-in depuis la gauche
   requestAnimationFrame(() => sidebar.classList.add("bz-sidebar--open"));
+
+  const escHandler = (e) => {
+    if (e.key === "Escape") {
+      closeSidebar();
+      document.removeEventListener("keydown", escHandler);
+    }
+  };
+  document.addEventListener("keydown", escHandler);
+  sidebar._escHandler = escHandler;
 }
 
 function closeSidebar() {
   const sidebar = document.getElementById("bz-sidebar");
   if (!sidebar) return;
+  if (sidebar._escHandler) {
+    document.removeEventListener("keydown", sidebar._escHandler);
+  }
   sidebar.classList.remove("bz-sidebar--open");
   sidebar.addEventListener("transitionend", () => sidebar.remove(), { once: true });
 }
@@ -490,9 +501,9 @@ function injectBodyZoneButton(titleEl) {
       const enregistrerRect = enregistrerBtn.getBoundingClientRect();
       const rightOffset     = containerRect.right - enregistrerRect.right;
       btn.style.right       = rightOffset + "px";
-      const completionBtn   = container.querySelector(".med-completion-btn");
-      if (completionBtn) {
-        completionBtn.style.right = (rightOffset + btn.offsetWidth + 8) + "px";
+      const completionWrapper = container.querySelector(".med-completion-wrapper");
+      if (completionWrapper) {
+        completionWrapper.style.right = (rightOffset + btn.offsetWidth + 8) + "px";
       }
     }
   }, 50);

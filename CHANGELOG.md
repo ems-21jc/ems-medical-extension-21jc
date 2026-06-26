@@ -8,6 +8,26 @@ Le format est base sur [Keep a Changelog](https://keepachangelog.com/en/1.1.0/),
 
 ## [Unreleased]
 
+## [0.12.0] - 2026-06-26
+
+### Added
+- Option Detatouage dans le groupe Notes Internes (Nombre, Zone, Facture $)
+- Champ texte Taux mg/L pour Coma ethylique
+- Fermeture de la sidebar Bilan avec la touche Escape
+
+### Changed
+- Refonte complete du design du panneau Completion (palette, espacements, scrollbar, transitions)
+- Refonte complete du design de la sidebar Bilan Anatomique (palette, espacements, scrollbar)
+- Le panneau Completion s'ouvre a droite du dialog au lieu de se superposer au contenu
+- Boutons Valider / Annuler fixes en bas du panneau Completion avec zone de scroll
+- Harmonisation des designs Completion et Bilan (memes couleurs, espacements, polices)
+- Suppression de `pointer-events: none` sur les lignes desactivees du panneau Completion
+
+### Fixed
+- Accents retablis dans les recherches de labels MUI (Duree d'invalidite, Date de visite de controle, Incapacites)
+- Separateur entre le dernier groupe et les actions (double trait) corrige
+- Animation d'ouverture du panneau (translateX au lieu de translateY)
+
 ## [0.11.0] - 2026-06-25
 
 ### Added
