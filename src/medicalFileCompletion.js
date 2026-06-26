@@ -8,9 +8,9 @@ const COMPLETION_CONFIG = [
     items: [
       { key: "vm", label: "VM" },
       { key: "sp", label: "SP", parent: "vm", level: 1 },
-      { key: "valide", label: "Valide", parent: "vm", level: 1 },
+      { key: "valide", label: "Validé", parent: "vm", level: 1 },
       { key: "cu", label: "CU" },
-      { key: "detatouage", label: "Detatouage" },
+      { key: "detatouage", label: "Détatouage" },
       { key: "detatouage_nombre", label: "Nombre", parent: "detatouage", level: 1, type: "text" },
       { key: "detatouage_zone", label: "Zone", parent: "detatouage", level: 1, type: "text" },
       { key: "detatouage_facture", label: "Facture $", parent: "detatouage", level: 1, type: "text" },
@@ -30,7 +30,7 @@ const COMPLETION_CONFIG = [
       { key: "casque", label: "Casque", parent: "moto", level: 2 },
       {
         key: "velo",
-        label: "Velo",
+        label: "Vélo",
         parent: "avp",
         level: 1,
         disabledBy: ["moto", "pieton", "parebrise"],
@@ -44,7 +44,7 @@ const COMPLETION_CONFIG = [
       },
       {
         key: "pieton",
-        label: "Pieton",
+        label: "Piéton",
         parent: "avp",
         level: 1,
         disabledBy: ["moto", "parebrise", "velo"],
@@ -55,19 +55,19 @@ const COMPLETION_CONFIG = [
       { key: "bpb", label: "BPB" },
       { key: "gpb", label: "GPB", parent: "bpb", level: 1 },
       { key: "cat3", label: "Cat3", parent: "bpb", level: 1 },
-      { key: "desydratation", label: "Desydratation" },
-      { key: "hypoglycemie", label: "Hypoglycemie" },
-      { key: "coma_ethylique", label: "Coma ethylique" },
+      { key: "desydratation", label: "Déshydratation" },
+      { key: "hypoglycemie", label: "Hypoglycémie" },
+      { key: "coma_ethylique", label: "Coma éthylique" },
       { key: "coma_ethylique_g", label: "Taux mg/L", parent: "coma_ethylique", level: 1, type: "text" },
       { key: "overdose", label: "Overdose" },
       { key: "overdose_drogue", label: "Type Drogue", parent: "overdose", level: 1, type: "text" },
       { key: "noyade", label: "Noyade" },
-      { key: "depo", label: "Depot", parent: "noyade", level: 1 },
-      { key: "intox_fumee", label: "Intox Fumee" },
+      { key: "depo", label: "Dépôt", parent: "noyade", level: 1 },
+      { key: "intox_fumee", label: "Intox Fumée" },
       { key: "chute", label: "Chute" },
       { key: "chute_15m", label: "+15m", parent: "chute", level: 1 },
       { key: "explosion", label: "Explosion" },
-      { key: "brulure", label: "Brulure" },
+      { key: "brulure", label: "Brûlure" },
       { key: "attaque_animal", label: "Attaque Animal" },
     ],
   },
@@ -273,27 +273,27 @@ async function applyCompletion(sel) {
   }
 
   if (sel.vm) {
-    let remarque = "VISITE MEDICALE // ";
+    let remarque = "VISITE MÉDICALE // ";
     if (sel.sp)
       remarque +=
         (sel.valide ? "TEST EFFORT OK" : "TEST EFFORT ECHEC") + " // ";
     remarque += sel.valide
-      ? "[APPROUVE AU SERVICE]"
-      : "[NON APPROUVE AU SERVICE]";
+      ? "[APPROUVÉ AU SERVICE]"
+      : "[NON APPROUVÉ AU SERVICE]";
     appendToField("Remarque(s)", remarque);
   }
 
   if (sel.cu) {
-    appendToField("Remarque(s)", "Changement Contactes d'Urgence", " + ");
+    appendToField("Remarque(s)", "Changement Contactés d'Urgence", " + ");
   }
 
   if (sel.detatouage) {
     const nb = sel.detatouage_nombre || "[Nombre]";
     const zone = sel.detatouage_zone || "[Zone]";
     const facture = sel.detatouage_facture || "[Prix]";
-    appendToField("Examens", `Detatouage ${nb} ${zone}`);
-    appendToField("Traitements", "Creme anesthesiante + detatouage laser + creme cicatrisante // Bandages");
-    appendToField("Remarque(s)", `Facture réalisée de ${facture}$ // VC a faire dans 24H`);
+    appendToField("Examens", `Détatouage ${nb} ${zone}`);
+    appendToField("Traitements", "Crème anesthésiante + détatouage laser + crème cicatrisante // Bandages");
+    appendToField("Remarque(s)", `Facture réalisée de ${facture}$ // VC à faire dans 24H // Mémo détatouage`);
     const admissionField = findFieldByLabel("Date d'admission");
     if (admissionField && admissionField.value) {
       const parts = admissionField.value.split(" ");
@@ -314,7 +314,7 @@ async function applyCompletion(sel) {
 
   if (sel.vm) blessures.push("VM");
   if (sel.cu) blessures.push("CU");
-  if (sel.detatouage) blessures.push("Detatouage");
+  if (sel.Détatouage) blessures.push("Détatouage");
 
   if (sel.avp) {
     let s = "AVP";
@@ -322,9 +322,9 @@ async function applyCompletion(sel) {
       s += " Moto";
       s += sel.casque ? " Casque" : " sans Casque";
     }
-    if (sel.velo) s += " Velo";
+    if (sel.velo) s += " Vélo";
     if (sel.parebrise) s += " Pare Brise";
-    if (sel.pieton) s += " Pieton";
+    if (sel.pieton) s += " Piéton";
     blessures.push(s);
   }
 
@@ -347,7 +347,7 @@ async function applyCompletion(sel) {
   }
 
   if (sel.desydratation) {
-    blessures.push("Deshydratation");
+    blessures.push("Déshydratation");
     if (cbComa && !cbComa.checked) cbComa.click();
     appendToField("Examens", "Constantes: Faibles");
     appendToField("Traitements", "Poche de Solution Hydratante", " + ");
@@ -356,7 +356,7 @@ async function applyCompletion(sel) {
   }
 
   if (sel.hypoglycemie) {
-    blessures.push("Hypoglycemie");
+    blessures.push("Hypoglycémie");
     if (cbComa && !cbComa.checked) cbComa.click();
     appendToField("Examens", "Constantes: Faibles");
     appendToField("Traitements", "Poche de Glucose", " + ");
@@ -365,7 +365,7 @@ async function applyCompletion(sel) {
   }
 
   if (sel.coma_ethylique) {
-    blessures.push("Coma ethylique");
+    blessures.push("Coma éthylique");
     if (cbComa && !cbComa.checked) cbComa.click();
     if (cbSaut && !cbSaut.checked) cbSaut.click();
     if (cbCourse && !cbCourse.checked) cbCourse.click();
@@ -386,7 +386,7 @@ async function applyCompletion(sel) {
   }
 
   if (sel.intox_fumee) {
-    blessures.push("Intoxication Fumee");
+    blessures.push("Intoxication Fumée");
     if (cbSaut && !cbSaut.checked) cbSaut.click();
     if (cbCourse && !cbCourse.checked) cbCourse.click();
   }
@@ -397,7 +397,7 @@ async function applyCompletion(sel) {
     blessures.push(s);
   }
   if (sel.explosion) blessures.push("Explosion");
-  if (sel.brulure) blessures.push("Brulures");
+  if (sel.brulure) blessures.push("Brûlures");
   if (sel.attaque_animal) blessures.push("Attaque Animal");
 
   if (blessures.length)
@@ -407,18 +407,18 @@ async function applyCompletion(sel) {
   if (sel.inconscient) appendToField("Blessures", "// Inconscient", " ");
 
   if (sel.noyade) {
-    if (sel.depo) appendToField("Examens", "Echo: Presence Depot Poumon");
+    if (sel.depo) appendToField("Examens", "Echo: Présence Dépôt Poumon");
     else appendToField("Examens", "Echo: RAS");
   }
-  if (sel.intox_fumee) appendToField("Examens", "Echo: Brulure Bronches");
+  if (sel.intox_fumee) appendToField("Examens", "Echo: Brûlure Bronches");
   if (sel.coma_ethylique) {
     const taux = sel.coma_ethylique_g || "[NOMBRE]";
-    appendToField("Examens", `Ethylotest : ${taux}mg/L`);
+    appendToField("Examens", `Éthylotest : ${taux}mg/L`);
   }
   if (sel.overdose) appendToField("Examens", "Test Salivaire: Positif");
 
   if (sel.intox_fumee) appendToField("Traitements", "Bouteille d'O2 // AI + AD");
-  if (sel.coma_ethylique) appendToField("Traitements", "Lavage d'estomac // Baclofene");
+  if (sel.coma_ethylique) appendToField("Traitements", "Lavage d'estomac // Baclofène");
   if (sel.overdose) appendToField("Traitements", "Lavage d'estomac");
   if (sel.noyade) {
     appendToField("Traitements", "AI + AD + AB + AF + Expectorant");
@@ -454,8 +454,8 @@ async function applyCompletion(sel) {
     setDuration(best);
   }
 
-  if (sel.canne) appendToField("Remarque(s)", "Pret de canne", " + ");
-  if (sel.fauteuil) appendToField("Remarque(s)", "Pret de fauteuil", " + ");
+  if (sel.canne) appendToField("Remarque(s)", "Prêt de canne", " + ");
+  if (sel.fauteuil) appendToField("Remarque(s)", "Prêt de fauteuil", " + ");
 
   if (sel.vm || sel.cu || sel.detatouage)
     setTimeout(() => setSelectOption("Type", "Note interne"), 50);
