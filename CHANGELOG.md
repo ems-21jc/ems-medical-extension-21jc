@@ -8,6 +8,13 @@ Le format est base sur [Keep a Changelog](https://keepachangelog.com/en/1.1.0/),
 
 ## [Unreleased]
 
+## [0.12.1] - 2026-06-26
+
+### Fixed
+- Les champs texte du panneau Completion ne fonctionnaient plus quand le panel etait dans document.body (focus trap MUI) : panel replace dans le dialog, z-index du dialog monte a 100001 pour passer au-dessus de la sidebar Bilan
+- Le panneau Completion passait derriere la sidebar Bilan (conflit de stacking context)
+- Fermeture intempestive du panneau au clic d'ouverture
+
 ## [0.12.0] - 2026-06-26
 
 ### Added
