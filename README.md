@@ -1,23 +1,24 @@
 # EMS Medical Extension • 21 Jump Click
 
-Extension navigateur (Chrome & Firefox) qui automatise la redaction des dossiers medicaux pour les EMS du serveur **21 Jump Click**.
+Extension navigateur (Chrome & Firefox) qui automatise la rédaction des dossiers médicaux pour les EMS du serveur **21 Jump Click**.
 
 > Site cible : `https://intra.21jumpclick.fr/*`
 
 ---
 
-## Fonctionnalites
+## Fonctionnalités
 
-- **Completion automatique** • Panneau de cases a cocher pour pre-remplir les champs du rapport medical (Blessures, Examens, Traitements, Remarques, Duree, Code Postal). Groupes : Notes Internes, Accident, Medicaments, Autre.
-- **Bilan Anatomique** • Sidebar laterale pour construire un bilan lesionnel multi-zones (pathologies avec examens/soins predefinis depuis `pathologies.json`), injection groupee dans Examens et Traitements.
-- **Dates** • Boutons pour inserer automatiquement VM, DDS et VC. Date d'admission pre-remplie a l'ouverture du formulaire.
+- **Complétion automatique** • Panneau de cases à cocher pour pré-remplir les champs du rapport médical (Blessures, Examens, Traitements, Remarques, Durée, Code Postal). Groupes : Notes Internes, Accident, Médicaments, Autre.
+- **Bilan Anatomique** • Sidebar latérale pour construire un bilan lésionnel multi-zones (pathologies avec examens/soins prédéfinis depuis `pathologies.json`), injection groupée dans Examens et Traitements.
+- **Dates** • Boutons pour insérer automatiquement VM, DDS et VC. Date d'admission pré-remplie à l'ouverture du formulaire.
 - **Chips Infos ok / pas ok** • Boutons mutex dans le champ *En cas d'urgence* avec colorisation des chips MUI.
-- **Bouton VC** • Sur la popup detail d'un rapport, convertit le rapport en visite de controle (examens en RAS, traitements en Retrait).
-- **Groupe Sanguin** • Randomizer aleatoire parmi les 8 groupes.
-- **Popup de configuration** • Hopital actif (BCES/LSES), code postal, liens dispatches.
-- **Guide d'epinglage** • Page de bienvenue a la premiere installation (4 etapes).
+- **Bouton VC** • Sur la popup détail d'un rapport, convertit le rapport en visite de contrôle (examens en RAS, traitements en Retrait).
+- **Groupe Sanguin** • Randomizer aléatoire parmi les 8 groupes.
+- **Popup de configuration** • Hôpital actif (BCES/LSES), code postal, liens dispatches.
+- **Guide d'épinglage** • Page de bienvenue à la première installation (4 étapes).
 - **Overdose** • Gestion des overdoses d'alcool et de drogue.
-- **Variante Lite** • Build allege sans Completion, Bilan Anatomique ni bouton VC.
+- **Détatouage** • Gestion du détatouage avec facture et VC automatique.
+- **Variante Lite** • Build allégé sans Complétion, Bilan Anatomique ni bouton VC.
 
 ---
 
@@ -27,20 +28,20 @@ Extension navigateur (Chrome & Firefox) qui automatise la redaction des dossiers
 ├── dist/                              # Builds + zips de distribution
 │   ├── chrome/       firefox/         # Builds standards
 │   └── chrome-lite/  firefox-lite/    # Builds Lite
-├── scripts/zip.mjs                    # Generation des zips (archiver)
+├── scripts/zip.mjs                    # Génération des zips (archiver)
 ├── src/
 │   ├── background.js                  # Service worker (install, pin status)
 │   ├── bodyZoneCompletion.js          # Sidebar Bilan Anatomique
-│   ├── content.css                    # Styles injectes
+│   ├── content.css                    # Styles injectés
 │   ├── dateFieldCompletion.js         # Dates + chips Infos + randomizer
 │   ├── manifest.chrome.json           # Manifest Chrome (V3)
 │   ├── manifest.firefox.json          # Manifest Firefox (V3 + gecko.id)
 │   ├── medicalCheckupCompletion.js    # Bouton VC
-│   ├── medicalFileCompletion.js       # Panneau de completion
+│   ├── medicalFileCompletion.js       # Panneau de complétion
 │   ├── pathologies.json               # Base pathologies par zone
 │   ├── popup.html / popup.js          # Popup de configuration
 │   ├── welcome.html / welcome.js      # Page de bienvenue
-│   └── icons/                         # Icones (16, 32, 48, 128 px)
+│   └── icons/                         # Icônes (16, 32, 48, 128 px)
 ├── .github/ISSUE_TEMPLATE/            # Templates d'issues
 ├── CHANGELOG.md                       # Historique des versions
 ├── package.json
@@ -49,7 +50,7 @@ Extension navigateur (Chrome & Firefox) qui automatise la redaction des dossiers
 
 ---
 
-## Installation & Developpement
+## Installation & Développement
 
 ```bash
 npm install
@@ -60,7 +61,7 @@ npm run dev:firefox-lite    # Watch mode Firefox Lite
 ```
 
 Charger dans le navigateur :
-- **Chrome** : `chrome://extensions/` > Mode developpeur > Charger l'extension non empaquetee > `dist/chrome/`
+- **Chrome** : `chrome://extensions/` > Mode développeur > Charger l'extension non empaquetée > `dist/chrome/`
 - **Firefox** : `about:debugging#/runtime/this-firefox` > Charger un module temporaire > `dist/firefox/manifest.json`
 
 ---
@@ -77,7 +78,7 @@ npm run build:all-lite          # Chrome Lite + Firefox Lite
 npm run build:everything        # Les 4 variantes
 ```
 
-Zips generes dans `dist/` sous la forme `ems-medical-extension-21jc-v<version>-<target>.zip`.
+Zips générés dans `dist/` sous la forme `ems-medical-extension-21jc-v<version>-<target>.zip`.
 
 ---
 
@@ -87,10 +88,10 @@ Voir [CHANGELOG.md](./CHANGELOG.md).
 
 ---
 
-## Dependances
+## Dépendances
 
-| Dependance | Usage |
+| Dépendance | Usage |
 |---|---|
 | `vite` (dev) | Build et compilation JS |
-| `webextension-polyfill` | API `browser` unifiee Chrome/Firefox |
-| `archiver` (dev) | Generation des zips de distribution |
+| `webextension-polyfill` | API `browser` unifiée Chrome/Firefox |
+| `archiver` (dev) | Génération des zips de distribution |

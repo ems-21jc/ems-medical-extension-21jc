@@ -314,7 +314,7 @@ async function applyCompletion(sel) {
 
   if (sel.vm) blessures.push("VM");
   if (sel.cu) blessures.push("CU");
-  if (sel.Détatouage) blessures.push("Détatouage");
+  if (sel.detatouage) blessures.push("Détatouage");
 
   if (sel.avp) {
     let s = "AVP";
