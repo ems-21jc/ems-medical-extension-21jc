@@ -293,7 +293,7 @@ async function applyCompletion(sel) {
     const facture = sel.detatouage_facture || "[Prix]";
     appendToField("Examens", `Détatouage ${nb} ${zone}`);
     appendToField("Traitements", "Crème anesthésiante + détatouage laser + crème cicatrisante // Bandages");
-    appendToField("Remarque(s)", `Facture réalisée de ${facture}$ // VC à faire dans 24H // Mémo détatouage`);
+    appendToField("Remarque(s)", `Facture réalisée de ${facture}$ // VC à faire dans 24H`);
     const admissionField = findFieldByLabel("Date d'admission");
     if (admissionField && admissionField.value) {
       const parts = admissionField.value.split(" ");
