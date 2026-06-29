@@ -80,6 +80,87 @@ function formatControlDate() {
   };
 }
 
+function createSvgElement(tagName, attributes = {}, children = []) {
+  const element = document.createElementNS("http://www.w3.org/2000/svg", tagName);
+  for (const [name, value] of Object.entries(attributes)) {
+    element.setAttribute(name, value);
+  }
+  for (const child of children) {
+    element.append(child);
+  }
+  return element;
+}
+
+function createIconBase(stroke, children) {
+  return createSvgElement(
+    "svg",
+    {
+      width: "14",
+      height: "14",
+      viewBox: "0 0 24 24",
+      fill: "none",
+      stroke,
+      "stroke-width": "2.5",
+      "stroke-linecap": "round",
+      "stroke-linejoin": "round",
+    },
+    children,
+  );
+}
+
+function createMedicalIcon() {
+  return createIconBase("#29b6f6", [
+    createSvgElement("path", { d: "M22 12h-4l-3 9L9 3l-3 9H2" }),
+  ]);
+}
+
+function createBloodIcon() {
+  return createIconBase("#ef5350", [
+    createSvgElement("path", {
+      d: "M12 22a7 7 0 0 0 7-7c0-4.3-7-13-7-13S5 10.7 5 15a7 7 0 0 0 7 7z",
+    }),
+  ]);
+}
+
+function createRefreshIcon() {
+  return createIconBase("currentColor", [
+    createSvgElement("path", {
+      d: "M21.5 2v6h-6M21.34 15.57a10 10 0 1 1-.57-8.38l5.67-5.67",
+    }),
+  ]);
+}
+
+function createSuccessIcon() {
+  return createIconBase("currentColor", [
+    createSvgElement("polyline", { points: "20 6 9 17 4 12" }),
+  ]);
+}
+
+function createErrorIcon() {
+  return createIconBase("currentColor", [
+    createSvgElement("circle", { cx: "12", cy: "12", r: "10" }),
+    createSvgElement("line", { x1: "12", y1: "8", x2: "12", y2: "12" }),
+    createSvgElement("line", { x1: "12", y1: "16", x2: "12.01", y2: "16" }),
+  ]);
+}
+
+function createShuffleIcon() {
+  return createIconBase("currentColor", [
+    createSvgElement("polyline", { points: "16 3 21 3 21 8" }),
+    createSvgElement("line", { x1: "4", y1: "20", x2: "21", y2: "3" }),
+    createSvgElement("polyline", { points: "21 16 21 21 16 21" }),
+    createSvgElement("line", { x1: "15", y1: "15", x2: "21", y2: "21" }),
+    createSvgElement("line", { x1: "4", y1: "4", x2: "9", y2: "9" }),
+  ]);
+}
+
+function setButtonContent(button, icon, label) {
+  button.replaceChildren(icon);
+  if (label) {
+    button.append(document.createTextNode(` ${label}`));
+  }
+}
+
 // Compatible React : execCommand opère sous la couche synthétique de React,
 // évitant les problèmes de re-render qui détachent l'élément entre le set et le dispatch
 function setNativeValue(input, value) {
@@ -168,7 +249,7 @@ function injectButton(input, format, label) {
       ";border-radius:8px;" +
       "cursor:pointer;transition:all 0.15s ease;" +
       "font-family:inherit;white-space:nowrap;margin:8px 0;";
-    btn.innerHTML = svgIcon + btnText;
+    setButtonContent(btn, createMedicalIcon(), btnText);
 
     btn.addEventListener("mouseenter", () => {
       btn.style.background = BG_HOVER;
@@ -187,10 +268,10 @@ function injectButton(input, format, label) {
       if (!currentInput) return;
       const value = formatDate();
       setNativeValue(currentInput, value);
-      btn.innerHTML = `<svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><polyline points="20 6 9 17 4 12"/></svg> OK`;
+      setButtonContent(btn, createSuccessIcon(), "OK");
       btn.style.background = BG_SUCCESS;
       setTimeout(() => {
-        btn.innerHTML = svgIcon + btnText;
+        setButtonContent(btn, createMedicalIcon(), btnText);
         btn.style.background = BG_COLOR;
       }, 1500);
     });
@@ -224,7 +305,7 @@ function injectButton(input, format, label) {
       ";border-radius:8px;" +
       "cursor:pointer;transition:all 0.15s ease;" +
       "font-family:inherit;white-space:nowrap;margin:8px 0;";
-    btn.innerHTML = svgIcon + btnText;
+    setButtonContent(btn, createBloodIcon(), btnText);
 
     btn.addEventListener("mouseenter", () => {
       btn.style.background = BG_HOVER;
@@ -243,10 +324,10 @@ function injectButton(input, format, label) {
       if (!currentInput) return;
       const value = formatDateTime();
       setNativeValue(currentInput, value);
-      btn.innerHTML = `<svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><polyline points="20 6 9 17 4 12"/></svg> OK`;
+      setButtonContent(btn, createSuccessIcon(), "OK");
       btn.style.background = BG_SUCCESS;
       setTimeout(() => {
-        btn.innerHTML = svgIcon + btnText;
+        setButtonContent(btn, createBloodIcon(), btnText);
         btn.style.background = BG_COLOR;
       }, 1500);
       const enregistrer = [...document.querySelectorAll("button")].find(
@@ -284,7 +365,7 @@ function injectButton(input, format, label) {
       ";border-radius:8px;" +
       "cursor:pointer;transition:all 0.15s ease;" +
       "flex-shrink:0;";
-    btn.innerHTML = svgIcon;
+    setButtonContent(btn, createRefreshIcon());
 
     btn.addEventListener("mouseenter", () => {
       btn.style.background = BG_HOVER;
@@ -304,21 +385,21 @@ function injectButton(input, format, label) {
 
       const result = formatControlDate();
       if (result.error) {
-        btn.innerHTML = `<svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"/><line x1="12" y1="8" x2="12" y2="12"/><line x1="12" y1="16" x2="12.01" y2="16"/></svg>`;
+        setButtonContent(btn, createErrorIcon());
         btn.title = result.error;
         btn.style.background = BG_ERROR;
         setTimeout(() => {
-          btn.innerHTML = svgIcon;
+          setButtonContent(btn, createRefreshIcon());
           btn.title = btnTitle;
           btn.style.background = BG_COLOR;
         }, 2000);
         return;
       }
       setNativeValue(currentInput, result.value);
-      btn.innerHTML = `<svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><polyline points="20 6 9 17 4 12"/></svg>`;
+      setButtonContent(btn, createSuccessIcon());
       btn.style.background = BG_SUCCESS;
       setTimeout(() => {
-        btn.innerHTML = svgIcon;
+        setButtonContent(btn, createRefreshIcon());
         btn.style.background = BG_COLOR;
       }, 1500);
     });
@@ -774,7 +855,7 @@ function injectBloodGroupRandomizer() {
     btn.type = "button";
     btn.className = "med-blood-rnd";
     btn.title = "Randomiser groupe sanguin";
-    btn.innerHTML = svgRandom;
+    setButtonContent(btn, createShuffleIcon());
     btn.style.cssText =
       "display:inline-flex;align-items:center;justify-content:center;" +
       "width:36px;height:36px;padding:0;" +
@@ -820,10 +901,10 @@ function injectBloodGroupRandomizer() {
         combobox.dispatchEvent(new Event("change", { bubbles: true }));
       }
       // Feedback visuel succès (✓ vert) comme les autres boutons
-      btn.innerHTML = `<svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><polyline points="20 6 9 17 4 12"/></svg>`;
+      setButtonContent(btn, createSuccessIcon());
       btn.style.background = BG_SUCCESS;
       setTimeout(() => {
-        btn.innerHTML = svgRandom;
+        setButtonContent(btn, createShuffleIcon());
         btn.style.background = BG_COLOR;
       }, 1200);
     });

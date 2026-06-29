@@ -46,7 +46,10 @@
   ],
   "browser_specific_settings": {
     "gecko": {
-      "id": "extension-ems-21jc@21jumpclick.fr"
+      "id": "extension-ems-21jc@21jumpclick.fr",
+      "data_collection_permissions": {
+        "required": ["none"]
+      }
     }
   }
 }
