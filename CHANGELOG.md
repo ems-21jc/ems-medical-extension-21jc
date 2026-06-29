@@ -8,6 +8,13 @@ Le format est basé sur [Keep a Changelog](https://keepachangelog.com/en/1.1.0/)
 
 ## [Unreleased]
 
+## [0.13.2] - 2026-06-29
+
+### Changed
+- Label "Taux mg/L" changé en "Taux g" pour le taux d'alcool (Coma éthylique), sortie `Éthylotest : Xg` au lieu de `Xmg/L`
+- Refactor des icônes SVG : remplacement des SVG inline par des fonctions helpers dans `dateFieldCompletion.js` et `popup.js`
+- Ajout de `data_collection_permissions` au manifest Firefox (conformité AMO)
+
 ## [0.13.1] - 2026-06-26
 
 ### Fixed
