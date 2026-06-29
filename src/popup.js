@@ -64,7 +64,13 @@ function renderManifestInfo() {
 
   const footer = document.getElementById("popupFooter");
   if (footer) {
-    footer.innerHTML = `<img src="icons/icon16.png" alt=""> ${fullName} • v${manifest.version}`;
+    const icon = document.createElement("img");
+    icon.src = "icons/icon16.png";
+    icon.alt = "";
+    footer.replaceChildren(
+      icon,
+      document.createTextNode(` ${fullName} • v${manifest.version}`),
+    );
   }
 }
 
