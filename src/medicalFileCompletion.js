@@ -58,7 +58,7 @@ const COMPLETION_CONFIG = [
       { key: "desydratation", label: "Déshydratation" },
       { key: "hypoglycemie", label: "Hypoglycémie" },
       { key: "coma_ethylique", label: "Coma éthylique" },
-      { key: "coma_ethylique_g", label: "Taux mg/L", parent: "coma_ethylique", level: 1, type: "text" },
+      { key: "coma_ethylique_g", label: "Taux g", parent: "coma_ethylique", level: 1, type: "text" },
       { key: "overdose", label: "Overdose" },
       { key: "overdose_drogue", label: "Type Drogue", parent: "overdose", level: 1, type: "text" },
       { key: "noyade", label: "Noyade" },
@@ -418,7 +418,7 @@ async function applyCompletion(sel) {
   if (sel.intox_fumee) appendToField("Examens", "Echo: Brûlure Bronches");
   if (sel.coma_ethylique) {
     const taux = sel.coma_ethylique_g || "[NOMBRE]";
-    appendToField("Examens", `Éthylotest : ${taux}mg/L`);
+    appendToField("Examens", `Éthylotest : ${taux}g`);
   }
   if (sel.overdose) appendToField("Examens", "Test Salivaire: Positif");
 
