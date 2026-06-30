@@ -8,6 +8,11 @@ Le format est basé sur [Keep a Changelog](https://keepachangelog.com/en/1.1.0/)
 
 ## [Unreleased]
 
+## [0.14.0] - 2026-06-30
+
+### Added
+- Lien "Signaler un bug" dans la popup pointant vers les issues GitHub
+
 ## [0.13.2] - 2026-06-29
 
 ### Changed
