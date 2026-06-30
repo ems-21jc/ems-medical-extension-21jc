@@ -232,8 +232,6 @@ function injectButton(input, format, label) {
     const btnText = "VM Maintenant";
     const btnTitle = "Insérer date actuelle pour la visite médicale";
     // SVG médical (cross/heartbeat) - bleu #29b6f6
-    const svgIcon = `<svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="#29b6f6" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M22 12h-4l-3 9L9 3l-3 9H2"></path></svg>`;
-
     const btn = document.createElement("button");
     btn.type = "button";
     btn.className = "med-now-btn med-now-btn--vm";
@@ -288,8 +286,6 @@ function injectButton(input, format, label) {
     const btnText = "DDS Maintenant";
     const btnTitle = "Insérer date et heure actuelles pour le don du sang";
     // SVG sang (heart/blood drop) - rouge #ef5350
-    const svgIcon = `<svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="#ef5350" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M12 22a7 7 0 0 0 7-7c0-4.3-7-13-7-13S5 10.7 5 15a7 7 0 0 0 7 7z"></path></svg>`;
-
     const btn = document.createElement("button");
     btn.type = "button";
     btn.className = "med-now-btn med-now-btn--dds";
@@ -348,8 +344,6 @@ function injectButton(input, format, label) {
     const btnTitle =
       "Calculer la date de visite de contrôle (admission + durée)";
     // SVG actualiser (refresh) - blanc (currentColor)
-    const svgIcon = `<svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M21.5 2v6h-6M21.34 15.57a10 10 0 1 1-.57-8.38l5.67-5.67"/></svg>`;
-
     const btn = document.createElement("button");
     btn.type = "button";
     btn.className = "med-now-btn med-now-btn--vc";
@@ -462,30 +456,6 @@ function isInfosPasOk(text) {
     /\binfo(?:s|rmation(?:s)?)?\s*pas\s*ok\b/.test(t) ||
     /\binfo(?:s|rmation(?:s)?)?\s*pasok\b/.test(t)
   );
-}
-
-// Découpe un texte en segments colorables.
-// Renvoie un tableau de {text, kind} où kind ∈ {null, 'ok', 'pas-ok'}
-function splitInfoSegments(text) {
-  const segments = [];
-  const re = /\b(info(?:s|rmation(?:s)?)?\s*(?:pas\s*ok|pasok|ok))\b/gi;
-  let lastIndex = 0;
-  let m;
-  while ((m = re.exec(text)) !== null) {
-    if (m.index > lastIndex) {
-      segments.push({ text: text.slice(lastIndex, m.index), kind: null });
-    }
-    const matched = m[0];
-    segments.push({
-      text: matched,
-      kind: isInfosPasOk(matched) ? "pas-ok" : "ok",
-    });
-    lastIndex = m.index + matched.length;
-  }
-  if (lastIndex < text.length) {
-    segments.push({ text: text.slice(lastIndex), kind: null });
-  }
-  return segments;
 }
 
 // Colore les chips MUI ET le texte brut inline.
@@ -849,8 +819,6 @@ function injectBloodGroupRandomizer() {
     const BORDER_COLOR = "#4c6875";
 
     // SVG aléatoire / shuffle (deux flèches croisées)
-    const svgRandom = `<svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><polyline points="16 3 21 3 21 8"></polyline><line x1="4" y1="20" x2="21" y2="3"></line><polyline points="21 16 21 21 16 21"></polyline><line x1="15" y1="15" x2="21" y2="21"></line><line x1="4" y1="4" x2="9" y2="9"></line></svg>`;
-
     const btn = document.createElement("button");
     btn.type = "button";
     btn.className = "med-blood-rnd";

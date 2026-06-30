@@ -8,6 +8,11 @@ Le format est basé sur [Keep a Changelog](https://keepachangelog.com/en/1.1.0/)
 
 ## [Unreleased]
 
+## [0.14.1] - 2026-06-30
+
+### Fixed
+- Suppression de variables et fonctions inutilisées dans `dateFieldCompletion.js` (`svgIcon`, `svgRandom`, `splitInfoSegments`)
+
 ## [0.14.0] - 2026-06-30
 
 ### Added
