@@ -8,6 +8,11 @@ Le format est basé sur [Keep a Changelog](https://keepachangelog.com/en/1.1.0/)
 
 ## [Unreleased]
 
+## [0.14.2] - 2026-06-30
+
+### Fixed
+- Le lien "Signaler un bug" est masqué dans la variante Lite pour ne pas exposer le code complet
+
 ## [0.14.1] - 2026-06-30
 
 ### Fixed

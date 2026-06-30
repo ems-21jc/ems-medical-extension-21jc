@@ -37,15 +37,16 @@ function renderManifestInfo() {
   const runtime = (typeof browser !== "undefined" ? browser : chrome).runtime;
   if (!runtime || !runtime.getManifest) {
     console.warn("[popup] runtime.getManifest non disponible");
-    return;
+    return false;
   }
   const manifest = runtime.getManifest();
   if (!manifest) {
     console.warn("[popup] manifest non trouvé");
-    return;
+    return false;
   }
 
   const fullName = manifest.name || "EMS Medical Extension";
+  const isLite = fullName.includes("Lite");
 
   console.log(
     "[popup] manifest.name:",
@@ -72,6 +73,7 @@ function renderManifestInfo() {
       document.createTextNode(` ${fullName} • v${manifest.version}`),
     );
   }
+  return isLite;
 }
 
 // ── Bannière d'épinglage ─────────────────────────────────────────────────
@@ -135,7 +137,13 @@ async function initPinBanner() {
 }
 
 document.addEventListener("DOMContentLoaded", async () => {
-  renderManifestInfo();
+  const isLite = renderManifestInfo();
+  if (isLite) {
+    const supportSection = document.getElementById("supportSection");
+    const bugLink = document.getElementById("linkBug");
+    if (supportSection) supportSection.style.display = "none";
+    if (bugLink) bugLink.style.display = "none";
+  }
   await initPinBanner();
 
   const zipInput = document.getElementById("defaultZip");
