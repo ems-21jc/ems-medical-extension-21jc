@@ -6,6 +6,13 @@ Extension navigateur (Chrome & Firefox) qui automatise la rédaction des dossier
 
 ---
 
+## Liens des stores
+
+- [Chrome Web Store](https://chromewebstore.google.com/detail/anemnlbfaifjlmmmnnilanjconlmggmh?utm_source=item-share-cb)
+- [Firefox Add-ons](https://addons.mozilla.org/fr/firefox/addon/ems-medical-extension/)
+
+---
+
 ## Fonctionnalités
 
 - **Complétion automatique** • Panneau de cases à cocher pour pré-remplir les champs du rapport médical (Blessures, Examens, Traitements, Remarques, Durée, Code Postal). Groupes : Notes Internes, Accident, Médicaments, Autre.
