@@ -244,8 +244,8 @@ function mcc_injectButton(dialog) {
     const remarquesRaw = mcc_getFieldValue(dialog, "Remarque(s)") || "";
     const traitementsRaw = mcc_getFieldValue(dialog, "Traitements") || "";
     const extras = [];
-    if (/canne/i.test(remarquesRaw)) extras.push("Canne récupéré");
-    if (/fauteuil/i.test(remarquesRaw)) extras.push("Fauteuil récupéré");
+    if (/c[aâ]nn?es?/i.test(remarquesRaw)) extras.push("Canne récupéré");
+    if (/faut[h]?eu?i?l/i.test(remarquesRaw)) extras.push("Fauteuil récupéré");
     const remarques = "FDS" + (extras.length ? " + " + extras.join(" + ") : "");
     const traitementsBase = mcc_buildTraitementsRetrait(traitementsRaw);
     const traitements = traitementsBase
