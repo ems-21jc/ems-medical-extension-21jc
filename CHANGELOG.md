@@ -8,6 +8,18 @@ Le format est basé sur [Keep a Changelog](https://keepachangelog.com/en/1.1.0/)
 
 ## [Unreleased]
 
+## [0.15.0] - 2026-08-15
+
+### Changed
+- Le Bilan Anatomique fusionne les examens et les traitements déjà présents au lieu d'ajouter des lignes dupliquées.
+- Les latéralités sont abrégées en `G` et `D`, et le sigle `PDS` est normalisé en `PDSR`.
+- Les chirurgies de la tête, du torse et les brûlures sont systématiquement classées en `Chir AG`.
+
+### Fixed
+- Les résultats d'examens d'un même type sont regroupés, ce qui évite notamment `Radio : RAS // Radio : ...`.
+- Une ligne `Chir AG` remplace `Chir AG ou AL` lorsque les deux sont présentes, sans perdre les actes associés.
+- L'anti-coagulant `AC` est retiré des traitements lorsqu'une pathologie de tête est ajoutée.
+
 ## [0.14.2] - 2026-06-30
 
 ### Fixed
