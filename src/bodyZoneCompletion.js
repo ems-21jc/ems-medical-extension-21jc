@@ -37,21 +37,129 @@ function bz_findFieldByLabel(labelText) {
   return null;
 }
 
-function bz_appendToField(labelText, text, separator = " // ") {
-  const field = bz_findFieldByLabel(labelText);
-  if (!field) return;
+function bz_setFieldValue(field, value) {
   field.focus();
-  field.setSelectionRange(field.value.length, field.value.length);
-  const prefix = field.value.trim() ? separator : "";
-  document.execCommand("insertText", false, prefix + text);
+  field.select();
+  document.execCommand("insertText", false, value);
 }
 
-function bz_prependToField(labelText, text, separator = " // ") {
-  const field = bz_findFieldByLabel(labelText);
-  if (!field) return;
-  field.focus();
-  field.setSelectionRange(0, 0);
-  document.execCommand("insertText", false, text + (field.value.trim() ? separator : ""));
+function bz_normalizeOutput(text) {
+  return text
+    .replace(/\bGauche\b/gi, "G")
+    .replace(/\bDroite?\b/gi, "D")
+    .replace(/\bPDS\b/gi, "PDSR");
+}
+
+function bz_normalizeChirLabel(label) {
+  const normalized = label.trim().replace(/\s+/g, " ");
+  if (/^chir\s+ag\s+ou\s+al$/i.test(normalized)) return "Chir AG ou AL";
+  if (/^chir\s+al\s+ou\s+ag$/i.test(normalized)) return "Chir AG ou AL";
+  if (/^chir\s+ag$/i.test(normalized)) return "Chir AG";
+  if (/^chir\s+al$/i.test(normalized)) return "Chir AL";
+  return normalized;
+}
+
+function bz_addUnique(values, value) {
+  const normalized = value.trim();
+  if (!normalized) return;
+  if (!values.some((item) => item.toLowerCase() === normalized.toLowerCase())) {
+    values.push(normalized);
+  }
+}
+
+function bz_mergeExamens(field, examens) {
+  const groups = new Map();
+  const order = [];
+  const otherLines = [];
+
+  const add = (label, values) => {
+    const key = label.trim().toLowerCase();
+    if (!groups.has(key)) {
+      groups.set(key, { label: label.trim(), values: [] });
+      order.push(key);
+    }
+    values.forEach((value) => bz_addUnique(groups.get(key).values, value));
+  };
+
+  field.value.split(/\s*\/\/\s*/).forEach((segment) => {
+    const match = segment.match(/^\s*([^:]+)\s*:\s*(.+)\s*$/);
+    if (match) add(match[1], match[2].split(/\s*\+\s*/));
+    else bz_addUnique(otherLines, segment);
+  });
+  examens.forEach(({ appareil, contenu }) => add(appareil, [contenu]));
+
+  const preferredOrder = [
+    "constantes",
+    "auscultation",
+    "radio",
+    "echo",
+    "irm",
+    "scanner",
+  ];
+  order.sort((a, b) => {
+    const aIndex = preferredOrder.indexOf(a);
+    const bIndex = preferredOrder.indexOf(b);
+    return (aIndex === -1 ? Infinity : aIndex) - (bIndex === -1 ? Infinity : bIndex);
+  });
+
+  return [
+    ...order.map((key) => {
+      const group = groups.get(key);
+      const values = group.values.filter((value) => {
+        return !/^ras$/i.test(value) || group.values.length === 1;
+      });
+      return `${group.label} : ${values.join(" + ")}`;
+    }),
+    ...otherLines,
+  ].join(" // ");
+}
+
+function bz_mergeTraitements(field, soinsText, removeAC = false) {
+  const chirGroups = new Map();
+  const chirOrder = [];
+  const otherLines = [];
+
+  const addChir = (label, values) => {
+    const nonEmptyValues = values.filter((value) => value.trim());
+    if (nonEmptyValues.length === 0) return;
+    const key = bz_normalizeChirLabel(label);
+    if (!chirGroups.has(key)) {
+      chirGroups.set(key, []);
+      chirOrder.push(key);
+    }
+    nonEmptyValues.forEach((value) => bz_addUnique(chirGroups.get(key), value));
+  };
+
+  [soinsText, bz_normalizeOutput(field.value)].forEach((text) => {
+    text.split(/\s*\/\/\s*/).forEach((segment) => {
+      const match = segment.match(/^\s*(Chir[^:]*)\s*:\s*(.+)\s*$/i);
+      if (match) {
+        const values = match[2].split(/\s*\+\s*/).filter((value) => {
+          return !removeAC || !/^AC$/i.test(value.trim());
+        });
+        addChir(match[1], values);
+      } else {
+        const line = segment
+          .split(/\s*\+\s*/)
+          .filter((value) => !removeAC || !/^AC$/i.test(value.trim()))
+          .join(" + ");
+        bz_addUnique(otherLines, line);
+      }
+    });
+  });
+
+  if (chirGroups.has("Chir AG") && chirGroups.has("Chir AG ou AL")) {
+    chirGroups.get("Chir AG ou AL").forEach((value) => {
+      bz_addUnique(chirGroups.get("Chir AG"), value);
+    });
+    chirGroups.delete("Chir AG ou AL");
+    chirOrder.splice(chirOrder.indexOf("Chir AG ou AL"), 1);
+  }
+
+  return [
+    ...chirOrder.map((label) => `${label} : ${chirGroups.get(label).join(" + ")}`),
+    ...otherLines,
+  ].join(" // ");
 }
 
 // ── Construction de la sidebar ────────────────────────────────────────────────
@@ -249,9 +357,8 @@ function buildSidebar() {
   // Construit les textes finaux à partir du stack.
   //
   // EXAMENS
-  //   Tous les { appareil, contenu } regroupés par appareil (insensible à la casse).
-  //   Contenus identiques dédupliqués.
-  //   → "Radio : X + Y + Z // Echo : A + B"
+  //   Les nouveaux segments sont préparés ici, puis fusionnés avec le champ existant
+  //   à l'injection pour éviter, par exemple, "Radio : RAS // Radio : X".
   //
   // SOINS - ordre fixe : chir → immo → meds
   //   chir : regroupés par préfixe exact, contenus dédupliqués par préfixe
@@ -277,12 +384,10 @@ function buildSidebar() {
       }
     }
 
-    const examensText = examOrder
-      .map((k) => {
-        const { label, contents } = examGroups.get(k);
-        return `${label} : ${[...contents].join(" + ")}`;
-      })
-      .join(" // ");
+    const examens = examOrder.flatMap((k) => {
+      const { label, contents } = examGroups.get(k);
+      return [...contents].map((contenu) => ({ appareil: label, contenu }));
+    });
 
     // ── Soins ──────────────────────────────────────────────────────────────────
 
@@ -300,11 +405,15 @@ function buildSidebar() {
     // Ordre d'affichage des meds courants - les sigles médicaux passent en dernier
     const MEDS_SIGLES = ["AD", "AI", "AB", "AC", "AF"];
 
-    for (const { patho } of stack) {
+    for (const { zone, patho } of stack) {
       for (const soin of patho.soins) {
 
         if (soin.type === "chir") {
-          const key = soin.prefixe || "Chir";
+          const requiresGeneralAnesthesia =
+            zone.key === "tete" ||
+            zone.key === "torse" ||
+            patho.key.startsWith("brulure");
+          const key = requiresGeneralAnesthesia ? "Chir AG" : soin.prefixe || "Chir";
           if (!chirGroups.has(key)) {
             chirGroups.set(key, new Set());
             chirOrder.push(key);
@@ -348,15 +457,29 @@ function buildSidebar() {
       medsLine,
     ].filter(Boolean).join(" // ");
 
-    return { examensText, soinsText };
+    return { examens, soinsText: bz_normalizeOutput(soinsText) };
   }
 
   // ── injectAll ─────────────────────────────────────────────────────────────────
   function injectAll() {
     if (stack.length === 0) return;
-    const { examensText, soinsText } = buildResult(stack);
-    bz_appendToField("Examens", examensText);
-    bz_prependToField("Traitements", soinsText);
+    const { examens, soinsText } = buildResult(stack);
+    const examensField = bz_findFieldByLabel("Examens");
+    const traitementsField = bz_findFieldByLabel("Traitements");
+    const hasHeadInjury = stack.some(({ zone }) => zone.key === "tete");
+    if (examensField) {
+      const compactExamens = examens.map(({ appareil, contenu }) => ({
+        appareil,
+        contenu: bz_normalizeOutput(contenu),
+      }));
+      bz_setFieldValue(examensField, bz_mergeExamens(examensField, compactExamens));
+    }
+    if (traitementsField) {
+      bz_setFieldValue(
+        traitementsField,
+        bz_mergeTraitements(traitementsField, soinsText, hasHeadInjury),
+      );
+    }
     closeSidebar();
   }
 

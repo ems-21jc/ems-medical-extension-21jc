@@ -21,3 +21,6 @@ Thumbs.db
 .env
 .env.local
 .env.*.local
+
+# Dossiers de sauvegarde
+.backup/
