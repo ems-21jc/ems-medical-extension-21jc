@@ -5,7 +5,8 @@ const storage = api.storage.local;
 const URLS_CONFIG = {
   BCES: {
     bces: "https://docs.google.com/spreadsheets/d/1Vho76MbebIo4d1RgpVL0wGFqbMjeK1e3HcirZV_C7Uk", // Lien dispatch BCES quand on est à l'hôpital BCES
-    lses: "https://lses-link.web.app/", // Lien dispatch LSES quand on est à l'hôpital BCES
+    lses: "https://docs.google.com/spreadsheets/d/1Vho76MbebIo4d1RgpVL0wGFqbMjeK1e3HcirZV_C7Uk/edit?gid=1217157182#gid=1217157182", // Lien dispatch LSES quand on est à l'hôpital BCES
+    // lses: "https://lses-link.web.app/", // Lien dispatch LSES quand on est à l'hôpital BCES (application bloqué par le LSES)
     intra21: "https://intra.21jumpclick.fr/", // Lien Intra-21 quand on est à l'hôpital BCES
   },
   LSES: {
