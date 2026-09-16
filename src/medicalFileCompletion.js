@@ -283,7 +283,7 @@ async function applyCompletion(sel) {
   }
 
   if (sel.cu) {
-    appendToField("Remarque(s)", "Changement Contactés d'Urgence", " + ");
+    appendToField("Remarque(s)", "Changement Contacts d'Urgence", " + ");
   }
 
   if (sel.detatouage) {

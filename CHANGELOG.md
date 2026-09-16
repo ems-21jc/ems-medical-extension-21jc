@@ -8,6 +8,11 @@ Le format est basé sur [Keep a Changelog](https://keepachangelog.com/en/1.1.0/)
 
 ## [Unreleased]
 
+## [0.15.1] - 2026-09-16
+
+### Fixed
+- La remarque ajoutée lors d'un changement de CU ne comporte plus de faute d'orthographe : `Changement Contactés d'Urgence` devient `Changement Contacts d'Urgence`.
+
 ## [0.15.0] - 2026-08-15
 
 ### Changed
