@@ -67,6 +67,71 @@ function bz_addUnique(values, value) {
   }
 }
 
+// ── Extraction d'une zone corporelle en fin de contenu ────────────────────────
+// Retourne { base, zone, side, isSide } ou null quand il n'y a pas de zone.
+// Ex: "Bandages + tulles gras Bras D" → { base: "Bandages + tulles gras", zone: "Bras", side: "D", isSide: true }
+//     "Attelle rigide Torse"          → { base: "Attelle rigide", zone: "Torse", side: "", isSide: false }
+function bz_extractZone(content) {
+  const m = content.match(
+    /^(.*?)\s+(Torse|Dos|Bassin|T[êe]te|[ÉE]paules|Bras|Jambe|Main|Pied)\s*(D|G)?\s*$/i,
+  );
+  if (!m) return null;
+  const sideZones = ["bras", "jambe", "main", "pied"];
+  return {
+    base: m[1].trim(),
+    zone: m[2],
+    side: m[3] || "",
+    isSide: sideZones.includes(m[2].toLowerCase()),
+  };
+}
+
+// Fusionne les côtés D + G d'une même blessure en "D&G".
+// items : tableau de chaînes (contenu de soin ou d'examen)
+// Retourne un tableau de chaînes fusionnées, les items sans zone en fin.
+function bz_mergeSides(items) {
+  const groups = new Map(); // base → { side: Map<zone, {d,g}>, noside: Set<zone> }
+  const baseOrder = [];
+  const plain = [];
+
+  for (const item of items) {
+    const z = bz_extractZone(item);
+    if (!z) {
+      bz_addUnique(plain, item);
+      continue;
+    }
+    if (!groups.has(z.base)) {
+      groups.set(z.base, { side: new Map(), noside: new Set() });
+      baseOrder.push(z.base);
+    }
+    const g = groups.get(z.base);
+    if (z.isSide) {
+      if (!g.side.has(z.zone)) g.side.set(z.zone, { d: false, g: false });
+      const s = g.side.get(z.zone);
+      if (z.side.toUpperCase() === "D") s.d = true;
+      if (z.side.toUpperCase() === "G") s.g = true;
+    } else {
+      g.noside.add(z.zone);
+    }
+  }
+
+  const out = [];
+  for (const base of baseOrder) {
+    const g = groups.get(base);
+    const zoneLabels = [];
+    for (const [zone, s] of g.side) {
+      let sideLab = "";
+      if (s.d && s.g) sideLab = "D&G";
+      else if (s.d) sideLab = "D";
+      else if (s.g) sideLab = "G";
+      zoneLabels.push(`${zone}${sideLab ? " " + sideLab : ""}`);
+    }
+    for (const zone of g.noside) zoneLabels.push(zone);
+    out.push(base ? `${base} ${zoneLabels.join(" + ")}` : zoneLabels.join(" + "));
+  }
+  out.push(...plain);
+  return out;
+}
+
 function bz_mergeExamens(field, examens) {
   const groups = new Map();
   const order = [];
@@ -380,14 +445,17 @@ function buildSidebar() {
           examGroups.set(key, { label: seg.appareil, contents: new Set() });
           examOrder.push(key);
         }
-        examGroups.get(key).contents.add(seg.contenu);
+        examGroups.get(key).contents.add(bz_normalizeOutput(seg.contenu));
       }
     }
 
-    const examens = examOrder.flatMap((k) => {
+    const examens = [];
+    for (const k of examOrder) {
       const { label, contents } = examGroups.get(k);
-      return [...contents].map((contenu) => ({ appareil: label, contenu }));
-    });
+      for (const contenu of bz_mergeSides([...contents])) {
+        examens.push({ appareil: label, contenu });
+      }
+    }
 
     // ── Soins ──────────────────────────────────────────────────────────────────
 
@@ -395,9 +463,8 @@ function buildSidebar() {
     const chirGroups = new Map(); // prefixe → Set<contenu>
     const chirOrder  = [];
 
-    // Immo : contenus dédupliqués, ordre de première apparition
-    const immoContents = [];
-    const immoSeen     = new Set();
+    // Immo : contenus fusionnés par zone (D+G → D&G), regroupés par famille de soin
+    const immoItems = [];
 
     // Meds : chaque sigle/produit collecté individuellement, dédupliqué
     const medsSet = new Set();
@@ -422,10 +489,7 @@ function buildSidebar() {
         }
 
         else if (soin.type === "immo") {
-          if (!immoSeen.has(soin.contenu)) {
-            immoSeen.add(soin.contenu);
-            immoContents.push(soin.contenu);
-          }
+          immoItems.push(bz_normalizeOutput(soin.contenu));
         }
 
         else if (soin.type === "meds") {
@@ -439,9 +503,20 @@ function buildSidebar() {
       (key) => `${key} : ${[...chirGroups.get(key)].join(" + ")}`
     );
 
-    // Ligne Immo (tout sur une ligne)
-    const immoLine = immoContents.length > 0
-      ? immoContents.join(" + ")
+    // Ligne Immo : fusion D+G → D&G, segmentée par famille de soin (Bandages // Attelle // …)
+    const mergedImmo = bz_mergeSides(immoItems);
+    const immoFamilies = new Map();
+    const immoFamOrder = [];
+    for (const item of mergedImmo) {
+      const fam = item.split(/\s+/)[0];
+      if (!immoFamilies.has(fam)) {
+        immoFamilies.set(fam, []);
+        immoFamOrder.push(fam);
+      }
+      immoFamilies.get(fam).push(item);
+    }
+    const immoLine = immoFamOrder.length
+      ? immoFamOrder.map((fam) => immoFamilies.get(fam).join(" + ")).join(" // ")
       : null;
 
     // Ligne Meds : produits spéciaux d'abord, sigles médicaux en dernier
