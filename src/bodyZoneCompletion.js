@@ -713,7 +713,11 @@ function tryInjectBodyZone() {
   for (const el of document.querySelectorAll(
     'h1, h2, h3, h4, h5, [class*="title"], [class*="Title"]'
   )) {
-    if (el.textContent.trim().includes("Nouveau rapport medical")) {
+    const text = el.textContent.trim();
+    if (
+      text.includes("Nouveau rapport medical") ||
+      text.includes("Modifier le rapport médical")
+    ) {
       injectBodyZoneButton(el);
       break;
     }
@@ -726,7 +730,13 @@ const bodyZoneObserver = new MutationObserver(() => {
   if (document.getElementById("bz-sidebar")) {
     const formOpen = [...document.querySelectorAll(
       'h1, h2, h3, h4, h5, [class*="title"], [class*="Title"]'
-    )].some((el) => el.textContent.trim().includes("Nouveau rapport medical"));
+    )].some((el) => {
+      const text = el.textContent.trim();
+      return (
+        text.includes("Nouveau rapport medical") ||
+        text.includes("Modifier le rapport médical")
+      );
+    });
     if (!formOpen) closeSidebar();
   }
 });

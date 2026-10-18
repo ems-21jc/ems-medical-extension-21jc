@@ -790,7 +790,11 @@ function tryInjectCompletion() {
   for (const el of document.querySelectorAll(
     'h1, h2, h3, h4, h5, [class*="title"], [class*="Title"]',
   )) {
-    if (el.textContent.trim().includes("Nouveau rapport medical")) {
+    const text = el.textContent.trim();
+    if (
+      text.includes("Nouveau rapport medical") ||
+      text.includes("Modifier le rapport médical")
+    ) {
       injectCompletionButton(el);
       break;
     }
