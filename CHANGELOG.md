@@ -8,6 +8,18 @@ Le format est basé sur [Keep a Changelog](https://keepachangelog.com/en/1.1.0/)
 
 ## [Unreleased]
 
+## [0.16.0] - 2026-10-18
+
+### Ajouté
+- Les boutons "Bilan" et "Completion" s'injectent maintenant aussi sur le formulaire "Modifier le rapport médical" (auparavant uniquement sur "Nouveau rapport médical").
+
+### Changé
+- Le Bilan Anatomique fusionne les côtés Droit (`D`) et Gauche (`G`) d'une même blessure en `D&G` pour les Examens et les soins d'immobilisation (bandages, tulles gras, attelles rigides/souples), et regroupe les blessures identiques sur une seule ligne.
+- Les soins d'immobilisation sont segmentés par famille de soin et séparés par ` // ` (ex: `Bandages + tulles gras ... // Attelle rigide ...`).
+
+### Corrigé
+- La sidebar Bilan ne se ferme plus automatiquement lorsqu'on ouvre un rapport existant en modification.
+
 ## [0.15.1] - 2026-09-16
 
 ### Fixed
